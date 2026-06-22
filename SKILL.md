@@ -364,17 +364,55 @@ PRD 生成 → 文档委派 → 开发设计 → QA 审计 → 代码交接
 ```
 brainstorming  →  writing-specs  →  writing-plans  →  TDD  →  execute
      ↓                ↓                ↓              ↓        ↓
-   设计稿           spec           实施计划       RED-GREEN  逐步开发
-   签字             自检           签字确认      -REFACTOR   + 复盘
+   设计稿          spec 拆分        实施计划       RED-GREEN  逐步开发
+   + 用户签字      + 小 review      + 用户确认    -REFACTOR   + 复盘
 ```
 
-| 子流程 | 工具 / 参考 | 输出物 | 签字 |
-|---|---|---|---|
-| 1. **brainstorming** | superpowers 的 `brainstorming` skill | `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` | 用户 |
-| 2. **writing-specs** | superpowers 的 `design-an-interface` / `domain-modeling` | FSD + 数据模型设计 | 用户 |
-| 3. **writing-plans** | superpowers 的 `writing-plans` skill | 实施计划（任务 ≤ 2h）| 用户 |
-| 4. **TDD** | superpowers 的 `test-driven-development` | RED → GREEN → REFACTOR | Claude + 用户抽查 |
-| 5. **execute** | `subagent-driven-development` 或 `executing-plans` | commit + 复盘 | Claude + 用户抽查 |
+#### 第 1 步：brainstorming（设计稿 + HARD GATE）
+
+- **工具**：superpowers 的 `brainstorming` skill（强制）
+- **输出**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
+- **签字**：用户
+- **HARD GATE**：设计稿未批准，**禁止写任何代码 / scaffold 任何项目**
+
+#### 第 2 步：writing-specs（拆分成 spec + 小 review）
+
+- **工具**：superpowers 的 `design-an-interface` / `domain-modeling` skill
+- **输出**：FSD（功能拆模块）+ 数据模型设计（按域拆表）
+- **小 review**：spec 写完后做 1 次内联自检（无占位符 / 无矛盾 / 范围明确）
+- **签字**：用户
+
+#### 第 3 步：writing-plans（实施计划 + 用户确认）
+
+- **工具**：superpowers 的 `writing-plans` skill
+- **输出**：实施计划，每个任务粒度 **≤ 2 小时**，必须含：
+  - 涉及的文件路径
+  - 关键代码行号 / 改动点
+  - 完整代码片段（不是伪代码）
+  - **验证命令**（编译 / 测试 / lint 完整命令，复制即可跑）
+- **核心原则**：好计划 = 实施时不需要任何猜测。**让人猜 = 计划不完整**
+- **签字**：用户
+
+#### 第 4 步：TDD（RED-GREEN-REFACTOR）
+
+- **工具**：superpowers 的 `test-driven-development` skill
+- **节奏**：
+  1. 🔴 RED：写测试 → 跑 → 确认失败
+  2. 🟢 GREEN：写最小实现 → 跑 → 测试通过
+  3. ♻️ REFACTOR：清理代码 → 跑 → 测试仍通过
+- **核心纪律**：**没看测试失败 = 不知道测试测得对不对**
+- **签字**：Claude 自检 + 用户抽查
+
+#### 第 5 步：execute（逐步开发 + 复盘）
+
+- **二选一**：
+  - **`subagent-driven-development`** — 多任务独立、需要并行 + 两阶段 review（spec / quality）
+  - **`executing-plans`** — 串行 + 用户在循环中审
+- **每个子任务完成后**：
+  - commit（含任务编号）
+  - 5 问复盘（见 [references/task-retrospective.md](references/task-retrospective.md)）
+  - 通用知识沉淀到 `knowledge-path.md`
+- **签字**：Claude 自检 + 用户抽查
 
 > **HARD GATE**：每步未签字不得进入下一步。具体门控规则见 [references/stage-gate.md](references/stage-gate.md)。
 

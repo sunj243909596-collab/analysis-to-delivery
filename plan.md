@@ -1,6 +1,7 @@
 # Plan — Analysis to Delivery
 
-> 项目路线图。最新进度看 [README.md](README.md)，详细规格看 [SPEC.md](SPEC.md)。
+> **当前版本**:v2.0.0-dev(2026-06-22)
+> 路线图详见下方各版本节。最新进度看 [README.md](README.md)，详细规格看 [SPEC.md](SPEC.md)。
 
 ## 愿景
 
@@ -223,13 +224,14 @@
 | Issue / PR 模板 | ✅ 已完成 | bug_report.md / feature_request.md / PULL_REQUEST_TEMPLATE.md |
 | CONTRIBUTING.md | ✅ 已完成 | 行为准则 + 开发流程 + 验证脚本 + 目录约定 |
 
-### v3.0 — 待开始 ⬜
+### v3.0 — 部分完成 🚧
 | Phase | 状态 | 备注 |
 |---|---|---|
-| drawio CLI 集成 | ⬜ 待开始 | 自动生成流程图 PNG |
-| mermaid CLI 备选 | ⬜ 待开始 | |
-| docx 模板 | ⬜ 待开始 | python-docx-template |
-| VSCode 扩展 | ⬜ 待开始 | 右键项目 → 应用 skill |
+| ASCII 流程图 → Mermaid 转换器 | ✅ 已完成 | `scripts/flow-to-mermaid.py` |
+| mermaid CLI → SVG/PNG 渲染 | ✅ 已完成 | `scripts/flow-export.sh`(mmdc 包装)|
+| VSCode 扩展 scaffold | ✅ 已完成 | `vscode-extension/`(4 命令 + 配置)|
+| drawio CLI 集成 | ⬜ 待开始 | 与 mermaid 互为补充 |
+| docx 模板 | ⬜ 待开始 | python-docx-template(可选) |
 
 ---
 

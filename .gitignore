@@ -54,3 +54,16 @@ pnpm-debug.log*
 
 # 用户特定
 *.local.md
+
+# 生成的 Mermaid 文件(flow-to-mermaid.py 输出)
+**/*.mmd
+examples/**/rendered/
+
+# VSCode 扩展构建产物
+vscode-extension/dist/
+vscode-extension/node_modules/
+vscode-extension/*.vsix
+
+# Flow 渲染产物
+*.svg
+!vscode-extension/resources/*.svg

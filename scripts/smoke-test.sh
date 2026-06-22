@@ -414,6 +414,48 @@ check_file ".github/ISSUE_TEMPLATE/bug_report.md"
 check_file ".github/ISSUE_TEMPLATE/feature_request.md"
 check_file ".github/PULL_REQUEST_TEMPLATE.md"
 
+# 14. v3.0 工具链 + VSCode 扩展
+section "14. v3.0 工具链 + VSCode 扩展"
+# 14.1 流程图转换脚本
+check_file "scripts/flow-to-mermaid.py"
+check_file "scripts/flow-export.sh"
+if python3 "$SKILL_DIR/scripts/flow-to-mermaid.py" --help >/dev/null 2>&1; then
+  ok "scripts/flow-to-mermaid.py --help 可运行"
+else
+  warn "scripts/flow-to-mermaid.py --help 运行失败"
+fi
+if bash "$SKILL_DIR/scripts/flow-export.sh" --help >/dev/null 2>&1; then
+  ok "scripts/flow-export.sh --help 可运行"
+else
+  warn "scripts/flow-export.sh --help 运行失败"
+fi
+
+# 14.2 VSCode 扩展 scaffold
+check_dir "vscode-extension"
+check_file "vscode-extension/package.json"
+check_file "vscode-extension/src/extension.ts"
+check_file "vscode-extension/tsconfig.json"
+check_file "vscode-extension/README.md"
+check_file "vscode-extension/CHANGELOG.md"
+check_file "vscode-extension/resources/icon.svg"
+
+# 14.3 README.md 完整性
+check_file "README.md"
+readme_size=$(wc -l < "$SKILL_DIR/README.md" 2>/dev/null || echo 0)
+if [ "$readme_size" -ge 100 ]; then
+  ok "README.md 详尽($readme_size 行)"
+else
+  warn "README.md 较短($readme_size 行)"
+fi
+# README 中含关键章节
+for section in "26 个 skill" "知识库配置" "工具链" "GitHub Actions"; do
+  if grep -q "$section" "$SKILL_DIR/README.md" 2>/dev/null; then
+    ok "README.md 含「$section」章节"
+  else
+    warn "README.md 缺「$section」章节"
+  fi
+done
+
 # ---------- 总结 ----------
 if [ "$JSON_MODE" = true ]; then
   echo "{\"results\": $json_results, \"summary\": {\"pass\": $pass_count, \"warn\": $warn_count, \"fail\": $fail_count}}"

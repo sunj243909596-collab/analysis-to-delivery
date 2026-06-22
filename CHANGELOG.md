@@ -8,6 +8,37 @@
 ## [Unreleased]
 
 ### 新增
+- 🆕 **v3.0-dev 工具链 + VSCode 集成**(开发中)
+  - **`scripts/flow-to-mermaid.py`** — ASCII 流程图 → Mermaid 源码转换器
+    - 支持状态机自动检测(▼ 垂直箭头)
+    - 自动清理 box label 中的 │ 分隔符
+    - 批量模式 + JSON 输出
+    - 启发式边检测,失败时输出节点 + 边注释模板
+  - **`scripts/flow-export.sh`** — Mermaid → SVG/PNG 渲染器
+    - 包装 `mmdc`(mermaid-cli)
+    - 支持单文件 + `--batch` 批量 + `--all` 递归
+    - 自动创建 rendered/ 输出目录
+    - 依赖检查 + 友好错误提示
+  - **`vscode-extension/`** — VSCode 扩展 scaffold(v0.1.0)
+    - 4 个命令:`applySkill` / `runSmokeTest` / `renderFlowChart` / `openDocumentation`
+    - 配置项:`skillsPath` / `mermaidCli` / `defaultFormat` / `disabled`
+    - 上下文菜单集成(.txt 业务流程图自动出现)
+    - 自动激活(workspace 包含 BRD / TASK_CONFIRM 时)
+    - 自定义 SVG 图标(蓝色流程图风格)
+    - TypeScript + ESLint + .vscodeignore 完整工程
+    - README 详述开发 / 调试 / 打包 / 发布流程
+  - **`README.md` 全面重写**
+    - 添加目录导航(11 节)
+    - 添加 "26 个 skill 速查" 表
+    - 添加 "📚 知识库配置(项目级)" 完整章节(痛点 + 三层优先级 + 5 件套 + init 脚本 + 实战)
+    - 添加 "🔧 工具链" 章节(flow-export + VSCode 扩展用法)
+    - 添加 "GitHub Actions CI" 章节
+    - 更新依赖表(Node.js / mermaid-cli / cookiecutter)
+    - 更新路线图(v2.0 完成 + v3.0 进行中 + v4.0 计划)
+
+## [Unreleased 历史]
+
+### 新增
 - 🆕 **v2.0 多领域示例 + CI + 社区治理**
   - **`examples/02-saas-dashboard/`**(Node 22 + Express 5 + React 19 + PostgreSQL 16)
     - 12 个文件:README / TASK_CONFIRM_订单管理 / REVIEW_需求确认书 / REVIEW_字段对齐分析 / 01-BRD / 业务流程图(订单创建 + 状态流转)/ knowledge-path / tech-stack-path / compliance-path / doc-naming / config-used

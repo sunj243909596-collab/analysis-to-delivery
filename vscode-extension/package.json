@@ -1,0 +1,122 @@
+{
+  "name": "analysis-to-delivery",
+  "displayName": "Analysis to Delivery",
+  "description": "AI-powered workflow from requirements analysis to delivery — 26 skills, 3 examples, 5 CI workflows",
+  "version": "0.1.0",
+  "publisher": "sunj243909596-collab",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sunj243909596-collab/analysis-to-delivery.git"
+  },
+  "icon": "resources/icon.svg",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "workflow",
+    "analysis",
+    "delivery",
+    "skill",
+    "brd",
+    "prd",
+    "mermaid"
+  ],
+  "activationEvents": [
+    "onCommand:analysis-to-delivery.applySkill",
+    "onCommand:analysis-to-delivery.runSmokeTest",
+    "onCommand:analysis-to-delivery.renderFlowChart",
+    "onCommand:analysis-to-delivery.openDocumentation",
+    "workspaceContains:**/01-业务需求文档 BRD.md",
+    "workspaceContains:**/TASK_CONFIRM_*.md"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "analysis-to-delivery.applySkill",
+        "title": "Apply Analysis-to-Delivery Skill",
+        "category": "Analysis to Delivery",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "analysis-to-delivery.runSmokeTest",
+        "title": "Run Smoke Test",
+        "category": "Analysis to Delivery",
+        "icon": "$(check)"
+      },
+      {
+        "command": "analysis-to-delivery.renderFlowChart",
+        "title": "Render Flow Chart (ASCII → Mermaid → SVG)",
+        "category": "Analysis to Delivery",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "analysis-to-delivery.openDocumentation",
+        "title": "Open Documentation",
+        "category": "Analysis to Delivery",
+        "icon": "$(book)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "analysis-to-delivery.renderFlowChart",
+          "when": "resourceExtname == .txt && resourcePath =~ /业务流程图-/",
+          "group": "analysis-to-delivery"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "analysis-to-delivery.applySkill",
+          "when": "!config.analysisToDelivery.disabled"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Analysis to Delivery",
+      "properties": {
+        "analysisToDelivery.skillsPath": {
+          "type": "string",
+          "default": "${userHome}/.claude/skills/analysis-to-delivery",
+          "description": "Path to the installed analysis-to-delivery skill collection (where scripts/ and skills/ live)"
+        },
+        "analysisToDelivery.mermaidCli": {
+          "type": "string",
+          "default": "mmdc",
+          "description": "Path to mermaid-cli (mmdc). Install with: npm install -g @mermaid-js/mermaid-cli"
+        },
+        "analysisToDelivery.defaultFormat": {
+          "type": "string",
+          "enum": ["svg", "png"],
+          "default": "svg",
+          "description": "Default output format for rendered flow charts"
+        },
+        "analysisToDelivery.disabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable all commands (effective on next reload)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "vsce package --no-dependencies",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0",
+    "@vscode/test-electron": "^2.3.0",
+    "eslint": "^8.50.0",
+    "@vscode/vsce": "^2.22.0"
+  }
+}

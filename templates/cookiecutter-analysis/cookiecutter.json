@@ -1,0 +1,10 @@
+{
+    "project_name": "My Project",
+    "project_slug": "my-project",
+    "project_code": "MP",
+    "version": "0.1.0",
+    "owner": "Project Lead",
+    "date": "{% now 'local', '%Y-%m-%d' %}",
+    "_extensions": ["jinja2_time.TimeExtension"],
+    "_copy_without_render": ["*.drawio", "*.png", "*.jpg"]
+}

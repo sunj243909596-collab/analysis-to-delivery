@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Analysis to Delivery 一键安装脚本
 # 用法：
-#   curl -fsSL https://raw.githubusercontent.com/<owner>/analysis-to-delivery/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/sunj243909596-collab/analysis-to-delivery/main/install.sh | bash
 #   bash install.sh                   # 安装到默认目录
 #   bash install.sh --dry-run         # 只检查不安装
 #   bash install.sh --target DIR      # 安装到指定目录
@@ -9,7 +9,7 @@
 set -e
 
 # ---------- 默认配置 ----------
-REPO="${ANALYSIS_TO_DELIVERY_REPO:-https://github.com/<owner>/analysis-to-delivery.git}"
+REPO="${ANALYSIS_TO_DELIVERY_REPO:-https://github.com/sunj243909596-collab/analysis-to-delivery.git}"
 SKILL_NAME="analysis-to-delivery"
 VERSION="${VERSION:-main}"
 DRY_RUN=false

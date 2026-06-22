@@ -125,6 +125,6 @@
 
 ---
 
-**维护者**：WMOS Hermes Agent
+**维护者**：Jason sun
 **反馈渠道**：GitHub Issues（仓库地址待发布后补）
 **协议**：MIT

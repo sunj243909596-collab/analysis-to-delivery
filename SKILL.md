@@ -99,7 +99,7 @@ config 编写方法见 [SPEC.md §6](SPEC.md#6-配置接口契约)。
 **流程**：
 1. 读取用户填写的 `TASK_CONFIRM_*.md`
 2. 加载 `templates/REVIEW_需求确认书.md`
-3. 逐项标注 Hermes/Claude 的理解，列出待确认的设计假设
+3. 逐项标注 AI 助手的理解，列出待确认的设计假设
 4. 输出 `REVIEW_需求确认书.md`
 
 **⚠️ 关键纪律**：
@@ -460,5 +460,5 @@ DDL/DML 操作必须由用户人工执行，Claude 标记为"待人工执行"清
 ---
 
 **版本**：1.0.0-mvp（2026-06-22）
-**维护者**：WMOS Hermes Agent
+**维护者**：Jason sun
 **协议**：MIT

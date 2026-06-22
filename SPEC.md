@@ -94,7 +94,7 @@ Claude 读取 config/ 对应文件
 **流程**：
 1. Claude 生成 `TASK_CONFIRM_{项目}.md`（参考 `templates/TASK_CONFIRM.md`）
 2. 用户填写后告知 Claude
-3. Claude 读取并生成 `REVIEW_需求确认书.md`（结构化确认 Hermes 理解）
+3. AI 助手读取并生成 `REVIEW_需求确认书.md`（结构化确认 AI 助手理解）
 4. 用户审阅确认 → 进入阶段 2
 
 **关键纪律**：
@@ -462,5 +462,5 @@ Claude 读取 config/ 对应文件
 ---
 
 **最后更新**：2026-06-22
-**维护者**：WMOS Hermes Agent
+**维护者**：Jason sun
 **协议**：MIT

@@ -32,13 +32,13 @@
 ### 一键安装（推荐）
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/<owner>/analysis-to-delivery/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/sunj243909596-collab/analysis-to-delivery/main/install.sh | bash
 ```
 
 ### 手动安装
 
 ```bash
-git clone https://github.com/<owner>/analysis-to-delivery.git \
+git clone https://github.com/sunj243909596-collab/analysis-to-delivery.git \
   ~/.claude/skills/analysis-to-delivery
 ```
 
@@ -230,5 +230,5 @@ MIT — 详见 [LICENSE](LICENSE)
 
 ---
 
-**维护者**：WMOS Hermes Agent
+**维护者**：Jason sun
 **当前版本**：1.0.0-mvp（2026-06-22）

@@ -43,10 +43,30 @@
 - 文档结构清晰，示例可直接对照使用
 - 脚本能跑（即使功能不完整）
 
-### v1.1（计划 2026-Q3）— 配置库完善
-- 补充 5-8 个常用合规规则（HIPAA / SOX / 等保 2.0 / GDPR / PCI-DSS / 工业互联网安全）
+### v1.1（计划 2026-Q3）— **项目级配置体系**（核心方向调整）
+
+> 痛点回顾：v1.0 把所有 config 放在 skill 内 `config/`，真实项目交付时配置不准、难维护。
+> 调整方向：**项目级优先 + skill 级 fallback**。
+
+**核心变更**：
+- ✅ 新增 4 个项目级 config 模板（`templates/project-config/` 下）
+  - `knowledge-path.md`（项目根，列真实知识库路径）
+  - `compliance-path.md`（项目根，启用开关 + 路径）
+  - `tech-stack-path.md`（项目根，分端列后端/前端/数据库/中间件）
+  - `doc-naming.md`（项目根，文档编号/前缀/存放目录）
+- ✅ 新增 `scripts/init-project-config.sh`（一键在项目根生成 4 个空模板）
+- ✅ SKILL.md / SPEC.md 重写"配置加载机制"章节，明确三层优先级（项目级 > skill 级 > 默认）
+- ✅ 示例 `examples/01-wms-warehouse/config-used.md` 改写为项目级演示
+
+**配置库（skill 级）补充**（项目级的配套）：
+- 补充 5-8 个常用合规规则（HIPAA / SOX / 等保 2.0 / GDPR / PCI-DSS / 工业互联网安全）—— 仅作 fallback 示例
 - 补充 6-8 个常用技术栈（Java+Spring+MySQL / Python+Django / Go+Gin / Node+NestJS / .NET Core / Rust+Actix）
 - 补充 3-5 个常用领域知识库引用模板
+
+**用户承诺（v1.1）**：
+- 拿到一个真实项目后，跑一行 `init-project-config.sh` 就能开工
+- 项目的合规规则、技术栈、知识库路径**全部跟着项目走**，不污染 skill
+- skill 级示例只作为"不知道写什么时的参考"
 
 ### v1.2（计划 2026-Q3）— 测试增强
 - 集成 v1.0 skill 的自检脚本（skill 装完后自动跑 smoke test）

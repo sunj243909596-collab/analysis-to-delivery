@@ -53,21 +53,32 @@
 | **模板 (Template)** | `templates/` 目录下空白的文档模板，用户可复制使用 |
 | **参考 (Reference)** | `references/` 目录下方法论文档（流程图规范、字段对齐规范等） |
 
-### 2.3 配置加载机制
+### 2.3 配置加载机制（v1.1 起以项目级为优先）
+
 ```
-用户告诉 Claude 行业/技术栈
+Claude 进入项目
         ↓
-Claude 读取 config/ 对应文件
-        ↓
-将配置内容注入到工作流相应阶段
-        ↓
-按 10 阶段推进
+扫描项目根是否存在 *-path.md（项目级）
+        ↓ Yes                    ↓ No
+读取项目级                扫描 skill 自带 config/（skill 级）
+        ↓                         ↓
+注入到工作流相应阶段       项目级 + skill 级都缺？
+        ↓                         ↓
+按 10 阶段推进            主动问用户（默认）
 ```
 
+**三层优先级**：
+
+| 层级 | 位置 | 作用 | 优先级 |
+|------|------|------|--------|
+| **Level 1 项目级** | 项目根 `knowledge-path.md` 等 4 个文件 | 项目方自己填的真实配置（最准） | 最高 |
+| **Level 2 skill 级** | `~/.claude/skills/analysis-to-delivery/config/` | skill 自带的示例 + fallback | 中 |
+| **Level 3 默认** | Claude 询问用户 | 主动澄清，不擅自编造 | 兜底 |
+
 **加载示例**：
-- 用户说"这是医药物流项目" → Claude 加载 `config/compliance/gsp.md` + `config/tech-stack/java-spring.md`
-- 用户说"这是一个 SaaS 后台" → Claude 加载 `config/compliance/none.md` + `config/tech-stack/node-nestjs.md`
-- 用户未说明 → 走默认通用流程，不加载任何 config
+- 项目根有 `tech-stack-path.md` 指向 Java 规范 → Claude 直接用项目级，不读 skill 级
+- 项目根为空 + 用户说"这是医药物流项目" → Claude 加载 `config/compliance/gsp.md` 作为参考（标注来源）
+- 项目根为空 + 用户也未说明 → Claude **主动问用户**，禁止编造
 
 ## 3. 工作流定义
 
@@ -357,6 +368,79 @@ Claude 读取 config/ 对应文件
 ## 存放路径
 （如 docs/requirements/ vs 直接根目录）
 ```
+
+### 6.5 项目级配置（v1.1 引入，最推荐）
+
+> 这是 v1.1 新增的能力。**每个项目根目录放 4 个 `*-path.md` 文件**，Claude 优先读项目级的，再 fallback 到 skill 级。
+
+#### 6.5.1 4 个文件一览
+
+| 文件 | 项目级路径 | 模板 | 加载阶段 |
+|------|-----------|------|----------|
+| 知识库 | `./knowledge-path.md` | `templates/project-config/knowledge-path.md` | 1.3 / 8 |
+| 合规 | `./compliance-path.md` | `templates/project-config/compliance-path.md` | 3 |
+| 技术栈 | `./tech-stack-path.md` | `templates/project-config/tech-stack-path.md` | 1 / 4 / 8 |
+| 文档命名 | `./doc-naming.md` | `templates/project-config/doc-naming.md` | 2-10 全部 |
+
+#### 6.5.2 加载优先级（强制）
+
+```
+项目级 *-path.md（Level 1，最准）
+    ↓ 未提供
+skill 级 config/*.md（Level 2，示例库 + fallback）
+    ↓ 仍未匹配
+Claude 主动询问用户（Level 3，兜底；严禁编造）
+```
+
+#### 6.5.3 路径格式契约
+
+| 项 | 规范 |
+|---|---|
+| 默认接受 | 本地**绝对路径**（Unix: `/path/...` 或 Windows: `D:\path\...`） |
+| 也接受 | 相对项目根的相对路径（Claude 自动解析为绝对路径） |
+| 谨慎接受 | HTTP/HTTPS URL — 必须加 ` # remote` 后缀明确授权 |
+| 严禁 | 执行路径下任何代码 — 仅作 Markdown 文本读取 |
+
+#### 6.5.4 文件最小结构
+
+每个 `*-path.md` 文件最小结构（详见各自模板）：
+
+```markdown
+# {文件名}：项目级 {类型} 配置
+
+## 路径列表
+| 标签 | 路径 | 用途 | 必读？ |
+
+## 加载规则
+（明确 fallback 行为）
+
+## 安全约束
+（路径白名单 / 远程标注）
+```
+
+#### 6.5.5 一键初始化
+
+```bash
+# 在新项目根跑：
+bash ~/.claude/skills/analysis-to-delivery/scripts/init-project-config.sh /path/to/project
+
+# 会生成：
+#   /path/to/project/knowledge-path.md
+#   /path/to/project/compliance-path.md
+#   /path/to/project/tech-stack-path.md
+#   /path/to/project/doc-naming.md
+# 全部带示例注释，用户填写真实内容。
+```
+
+#### 6.5.6 与 skill 级 config 的关系
+
+| 维度 | 项目级（v1.1+） | skill 级（v1.0 中心化） |
+|------|----------------|------------------------|
+| 位置 | 项目根 | `~/.claude/skills/.../config/` |
+| 优先级 | **最高** | 项目级未填时的 fallback |
+| 维护者 | 项目方 | skill 维护者 |
+| 适用场景 | 真实项目交付 | skill 内置示例 / 临时试用 |
+| 版本控制 | 跟项目一起 commit | 跟 skill 一起发布 |
 
 ## 7. 脚本接口契约
 

@@ -57,16 +57,18 @@
 - ✅ 新增 `scripts/init-project-config.sh`（一键在项目根生成 4 个空模板）
 - ✅ SKILL.md / SPEC.md 重写"配置加载机制"章节，明确三层优先级（项目级 > skill 级 > 默认）
 - ✅ 示例 `examples/01-wms-warehouse/config-used.md` 改写为项目级演示
-
-**配置库（skill 级）补充**（项目级的配套）：
-- 补充 5-8 个常用合规规则（HIPAA / SOX / 等保 2.0 / GDPR / PCI-DSS / 工业互联网安全）—— 仅作 fallback 示例
-- 补充 6-8 个常用技术栈（Java+Spring+MySQL / Python+Django / Go+Gin / Node+NestJS / .NET Core / Rust+Actix）
-- 补充 3-5 个常用领域知识库引用模板
+- ✅ 阶段 8 简化：去掉 V1/V2 双版本（FSD / 数据模型 / 开发设计三件套）
+- ✅ templates 通用化 + WMS 痕迹清理
 
 **用户承诺（v1.1）**：
 - 拿到一个真实项目后，跑一行 `init-project-config.sh` 就能开工
 - 项目的合规规则、技术栈、知识库路径**全部跟着项目走**，不污染 skill
-- skill 级示例只作为"不知道写什么时的参考"
+- skill 级示例仅作 fallback 参考；其他行业的 config 让用户用 LLM 按 `templates/` 自己生成
+
+**明确不做的**（v1.2+ 也不会做）：
+- ❌ skill 维护方**不**预置 N 个合规规则 / N 个技术栈的内置 fallback
+- 原因：LLM 时代，用户用 `templates/` 自己生成 config 更快、更贴场景；skill 维护方写一堆 fallback 是低价值重复劳动
+- skill 自带的 `config/compliance/gsp.md` / `config/tech-stack/java-spring.md` 仅作"格式参考样例"，不追求覆盖广度
 
 ### v1.2（计划 2026-Q3）— 测试增强
 - 集成 v1.0 skill 的自检脚本（skill 装完后自动跑 smoke test）
@@ -141,14 +143,15 @@
 | 本地验证 | ✅ 已完成 | 129dea6 | 脚本 --help 全跑通 |
 | git init + 推送 GitHub | ✅ 已完成 | b35d53e | sunj243909596-collab/analysis-to-delivery |
 
-### v1.1 — 部分完成 🟡
+### v1.1 — 全部完成 ✅（不含 fallback 库）
 | Phase | 状态 | Commit | 备注 |
 |---|---|---|---|
 | 项目级 config 体系（4 个 *-path.md + init 脚本） | ✅ 已完成 | 09bb58d | 核心方向调整 |
 | 阶段 8 去掉 V1/V2 双版本 | ✅ 已完成 | fb8db83 | 用户反馈"存储过程不需要" |
 | templates 通用化 | ✅ 已完成 | 511009f | 移除 WMS 特定内容 |
 | references / SKILL / SPEC WMS 痕迹清理 | ✅ 已完成 | 8a6c585 | 实战教训段保留（按方案 B） |
-| **skill 级配置库补充** | ⬜ 待开始 | | 5-8 合规 + 6-8 技术栈 + 3-5 知识库 |
+| plan.md 进度看板同步 | ✅ 已完成 | e224917 | |
+| ~~skill 级配置库补充~~ | ❌ 取消 | - | LLM 时代用户自己生成更快 |
 | **CHANGELOG 升 [1.1.0] tag** | ⬜ 待开始 | | v1.1 已发到 main，未打 tag |
 
 ### v1.2 — 待开始 ⬜

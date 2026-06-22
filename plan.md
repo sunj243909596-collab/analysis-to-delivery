@@ -130,18 +130,50 @@
 
 ## 进度看板
 
+### v1.0 MVP — 全部完成 ✅
+| Phase | 状态 | Commit | 备注 |
+|---|---|---|---|
+| 建目录骨架 | ✅ 已完成 | 129dea6 | 2026-06-22 |
+| 写 plan.md / SPEC.md / SKILL.md | ✅ 已完成 | 129dea6 | 2026-06-22 |
+| 写 install.sh | ✅ 已完成 | 129dea6 | 含 --dry-run / --target / --uninstall / --version |
+| 蒸馏 examples/01-wms-warehouse | ✅ 已完成 | 129dea6 | 8 个文件（BRD / 流程图 / 配置） |
+| 写 README/LICENSE/CHANGELOG | ✅ 已完成 | 129dea6 | |
+| 本地验证 | ✅ 已完成 | 129dea6 | 脚本 --help 全跑通 |
+| git init + 推送 GitHub | ✅ 已完成 | b35d53e | sunj243909596-collab/analysis-to-delivery |
+
+### v1.1 — 部分完成 🟡
+| Phase | 状态 | Commit | 备注 |
+|---|---|---|---|
+| 项目级 config 体系（4 个 *-path.md + init 脚本） | ✅ 已完成 | 09bb58d | 核心方向调整 |
+| 阶段 8 去掉 V1/V2 双版本 | ✅ 已完成 | fb8db83 | 用户反馈"存储过程不需要" |
+| templates 通用化 | ✅ 已完成 | 511009f | 移除 WMS 特定内容 |
+| references / SKILL / SPEC WMS 痕迹清理 | ✅ 已完成 | 8a6c585 | 实战教训段保留（按方案 B） |
+| **skill 级配置库补充** | ⬜ 待开始 | | 5-8 合规 + 6-8 技术栈 + 3-5 知识库 |
+| **CHANGELOG 升 [1.1.0] tag** | ⬜ 待开始 | | v1.1 已发到 main，未打 tag |
+
+### v1.2 — 待开始 ⬜
 | Phase | 状态 | 备注 |
 |---|---|---|
-| 建目录骨架 | ✅ 已完成 | 2026-06-22 |
-| 写 plan.md | ✅ 已完成 | 2026-06-22 |
-| 写 SPEC.md | ⏳ 进行中 | |
-| 写 SKILL.md | ⬜ 待开始 | |
-| 写 install.sh | ⬜ 待开始 | |
-| 蒸馏 examples/01-wms-warehouse | ⬜ 待开始 | |
-| 写 README/LICENSE/CHANGELOG | ⬜ 待开始 | |
-| 本地验证 | ⬜ 待开始 | |
-| git init | ⬜ 待开始 | 等待 GitHub 仓库地址 |
-| 推送 GitHub | ⬜ 待开始 | 等待用户授权 |
+| skill 自检 smoke test | ⬜ 待开始 | `scripts/smoke-test.sh` |
+| 文档产物自动校验 | ⬜ 待开始 | 集成到模板 |
+| 模板引擎化（cookiecutter/copier） | ⬜ 待开始 | |
+
+### v2.0 — 待开始 ⬜
+| Phase | 状态 | 备注 |
+|---|---|---|
+| examples/02-saas-dashboard | ⬜ 待开始 | Node + React + PostgreSQL |
+| examples/03-mobile-app | ⬜ 待开始 | Flutter + Firebase |
+| GitHub Actions | ⬜ 待开始 | SQL 检查 + 文档 QA |
+| Issue / PR 模板 | ⬜ 待开始 | |
+| CONTRIBUTING.md | ⬜ 待开始 | |
+
+### v3.0 — 待开始 ⬜
+| Phase | 状态 | 备注 |
+|---|---|---|
+| drawio CLI 集成 | ⬜ 待开始 | 自动生成流程图 PNG |
+| mermaid CLI 备选 | ⬜ 待开始 | |
+| docx 模板 | ⬜ 待开始 | python-docx-template |
+| VSCode 扩展 | ⬜ 待开始 | 右键项目 → 应用 skill |
 
 ---
 

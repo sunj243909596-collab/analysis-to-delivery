@@ -28,7 +28,7 @@
 - ✅ **26 个独立 skill**(v1.4 拆分):2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline
 - ✅ **3 个完整行业示例**(v2.0):医药 WMS / SaaS 订单 / 移动 App 积分
 - ✅ **5 个 GitHub Actions workflow**(v2.0):smoke-test / sql-dialect / doc-validate / field-alignment / full-qa-audit
-- ✅ **流程图工具链**(v3.0):ASCII → Mermaid → SVG/PNG(命令行 + VSCode 集成)
+- ✅ **流程图工具链**(v3.0):ASCII → Mermaid/Drawio → SVG/PNG(命令行 + VSCode 集成)
 - ✅ **VSCode 扩展**(v3.0):4 个命令直接桥接到 skill 脚本
 - ✅ **可组合**:不强制流程,自由调任意 skill
 - ✅ **可插拔配置**:`config/` 目录放行业/技术栈/领域知识库,按需加载
@@ -106,7 +106,7 @@ bash ~/.claude/skills/analysis-to-delivery/scripts/smoke-test.sh
 
 确认文件完整后再用。✅ 全部通过即可放心;⚠️ 有警告可继续;❌ 有错误需先修复。
 
-当前标准:**76 ✅ / 0 ⚠️ / 0 ❌**(v2.0 后)
+当前标准:**95+ ✅ / 0 ⚠️ / 0 ❌**(v3.0 后)
 
 ### 方式 1:斜杠命令(Claude Code)
 
@@ -326,7 +326,9 @@ config/
 
 ### 流程图渲染(v3.0)
 
-将 examples/ 中的 ASCII 流程图转为 Mermaid → SVG/PNG:
+将 examples/ 中的 ASCII 流程图转为可视化图形 — 支持两条路径(Mermaid 或 Drawio):
+
+**路径 1:Mermaid → SVG/PNG**(适合网页嵌入 / GitHub README)
 
 ```bash
 # 单文件
@@ -335,17 +337,37 @@ bash scripts/flow-export.sh examples/02-saas-dashboard/业务流程图-订单状
 # 批量(整个目录)
 bash scripts/flow-export.sh --batch examples/02-saas-dashboard/ png ./diagrams
 
-# 转换但不渲染(只生成 .mmd)
+# 只转换,不渲染(生成 .mmd 源码)
 python3 scripts/flow-to-mermaid.py --batch examples/02-saas-dashboard/
 ```
 
-**前置依赖**:
+**路径 2:Drawio XML**(适合在线编辑 / 精细布局)
+
 ```bash
-npm install -g @mermaid-js/mermaid-cli
+# 单文件
+python3 scripts/flow-to-drawio.py examples/02-saas-dashboard/业务流程图-订单状态流转.txt
+# → 生成 业务流程图-订单状态流转.drawio(可用 https://app.diagrams.net/ 打开)
+
+# 批量(整个目录)
+python3 scripts/flow-to-drawio.py --batch examples/02-saas-dashboard/
 ```
+
+**前置依赖**:
+- Mermaid 路径:`npm install -g @mermaid-js/mermaid-cli`
+- Drawio 路径:仅 Python 3.8+,**无外部依赖**(drawio desktop 可选,用于打开编辑)
 
 **支持图类型**:状态机(自动检测 ▼ 垂直箭头)/ 简单连接图。
 **限制**:复杂泳道图(swimlane)需手动整理。
+
+**两条路径对比**:
+
+| 维度 | Mermaid | Drawio |
+|---|---|---|
+| 输出 | SVG / PNG / 源码 | XML(可编辑) |
+| 编辑 | 需改 ASCII 重转 | drawio 桌面/网页直接拖拽 |
+| 嵌入 | GitHub README 直接渲染 | 需截图或嵌入 .drawio 文件 |
+| 精细布局 | 一般 | 强(自由拖拽) |
+| 依赖 | mmdc(Node) | 仅 Python |
 
 ### VSCode 扩展(v3.0)
 
@@ -456,6 +478,7 @@ analysis-to-delivery/
 │   ├── init-project-config.sh
 │   ├── cookiecutter-gen.sh
 │   ├── flow-to-mermaid.py      # v3.0:ASCII → Mermaid
+│   ├── flow-to-drawio.py       # v3.0:ASCII → Drawio XML
 │   └── flow-export.sh          # v3.0:Mermaid → SVG/PNG
 ├── .github/
 │   ├── workflows/              # 5 个 CI(v2.0)
@@ -488,6 +511,7 @@ analysis-to-delivery/
 | `scripts/init-project-config.sh` | 项目启动 | 生成 4 个项目级配置文件 | Bash |
 | `scripts/cookiecutter-gen.sh` | 项目启动 | 生成编号文档骨架 | cookiecutter |
 | `scripts/flow-to-mermaid.py` | v3.0 | ASCII 流程图 → Mermaid 源码 | Python 标准库 |
+| `scripts/flow-to-drawio.py` | v3.0 | ASCII 流程图 → Drawio XML(可在线编辑) | Python 标准库 |
 | `scripts/flow-export.sh` | v3.0 | Mermaid → SVG/PNG(批量 / 单文件) | mermaid-cli |
 
 ## 工作流总览
@@ -541,7 +565,7 @@ analysis-to-delivery/
 | v1.3 | 双模式 + 阶段门控 + 设计回测 + 任务复盘 | ✅ 2026-06 |
 | v1.4 | 拆分为 26 个独立 skill(mattpocock 风格)| ✅ 2026-06 |
 | v2.0 | **当前**:2 个新示例 + GitHub Actions + CONTRIBUTING | ✅ 2026-06 |
-| v3.0 | drawio/mermaid CLI + VSCode 扩展 | 🚧 进行中 |
+| v3.0 | drawio/mermaid CLI + VSCode 扩展 | ✅ 2026-06 |
 | v4.0 | 国际化 + 团队协作(计划) | ⬜ 待开始 |
 
 详见 [plan.md](plan.md)。

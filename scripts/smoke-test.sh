@@ -418,11 +418,17 @@ check_file ".github/PULL_REQUEST_TEMPLATE.md"
 section "14. v3.0 工具链 + VSCode 扩展"
 # 14.1 流程图转换脚本
 check_file "scripts/flow-to-mermaid.py"
+check_file "scripts/flow-to-drawio.py"
 check_file "scripts/flow-export.sh"
 if python3 "$SKILL_DIR/scripts/flow-to-mermaid.py" --help >/dev/null 2>&1; then
   ok "scripts/flow-to-mermaid.py --help 可运行"
 else
   warn "scripts/flow-to-mermaid.py --help 运行失败"
+fi
+if python3 "$SKILL_DIR/scripts/flow-to-drawio.py" --help >/dev/null 2>&1; then
+  ok "scripts/flow-to-drawio.py --help 可运行"
+else
+  warn "scripts/flow-to-drawio.py --help 运行失败"
 fi
 if bash "$SKILL_DIR/scripts/flow-export.sh" --help >/dev/null 2>&1; then
   ok "scripts/flow-export.sh --help 可运行"

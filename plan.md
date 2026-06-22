@@ -224,13 +224,13 @@
 | Issue / PR 模板 | ✅ 已完成 | bug_report.md / feature_request.md / PULL_REQUEST_TEMPLATE.md |
 | CONTRIBUTING.md | ✅ 已完成 | 行为准则 + 开发流程 + 验证脚本 + 目录约定 |
 
-### v3.0 — 部分完成 🚧
+### v3.0 — 全部完成 ✅
 | Phase | 状态 | 备注 |
 |---|---|---|
 | ASCII 流程图 → Mermaid 转换器 | ✅ 已完成 | `scripts/flow-to-mermaid.py` |
 | mermaid CLI → SVG/PNG 渲染 | ✅ 已完成 | `scripts/flow-export.sh`(mmdc 包装)|
+| ASCII 流程图 → drawio XML 转换器 | ✅ 已完成 | `scripts/flow-to-drawio.py`(与 mermaid 互为补充)|
 | VSCode 扩展 scaffold | ✅ 已完成 | `vscode-extension/`(4 命令 + 配置)|
-| drawio CLI 集成 | ⬜ 待开始 | 与 mermaid 互为补充 |
 | docx 模板 | ⬜ 待开始 | python-docx-template(可选) |
 
 ---

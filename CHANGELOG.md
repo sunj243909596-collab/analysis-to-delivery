@@ -19,6 +19,12 @@
     - 支持单文件 + `--batch` 批量 + `--all` 递归
     - 自动创建 rendered/ 输出目录
     - 依赖检查 + 友好错误提示
+  - **`scripts/flow-to-drawio.py`** — ASCII 流程图 → drawio XML 转换器(与 mermaid 互为补充)
+    - 输出标准 mxGraphModel 格式,可直接在 https://app.diagrams.net/ 打开
+    - 简单垂直布局(120x60 节点,80px 间距,白底蓝边 #3b82f6)
+    - 启发式垂直边检测(▼ 箭头)
+    - 支持 `--batch` 批量转换
+    - 适用场景:团队偏好 drawio 在线编辑 / 需要更精细布局控制时
   - **`vscode-extension/`** — VSCode 扩展 scaffold(v0.1.0)
     - 4 个命令:`applySkill` / `runSmokeTest` / `renderFlowChart` / `openDocumentation`
     - 配置项:`skillsPath` / `mermaidCli` / `defaultFormat` / `disabled`

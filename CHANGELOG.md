@@ -7,6 +7,16 @@
 
 ## [Unreleased]
 
+### 新增
+- 🆕 **v1.2 skill 自检 + 文档校验 + 模板引擎化**
+  - `scripts/smoke-test.sh` — Skill 装完自检（11 节 / 37 项检查），支持 `--verbose` / `--json`
+  - `scripts/doc-validate.py` — 单文档格式校验（P0/P1/P2 分级），支持 `--type` / `--json` / `--level`
+  - `templates/cookiecutter-analysis/` — Cookiecutter 项目骨架模板（13 个文件 + cookiecutter.json）
+  - `scripts/cookiecutter-gen.sh` — 一键生成项目骨架（支持 `--name` / `--slug` / `--code` / `--version` / `--owner` 等参数）
+  - README.md / SKILL.md / plan.md 同步更新
+
+## [1.1.0] - 2026-06-22
+
 ### 变更
 - 🎯 **阶段 8 简化**：去掉 V1（存储过程版）/ V2（代码实现版）双版本概念，统一为单一代码版工作流
   - FSD（功能规格）从"V1 配套产物"独立为阶段 8.1 通用产物，模板完全重写
@@ -56,7 +66,8 @@
 ## 版本说明
 
 - **1.0.0-mvp**：MVP 首发。功能完整但配置库/模板/脚本不全，**生产环境慎用**
-- **1.1.0**（开发中）：项目级 config 体系 + 阶段 8 简化
+- **1.1.0**（2026-06-22）：项目级 config 体系 + 阶段 8 简化
+- **1.2.0**（开发中）：skill 自检 + 文档校验 + cookiecutter 引擎化
 - **1.x.x**：配置库完善阶段，向完全可用演进
 - **2.x.x**：多领域示例 + CI 阶段
 - **3.x.x**：工具链集成 + 可视化阶段

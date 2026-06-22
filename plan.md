@@ -154,12 +154,12 @@
 | ~~skill 级配置库补充~~ | ❌ 取消 | - | LLM 时代用户自己生成更快 |
 | **CHANGELOG 升 [1.1.0] tag** | ⬜ 待开始 | | v1.1 已发到 main，未打 tag |
 
-### v1.2 — 待开始 ⬜
-| Phase | 状态 | 备注 |
-|---|---|---|
-| skill 自检 smoke test | ⬜ 待开始 | `scripts/smoke-test.sh` |
-| 文档产物自动校验 | ⬜ 待开始 | 集成到模板 |
-| 模板引擎化（cookiecutter/copier） | ⬜ 待开始 | |
+### v1.2 — 全部完成 ✅
+| Phase | 状态 | Commit | 备注 |
+|---|---|---|---|
+| skill 自检 smoke test | ✅ 已完成 | pending | `scripts/smoke-test.sh`（11 节 / 37 项检查） |
+| 文档产物自动校验 | ✅ 已完成 | pending | `scripts/doc-validate.py`（P0/P1/P2 分级，CI 可集成） |
+| 模板引擎化（cookiecutter） | ✅ 已完成 | pending | `templates/cookiecutter-analysis/` + `scripts/cookiecutter-gen.sh` |
 
 ### v2.0 — 待开始 ⬜
 | Phase | 状态 | 备注 |

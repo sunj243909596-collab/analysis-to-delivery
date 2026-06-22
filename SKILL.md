@@ -20,6 +20,65 @@ updated: "2026-06-22: MVP 初版"
 - 纯编码任务（用 `wms-code-implementation` 等编码 skill）
 - 极简单需求（"加个字段"级别，直接改就行）
 
+## 装完先跑 smoke test（v1.2+）
+
+```bash
+bash ~/.claude/skills/analysis-to-delivery/scripts/smoke-test.sh
+```
+
+会检查：核心文档 / 模板 / 脚本 / 链接是否完整。✅ 全部通过即可放心使用；⚠️ 有警告可继续；❌ 有错误需先修复。
+
+## 文档产物自动校验（v1.2+）
+
+文档写完后，跑 `doc-validate.py` 做轻量级格式校验：
+
+```bash
+# 校验整个项目目录
+python3 ~/.claude/skills/analysis-to-delivery/scripts/doc-validate.py docs/
+
+# 只看致命错误（P0）
+python3 ~/.claude/skills/analysis-to-delivery/scripts/doc-validate.py docs/ --level P0
+
+# 指定文档类型（更严格，必备章节匹配）
+python3 ~/.claude/skills/analysis-to-delivery/scripts/doc-validate.py docs/05-PRD.md --type PRD
+
+# JSON 输出（CI 集成）
+python3 ~/.claude/skills/analysis-to-delivery/scripts/doc-validate.py docs/ --json
+```
+
+检查项：
+- YAML frontmatter（`name` / `version` 字段）
+- H1 标题唯一性
+- 必备 H2 章节（按文档类型 BRD/FSD/PRD/...）
+- 内部链接是否有效
+- 代码块是否有语言标签
+- 未替换的占位符（`{xxx}`）
+
+退出码：`0` 通过 / `1` 仅警告 / `2` 有致命。
+
+## 一键生成项目骨架（v1.2+）
+
+拿到新项目时，用 `cookiecutter-gen.sh` 一键生成 8 个编号文档 + 4 个阶段模板：
+
+```bash
+# 一键生成（推荐）
+bash ~/.claude/skills/analysis-to-delivery/scripts/cookiecutter-gen.sh \
+    --output ./projects/wms-receive \
+    --name "WMS 收货管理" \
+    --slug wms-receive \
+    --code WMS-RCV \
+    --version 1.0.0 \
+    --owner "张三"
+
+# 交互式（cookiecutter 会逐个问）
+bash ~/.claude/skills/analysis-to-delivery/scripts/cookiecutter-gen.sh
+
+# 列出可填的变量
+bash ~/.claude/skills/analysis-to-delivery/scripts/cookiecutter-gen.sh --list
+```
+
+依赖：`pip install --break-system-packages cookiecutter jinja2_time`（脚本会检测并提示）。
+
 ## 工作流总览（10 阶段）
 
 ```
@@ -493,10 +552,13 @@ PRD 生成 → 文档委派 → 开发设计 → QA 审计 → 代码交接
 |---|---|
 | `scripts/install.sh` | 一键安装到 `~/.claude/skills/` |
 | `scripts/init-project-config.sh` | 在项目根生成 4 个 *-path.md 空模板（v1.1+） |
+| `scripts/smoke-test.sh` | Skill 自检（v1.2+）—— 装完跑一下确认文件完整 |
 | `scripts/sql-dialect-check.py` | SQL 方言混用检查 |
 | `scripts/full-qa-audit.py` | 6 大类全量 QA 审计 |
+| `scripts/doc-validate.py` | 单文档快速校验（v1.2+，编号/章节/链接） |
 | `scripts/field-alignment-check.py` | 字段对齐验证 |
 | `scripts/parallel-delegate.sh` | 并行委派 Claude 子代理 |
+| `scripts/cookiecutter-gen.sh` | 一键生成项目骨架（v1.2+，参数化） |
 
 ---
 

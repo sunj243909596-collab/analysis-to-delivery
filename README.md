@@ -23,7 +23,7 @@
 - ✅ **跨行业**：医药/金融/SaaS/移动 App 通用
 - ✅ **跨技术栈**：Java/Go/Python/Node/Rust/.NET 全支持
 - ✅ **3 个示例**：内置 1 个完整示例（医药 WMS 收货管理），其他行业 2 个规划中
-- ✅ **6 个自动化脚本**：SQL 方言检查、字段对齐、QA 审计、并行委派、HTML 后处理
+- ✅ **9 个自动化脚本**：SQL 方言检查、字段对齐、QA 审计、并行委派、HTML 后处理 + smoke-test / cookiecutter-gen / doc-validate（v1.2+）
 - ✅ **12 个文档模板**：从需求确认表到开发设计说明书
 - ✅ **10+ 个方法论文档**：流程图规范、字段对齐、Draw.io 生成等
 
@@ -67,6 +67,14 @@ bash install.sh --uninstall
 可用 `--target` 强制指定。
 
 ## 使用
+
+### 0. 装完先跑 smoke test（v1.2+）
+
+```bash
+bash ~/.claude/skills/analysis-to-delivery/scripts/smoke-test.sh
+```
+
+确认文件完整后再用。✅ 全部通过即可放心；⚠️ 有警告可继续；❌ 有错误需先修复。
 
 ### 方式 1：斜杠命令（Claude Code）
 
@@ -131,9 +139,13 @@ analysis-to-delivery/
 │   ├── 合规评审.md              # 阶段 3
 │   ├── PRD.md                  # 阶段 6
 │   ├── 开发设计说明书.md         # 阶段 8 (V2)
-│   └── TEST_CASE_DESIGN.md     # 阶段 5
+│   ├── TEST_CASE_DESIGN.md     # 阶段 5
+│   └── cookiecutter-analysis/ # v1.2+ cookiecutter 模板（生成项目骨架）
 └── scripts/                    # 自动化脚本
     ├── install.sh
+    ├── smoke-test.sh           # v1.2+ skill 自检
+    ├── cookiecutter-gen.sh     # v1.2+ 一键生成项目骨架
+    ├── doc-validate.py         # v1.2+ 文档格式校验
     ├── sql-dialect-check.py    # SQL 方言混用检查
     ├── full-qa-audit.py        # 6 大类全量 QA 审计
     ├── field-alignment-check.py # 字段对齐验证

@@ -1,0 +1,50 @@
+name: Smoke Test
+
+# 验证 SKILL 集合结构完整性
+# 检查每个 SKILL.md 文件存在 + frontmatter 合法 + 必填字段完整
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'skills/**'
+      - 'scripts/smoke-test.sh'
+      - '.github/workflows/smoke-test.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'skills/**'
+      - 'scripts/smoke-test.sh'
+  workflow_dispatch:
+
+concurrency:
+  group: smoke-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke-test:
+    name: Skill 集合冒烟测试
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 运行 smoke-test.sh
+        run: |
+          chmod +x scripts/smoke-test.sh
+          bash scripts/smoke-test.sh
+
+      - name: 上传 smoke-test 报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-test-report
+          path: |
+            smoke-test-output.txt
+            smoke-test-report.md
+          if-no-files-found: ignore
+          retention-days: 7

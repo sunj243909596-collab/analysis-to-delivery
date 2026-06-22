@@ -1,0 +1,131 @@
+业务流程图:订单状态流转
+
+> 项目:SaaS 后台 — 客户订单管理
+> 文档类型:状态机图
+> 编号:01-业务需求文档 BRD.md §3.2 附图
+
+```
+                    ┌──────────┐
+                    │  draft   │  草稿(购物车已提交,未提交订单)
+                    └─────┬────┘
+                          │
+                  客户提交 │ 客户取消
+                          │
+                          ▼
+                    ┌──────────┐
+            ┌──────│submitted │──────┐
+            │      │  待审核    │      │
+            │      └─────┬────┘      │
+            │            │           │
+   销售拒收  │  销售通过  │  客户取消  │
+            │            │           │
+            ▼            ▼           ▼
+      ┌──────────┐  ┌──────────┐  ┌──────────┐
+      │  draft   │  │   paid   │  │cancelled │  已取消
+      │  (回退)  │  │  已支付  │  │  终态    │
+      └──────────┘  └─────┬────┘  └──────────┘
+                          │
+                  仓管发货 │  客户申请退款
+                          │  (在 paid 状态)
+                          ▼
+                    ┌──────────┐
+                    │ shipped  │  已发货
+                    └─────┬────┘
+                          │
+            ┌─────────────┼─────────────┐
+            │             │             │
+   客户收货  │  客户申请退款│  物流异常   │
+            │             │             │
+            ▼             ▼             ▼
+      ┌──────────┐  ┌──────────┐  ┌──────────┐
+      │completed │  │refunded  │  │ abnormal │  异常
+      │  已完成  │  │  已退款  │  │  终态?   │
+      │  终态    │  │  终态    │  │  (人工)  │
+      └──────────┘  └──────────┘  └──────────┘
+                          ▲
+                          │ 部分退款
+                          │ (在 paid/shipped/completed)
+                          │
+                    ┌──────────┐
+                    │ partial_ │
+                    │ refunded │
+                    │  部分退款│
+                    └──────────┘
+```
+
+状态枚举(SaaS 字符串枚举,非 2 位数字码):
+
+| 状态值 | 英文 | 中文 | 终态? | 备注 |
+|---|---|---|---|---|
+| `draft` | Draft | 草稿 | ❌ | 购物车已提交但未提交订单 |
+| `submitted` | Submitted | 待审核 | ❌ | 已提交,等销售审核 |
+| `paid` | Paid | 已支付 | ❌ | 支付成功,等发货 |
+| `shipped` | Shipped | 已发货 | ❌ | 已发货,等客户确认收货 |
+| `completed` | Completed | 已完成 | ✅ | 客户确认收货 |
+| `cancelled` | Cancelled | 已取消 | ✅ | 任何阶段主动取消 |
+| `refunded` | Refunded | 已退款 | ✅ | 全额退款 |
+| `partial_refunded` | Partial Refunded | 部分退款 | ✅ | 部分金额退款 |
+| `abnormal` | Abnormal | 异常 | ⚠️ | 需人工介入 |
+
+合法转换矩阵(由 `/to-brd` 阶段 2 定义):
+
+| 当前状态 | 允许目标状态 | 触发者 | 备注 |
+|---|---|---|---|
+| `draft` | `submitted` | 客户 | 提交订单 |
+| `draft` | `cancelled` | 客户 | 主动取消 |
+| `submitted` | `paid` | 系统(支付回调)| 支付成功 |
+| `submitted` | `cancelled` | 客户/销售 | 取消 |
+| `submitted` | `draft` | 销售 | 审核拒绝,回退到草稿 |
+| `paid` | `shipped` | 仓管 | 发货 |
+| `paid` | `refunded` | 客户+销售 | 全额退款 |
+| `paid` | `partial_refunded` | 客户+销售 | 部分退款 |
+| `shipped` | `completed` | 客户 | 确认收货 |
+| `shipped` | `refunded` | 客户+销售 | 全额退款(需退货) |
+| `shipped` | `partial_refunded` | 客户+销售 | 部分退款 |
+| `shipped` | `abnormal` | 系统 | 物流异常超时 |
+| `completed` | `partial_refunded` | 客户+销售 | 售后部分退款 |
+| `partial_refunded` | `refunded` | 客户+销售 | 二次退款到全额 |
+
+非法转换示例(状态机校验):
+
+- ❌ `draft` → `paid`(未提交不能直接支付)
+- ❌ `completed` → `shipped`(已收货不能回退发货)
+- ❌ `cancelled` → `submitted`(已取消不能复活)
+- ❌ `refunded` → `paid`(已退款不能回退)
+
+实现要点(由 `/dev-design` 阶段 8.3 落地):
+
+```typescript
+// 状态机实现示例(伪代码)
+type OrderStatus =
+  | 'draft' | 'submitted' | 'paid' | 'shipped'
+  | 'completed' | 'cancelled' | 'refunded'
+  | 'partial_refunded' | 'abnormal';
+
+const transitions: Record<OrderStatus, OrderStatus[]> = {
+  draft:             ['submitted', 'cancelled'],
+  submitted:         ['paid', 'cancelled', 'draft'],
+  paid:              ['shipped', 'refunded', 'partial_refunded'],
+  shipped:           ['completed', 'refunded', 'partial_refunded', 'abnormal'],
+  completed:         ['partial_refunded'],
+  partial_refunded:  ['refunded'],
+  cancelled:         [],
+  refunded:          [],
+  abnormal:          [],
+};
+
+function canTransition(from: OrderStatus, to: OrderStatus): boolean {
+  return transitions[from].includes(to);
+}
+```
+
+与 WMS(01-wms-warehouse)示例的关键差异:
+
+| 维度 | WMS | SaaS |
+|---|---|---|
+| 状态码 | 2 位数字(10/20/30) | 字符串枚举(`draft`/`submitted`) |
+| 状态数量 | 7 个(ASN)| 9 个(订单)|
+| 终态数量 | 3 个 | 5 个(更细的售后流程) |
+| 转换复杂度 | 中等 | 高(8×8 矩阵) |
+| 部分退款 | 不涉及 | 涉及(`partial_refunded`) |
+| 异常处理 | 拒收 50 / 取消 60 | abnormal + 人工介入 |

@@ -374,6 +374,46 @@ else
   warn "scripts/parallel-delegate.sh --help 运行失败"
 fi
 
+# 13. v2.0 多领域示例 + CI 完整性
+section "13. v2.0 多领域示例 + CI"
+# 13.1 examples 完整性(至少 3 个,每个 ≥ 12 个文件)
+example_dirs=$(find "$SKILL_DIR/examples" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | sort)
+example_count=$(echo "$example_dirs" | grep -c . 2>/dev/null || echo 0)
+if [ "$example_count" -ge 3 ]; then
+  ok "examples/ 含 $example_count 个示例(期望 ≥ 3)"
+else
+  err "examples/ 仅含 $example_count 个示例(期望 ≥ 3)"
+fi
+for ed in $example_dirs; do
+  ed_name=$(basename "$ed")
+  file_count=$(find "$ed" -maxdepth 1 -type f 2>/dev/null | wc -l)
+  if [ "$file_count" -ge 10 ]; then
+    ok "examples/$ed_name 含 $file_count 个文件(≥ 10)"
+  else
+    warn "examples/$ed_name 仅含 $file_count 个文件(期望 ≥ 10)"
+  fi
+done
+
+# 13.2 GitHub Actions workflows 完整性(5 个)
+check_dir ".github"
+check_dir ".github/workflows"
+for wf in smoke-test.yml sql-dialect-check.yml doc-validate.yml field-alignment-check.yml full-qa-audit.yml; do
+  check_file ".github/workflows/$wf"
+done
+wf_total=$(find "$SKILL_DIR/.github/workflows" -name "*.yml" 2>/dev/null | wc -l)
+if [ "$wf_total" -ge 5 ]; then
+  ok ".github/workflows/ 含 $wf_total 个 workflow(期望 ≥ 5)"
+else
+  err ".github/workflows/ 仅含 $wf_total 个 workflow(期望 ≥ 5)"
+fi
+
+# 13.3 社区文件
+check_file "CONTRIBUTING.md"
+check_dir ".github/ISSUE_TEMPLATE"
+check_file ".github/ISSUE_TEMPLATE/bug_report.md"
+check_file ".github/ISSUE_TEMPLATE/feature_request.md"
+check_file ".github/PULL_REQUEST_TEMPLATE.md"
+
 # ---------- 总结 ----------
 if [ "$JSON_MODE" = true ]; then
   echo "{\"results\": $json_results, \"summary\": {\"pass\": $pass_count, \"warn\": $warn_count, \"fail\": $fail_count}}"

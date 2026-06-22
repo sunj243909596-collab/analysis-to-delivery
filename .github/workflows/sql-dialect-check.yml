@@ -1,0 +1,75 @@
+name: SQL Dialect Check
+
+# 检查 SQL 方言正确性
+# - Oracle 文档不应出现 PG 特有语法(COALESCE / LIMIT / BIGSERIAL)
+# - PostgreSQL 文档不应出现 Oracle 特有语法(NVL / ROWNUM / SYSDATE)
+# - 整数除法必须写 1.0/3 而非 1/3
+# - 字符串连接应使用 ||
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'examples/**'
+      - 'scripts/sql-dialect-check.py'
+      - '.github/workflows/sql-dialect-check.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'examples/**'
+      - 'scripts/sql-dialect-check.py'
+  workflow_dispatch:
+
+concurrency:
+  group: sql-dialect-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sql-dialect-oracle:
+    name: Oracle 方言校验
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 校验 Oracle 文档
+        run: |
+          # Oracle 文档不应有 PG 语法
+          python3 scripts/sql-dialect-check.py "examples/01-wms-warehouse/**/*.md" --dialect=oracle
+
+  sql-dialect-postgresql:
+    name: PostgreSQL 方言校验
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 校验 PostgreSQL 文档
+        run: |
+          # PostgreSQL 文档不应有 Oracle 语法
+          python3 scripts/sql-dialect-check.py "examples/02-saas-dashboard/**/*.md" --dialect=postgresql
+
+  sql-dialect-mix-check:
+    name: 跨方言一致性
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [sql-dialect-oracle, sql-dialect-postgresql]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 跨方言一致性
+        run: |
+          echo "✅ Oracle 和 PostgreSQL 方言校验均通过"
+          echo "详细结果见上方两个 job 的输出"

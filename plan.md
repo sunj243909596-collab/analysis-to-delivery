@@ -214,14 +214,14 @@
 | README / CHANGELOG 同步 | ✅ 已完成 | 加 v1.4.0-dev 条目 + 新结构说明 |
 | **CHANGELOG 升 [1.3.0] tag** | ⬜ 待开始 | v1.3 稳定后发布正式版 |
 
-### v2.0 — 待开始 ⬜
+### v2.0 — 全部完成 ✅
 | Phase | 状态 | 备注 |
 |---|---|---|
-| examples/02-saas-dashboard | ⬜ 待开始 | Node + React + PostgreSQL |
-| examples/03-mobile-app | ⬜ 待开始 | Flutter + Firebase |
-| GitHub Actions | ⬜ 待开始 | SQL 检查 + 文档 QA |
-| Issue / PR 模板 | ⬜ 待开始 | |
-| CONTRIBUTING.md | ⬜ 待开始 | |
+| examples/02-saas-dashboard(Node + React + PostgreSQL)| ✅ 已完成 | 12 个文件(BRD / 流程图 / 配置 / 状态机)|
+| examples/03-mobile-app(Flutter + Firebase)| ✅ 已完成 | 12 个文件(含 PIPL 轻合规 / Firestore 字段 / FIFO 批次)|
+| GitHub Actions(5 个 workflow)| ✅ 已完成 | smoke-test / sql-dialect-check / doc-validate / field-alignment-check / full-qa-audit |
+| Issue / PR 模板 | ✅ 已完成 | bug_report.md / feature_request.md / PULL_REQUEST_TEMPLATE.md |
+| CONTRIBUTING.md | ✅ 已完成 | 行为准则 + 开发流程 + 验证脚本 + 目录约定 |
 
 ### v3.0 — 待开始 ⬜
 | Phase | 状态 | 备注 |

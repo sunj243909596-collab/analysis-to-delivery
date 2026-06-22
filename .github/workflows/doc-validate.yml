@@ -1,0 +1,59 @@
+name: Doc Validate
+
+# 验证文档格式规范性
+# - 文件命名(01-08 编号)
+# - Markdown 风格(标题层级 / 表格对齐 / 代码块语言标注)
+# - 必填字段(版本号 / 日期 / 状态)
+# - 章节完整性(BRD / PRD / FSD 等模板)
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'examples/**'
+      - 'skills/**'
+      - 'scripts/doc-validate.py'
+      - '.github/workflows/doc-validate.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'examples/**'
+      - 'skills/**'
+      - 'scripts/doc-validate.py'
+  workflow_dispatch:
+
+concurrency:
+  group: doc-validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  doc-validate:
+    name: 文档格式校验
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 校验文档格式
+        run: |
+          python3 scripts/doc-validate.py "examples/**/*.md"
+
+      - name: 校验 SKILL 文档格式
+        run: |
+          python3 scripts/doc-validate.py "skills/**/*.md"
+
+      - name: 上传校验报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: doc-validate-report
+          path: doc-validate-report.txt
+          if-no-files-found: ignore
+          retention-days: 7

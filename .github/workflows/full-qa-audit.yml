@@ -1,0 +1,125 @@
+name: Full QA Audit
+
+# 全量 QA 审计
+# - 综合 smoke-test + sql-dialect + doc-validate + field-alignment
+# - 用于发布前最终把关
+# - 失败则阻断 merge / release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/**'
+      - 'skills/**'
+      - 'scripts/**'
+      - '.github/workflows/full-qa-audit.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'examples/**'
+      - 'skills/**'
+      - 'scripts/**'
+  release:
+    types: [published]
+  workflow_dispatch:
+
+concurrency:
+  group: full-qa-audit-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  full-qa-audit:
+    name: 全量 QA 审计
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 显示审计上下文
+        run: |
+          echo "## 审计上下文" >> $GITHUB_STEP_SUMMARY
+          echo "- 提交: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- 分支: \`${{ github.ref }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- 触发: \`${{ github.event_name }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: 1. Skill 集合冒烟测试
+        id: smoke
+        continue-on-error: false
+        run: |
+          chmod +x scripts/smoke-test.sh
+          bash scripts/smoke-test.sh
+
+      - name: 2. SQL 方言校验
+        id: dialect
+        continue-on-error: false
+        run: |
+          python3 scripts/sql-dialect-check.py "examples/**/*.md"
+
+      - name: 3. 文档格式校验
+        id: doc
+        continue-on-error: false
+        run: |
+          python3 scripts/doc-validate.py "examples/**/*.md"
+          python3 scripts/doc-validate.py "skills/**/*.md"
+
+      - name: 4. 字段对齐审计
+        id: field
+        continue-on-error: false
+        run: |
+          python3 scripts/field-alignment-check.py "examples/**/*.md" --strict
+
+      - name: 5. 全量 QA 审计
+        id: full-qa
+        continue-on-error: false
+        run: |
+          python3 scripts/full-qa-audit.py "examples/**/*.md"
+
+      - name: 汇总审计报告
+        if: always()
+        run: |
+          {
+            echo "# Full QA Audit Report"
+            echo ""
+            echo "- 提交: \`${{ github.sha }}\`"
+            echo "- 分支: \`${{ github.ref }}\`"
+            echo "- 时间: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo ""
+            echo "## 1. Smoke Test"
+            echo "${{ steps.smoke.outcome }}"
+            echo ""
+            echo "## 2. SQL Dialect"
+            echo "${{ steps.dialect.outcome }}"
+            echo ""
+            echo "## 3. Doc Validate"
+            echo "${{ steps.doc.outcome }}"
+            echo ""
+            echo "## 4. Field Alignment"
+            echo "${{ steps.field.outcome }}"
+            echo ""
+            echo "## 5. Full QA"
+            echo "${{ steps.full-qa.outcome }}"
+          } >> $GITHUB_STEP_SUMMARY
+
+      - name: 上传完整审计报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-qa-audit-report
+          path: |
+            smoke-test-report.md
+            sql-dialect-report.txt
+            doc-validate-report.txt
+            field-alignment-report.txt
+            full-qa-audit-report.txt
+          if-no-files-found: ignore
+          retention-days: 30

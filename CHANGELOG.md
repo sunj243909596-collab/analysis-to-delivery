@@ -8,6 +8,43 @@
 ## [Unreleased]
 
 ### 新增
+- 🆕 **v2.0 多领域示例 + CI + 社区治理**
+  - **`examples/02-saas-dashboard/`**(Node 22 + Express 5 + React 19 + PostgreSQL 16)
+    - 12 个文件:README / TASK_CONFIRM_订单管理 / REVIEW_需求确认书 / REVIEW_字段对齐分析 / 01-BRD / 业务流程图(订单创建 + 状态流转)/ knowledge-path / tech-stack-path / compliance-path / doc-naming / config-used
+    - 演示:SaaS 客户订单管理 / 多租户行级隔离 / 字符串状态枚举 / PostgreSQL 方言(NVL→COALESCE / ROWNUM→LIMIT / SERIAL / TIMESTAMPTZ)/ 9 状态状态机 / 支付集成(支付宝/微信/Stripe)/ 物流(顺丰)
+  - **`examples/03-mobile-app/`**(Flutter 3.24 + Cloud Firestore + Cloud Functions)
+    - 12 个文件:README / TASK_CONFIRM_会员积分 / REVIEW_需求确认书 / REVIEW_字段对齐分析 / 01-BRD / 业务流程图(积分获取 + 状态流转)/ knowledge-path / tech-stack-path / compliance-path / doc-naming / config-used
+    - 演示:会员积分管理(B2C 移动 App)/ 跨平台 iOS+Android / Firestore NoSQL / FIFO 批次消耗积分 / FCM 推送 / 离线优先 / PIPL 轻合规 / Riverpod 状态管理
+  - **`.github/workflows/`**(5 个 GitHub Actions)
+    - `smoke-test.yml` — Skill 集合结构冒烟测试
+    - `sql-dialect-check.yml` — SQL 方言校验(Oracle / PostgreSQL 双跑)
+    - `doc-validate.yml` — 文档格式校验(Markdown / 表格 / 代码块 / 章节)
+    - `field-alignment-check.yml` — 字段对齐审计(知识库对照 / 多租户必带 / 整数积分)
+    - `full-qa-audit.yml` — 全量 QA 审计(综合 4 项 + 阻断 merge / release)
+  - **`CONTRIBUTING.md`** — 贡献者指南
+    - 行为准则 / 贡献类型 / 开发流程(Fork & Clone & 分支命名)/ 提交规范(Conventional Commits)/ 本地验证 / examples & skills & scripts 目录约定 / SemVer 发布流程
+  - **`.github/ISSUE_TEMPLATE/`**
+    - `bug_report.md` — Bug 报告模板(8 节 + 检查清单)
+    - `feature_request.md` — 功能请求模板(优先级 / 验收标准 / 工作量)
+  - **`.github/PULL_REQUEST_TEMPLATE.md`** — PR 模板(改动类型 / 测试 / 文档同步 / 兼容性 / 检查清单)
+  - **`scripts/smoke-test.sh` v2.0 扩展**
+    - 新增第 13 节:examples ≥ 3 个 + 每例 ≥ 10 个文件 + 5 个 workflow + CONTRIBUTING + Issue/PR 模板
+
+### 跨项目差异对比(全 3 例)
+| 维度 | 01-wms-warehouse | 02-saas-dashboard | 03-mobile-app |
+|---|---|---|---|
+| 数据库 | Oracle 19c | PostgreSQL 16 | Cloud Firestore |
+| 后端 | Spring Boot 3 | Express 5 | Cloud Functions |
+| 前端 | Vue 3 PC | React 19 Web | Flutter 3.24(iOS+Android)|
+| 合规 | GSP 医药 | None(商业)| PIPL(C 端个人信息)|
+| 多租户 | 单租户 | 行级多租户 | 用户维度 |
+| 实时性 | 异步队列 | T+1 | 实时 Firestore listener |
+| 离线 | 不涉及 | 不涉及 | 必备(Offline-first)|
+| 推送 | 不涉及 | 不涉及 | FCM |
+
+## [Unreleased 历史]
+
+### 新增
 - 🆕 **v1.4.0-dev 拆分为 26 个独立 skill（mattpocock 风格）**
   - **架构重构**:从"1 个大 SKILL + 10 阶段强流程"拆为 26 个独立可组合 skill
   - **2 个 router**(`disable-model-invocation: true`,零 context load):
@@ -87,8 +124,9 @@
 - **1.0.0-mvp**：MVP 首发。功能完整但配置库/模板/脚本不全，**生产环境慎用**
 - **1.1.0**（2026-06-22）：项目级 config 体系 + 阶段 8 简化
 - **1.2.0**（2026-06-22）：skill 自检 + 文档校验 + cookiecutter 引擎化
-- **1.3.0-dev**（开发中）：双模式 + 阶段门控 + 设计回测 + 任务复盘 + 脚本补实现
-- **1.4.0-dev**（开发中）：拆分为 26 个独立 skill（mattpocock 风格）
+- **1.3.0-dev**：双模式 + 阶段门控 + 设计回测 + 任务复盘 + 脚本补实现
+- **1.4.0-dev**：拆分为 26 个独立 skill（mattpocock 风格）
+- **2.0.0-dev**（2026-06-22）：多领域示例(SaaS + 移动 App)+ GitHub Actions(5 个 workflow)+ CONTRIBUTING + Issue/PR 模板
 - **1.x.x**：配置库完善阶段，向完全可用演进
-- **2.x.x**：多领域示例 + CI 阶段
+- **2.x.x**：多领域示例 + CI 阶段（当前）
 - **3.x.x**：工具链集成 + 可视化阶段

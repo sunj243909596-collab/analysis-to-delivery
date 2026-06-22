@@ -1,0 +1,224 @@
+业务流程图:积分状态流转
+
+> 项目:移动 App — 会员积分管理
+> 文档类型:状态机图
+> 编号:01-业务需求文档 BRD.md §3.2 附图
+
+## 一、积分生命周期(批次维度)
+
+```
+                    ┌──────────┐
+                    │  (new)   │  批次生成
+                    └─────┬────┘
+                          │ 写入 points_batches
+                          ▼
+                    ┌──────────┐
+                    │  active  │  生效中(未到期,未耗尽)
+                    └─────┬────┘
+              ┌───────────┼───────────┬───────────┐
+              │           │           │           │
+   兑换消耗   │  兑换消耗 │  到期时间到│  争议冻结  │
+              │           │           │           │
+              ▼           ▼           ▼           ▼
+        ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐
+        │  used    │ │  used    │ │ expired  │ │ frozen   │
+        │  (耗尽)  │ │ (剩余)   │ │  已过期  │ │  冻结中  │
+        │  终态    │ │  仍active│ │  终态    │ │          │
+        └──────────┘ └─────┬────┘ └──────────┘ └─────┬────┘
+                           │                          │ 解冻
+                           │ 继续消耗                 │
+                           ▼                          ▼
+                      (回到 active)            ┌──────────┐
+                                               │  active  │
+                                               └──────────┘
+```
+
+## 二、积分钱包(用户维度)
+
+```
+                    ┌──────────┐
+                    │  (new)   │  用户注册
+                    └─────┬────┘
+                          │
+                          ▼
+                    ┌──────────┐
+                    │  active  │  活跃(有可用积分)
+                    └─────┬────┘
+                          │
+              ┌───────────┼───────────┐
+              │           │           │
+   全部过期   │  部分过期 │  兑换耗尽 │
+              │           │           │
+              ▼           ▼           ▼
+        ┌──────────┐ ┌──────────┐ ┌──────────┐
+        │  empty   │ │  active  │ │  empty   │
+        │  (0分)   │ │ (有剩余) │ │  (0分)   │
+        │  终态?   │ │  持续    │ │  终态?   │
+        └──────────┘ └─────┬────┘ └─────┬────┘
+                            │            │ 再次获取
+                            │            ▼
+                            │       ┌──────────┐
+                            │       │  active  │
+                            │       └──────────┘
+                            │
+                            ▼
+                       (持续流转)
+```
+
+## 三、兑换订单状态机
+
+```
+                    ┌──────────┐
+                    │  draft   │  草稿(用户选好商品未提交)
+                    └─────┬────┘
+                          │ 用户确认兑换
+                          ▼
+                    ┌──────────┐
+            ┌──────│submitted │──────┐
+            │      │  已提交   │      │
+            │      └─────┬────┘      │
+            │            │           │
+   用户取消  │  库存不足  │  运营拒绝 │  审核超时(24h)
+            │            │           │
+            ▼            ▼           ▼
+      ┌──────────┐  ┌──────────┐  ┌──────────┐
+      │cancelled │  │ rejected │  │ auto-    │
+      │  已取消  │  │  已拒绝  │  │ cancelled│
+      │  终态    │  │  终态    │  │  终态    │
+      └──────────┘  └──────────┘  └──────────┘
+                          ▲
+                          │ 重新提交
+                          │
+                    ┌──────────┐
+                    │  draft   │
+                    └──────────┘
+
+(继续,审核通过):
+
+            ┌──────────┐
+            │ approved │  已审核(等待核销)
+            └─────┬────┘
+                  │ 店员扫码核销
+                  ▼
+            ┌──────────┐
+            │fulfilled │  已核销(券已发)
+            └─────┬────┘
+                  │ 用户确认收货
+                  ▼
+            ┌──────────┐
+            │completed │  已完成
+            │  终态    │
+            └──────────┘
+```
+
+## 四、状态枚举(Firestore 字符串)
+
+### 4.1 积分批次(`points_batches.status`)
+
+| 值 | 含义 | 终态? |
+|---|---|---|
+| `active` | 生效中 | ❌ |
+| `used` | 已用完 | ✅ |
+| `expired` | 已过期 | ✅ |
+| `frozen` | 冻结中 | ❌ |
+
+### 4.2 积分流水(`points_ledger.type`)
+
+| 值 | 含义 | amount 符号 |
+|---|---|---|
+| `earn` | 获取 | + |
+| `use` | 消耗 | - |
+| `expire` | 过期 | - |
+| `freeze` | 冻结 | 不变(转 frozen 钱包)|
+| `unfreeze` | 解冻 | 不变(转 active 钱包)|
+
+### 4.3 兑换订单(`redemptions.status`)
+
+| 值 | 英文 | 中文 | 终态? |
+|---|---|---|---|
+| `draft` | Draft | 草稿 | ❌ |
+| `submitted` | Submitted | 已提交 | ❌ |
+| `approved` | Approved | 已审核 | ❌ |
+| `fulfilled` | Fulfilled | 已核销 | ❌ |
+| `completed` | Completed | 已完成 | ✅ |
+| `rejected` | Rejected | 已拒绝 | ✅ |
+| `cancelled` | Cancelled | 已取消 | ✅ |
+
+## 五、合法转换矩阵
+
+### 5.1 兑换订单
+
+| 当前状态 | 允许目标状态 | 触发者 | 备注 |
+|---|---|---|---|
+| `draft` | `submitted` | 用户 | 确认兑换 |
+| `draft` | `cancelled` | 用户 | 主动取消 |
+| `submitted` | `approved` | 运营 | 审核通过 |
+| `submitted` | `rejected` | 运营 | 审核拒绝 |
+| `submitted` | `cancelled` | 用户 | 主动取消 |
+| `submitted` | `cancelled` | 系统 | 24h 超时 |
+| `approved` | `fulfilled` | 店员 | 扫码核销 |
+| `approved` | `cancelled` | 运营 | 特殊情况 |
+| `fulfilled` | `completed` | 用户 | 确认收货 |
+| `fulfilled` | `cancelled` | 运营 | 异常情况 |
+| `rejected` | `draft` | 用户 | 修改后重提 |
+
+非法转换示例:
+
+- ❌ `draft` → `approved`(未提交不能审核)
+- ❌ `completed` → `cancelled`(已完成不能取消)
+- ❌ `rejected` → `approved`(需走 draft 中转)
+- ❌ `cancelled` → `submitted`(已取消不能复活)
+
+## 六、实现要点(由 `/dev-design` 阶段 8.3 落地)
+
+```typescript
+// 兑换订单状态机(Dart 实现)
+enum RedemptionStatus {
+  draft,
+  submitted,
+  approved,
+  fulfilled,
+  completed,
+  rejected,
+  cancelled,
+}
+
+const transitions = {
+  RedemptionStatus.draft: [
+    RedemptionStatus.submitted,
+    RedemptionStatus.cancelled,
+  ],
+  RedemptionStatus.submitted: [
+    RedemptionStatus.approved,
+    RedemptionStatus.rejected,
+    RedemptionStatus.cancelled,
+  ],
+  RedemptionStatus.approved: [
+    RedemptionStatus.fulfilled,
+    RedemptionStatus.cancelled,
+  ],
+  RedemptionStatus.fulfilled: [
+    RedemptionStatus.completed,
+    RedemptionStatus.cancelled,
+  ],
+  RedemptionStatus.completed: [],
+  RedemptionStatus.rejected: [RedemptionStatus.draft],
+  RedemptionStatus.cancelled: [],
+};
+
+bool canTransition(RedemptionStatus from, RedemptionStatus to) {
+  return transitions[from].contains(to);
+}
+```
+
+## 七、与 WMS / SaaS 示例的状态机对比
+
+| 维度 | WMS(ASN)| SaaS(订单)| App(积分/兑换) |
+|---|---|---|---|
+| 状态机数量 | 1 个(ASN)| 1 个(订单)| 2 个(积分 + 兑换)|
+| 状态数 | 7 个 | 9 个 | 4(积分)+ 7(兑换)= 11 |
+| 状态码风格 | 2 位数字 | 字符串枚举 | 字符串枚举 |
+| 终态数 | 3 个 | 5 个 | 5 个 |
+| 状态机校验 | 严格 | 严格 | 严格 |
+| 部分退款 | 不涉及 | 涉及 | 不涉及(部分退款改为部分兑换) |
+| 异常处理 | 拒收 / 取消 | abnormal + 人工 | rejected / auto-cancel |

@@ -190,7 +190,7 @@
 | 模板引擎化（cookiecutter） | ✅ 已完成 | ed8cc29 | `templates/cookiecutter-analysis/` + `scripts/cookiecutter-gen.sh` |
 | 文档同步 | ✅ 已完成 | b5e8de0 | README / SKILL / plan / CHANGELOG |
 
-### v1.3.0-dev — 开发中 🚧
+### v1.3.0-dev — 已完成 ✅
 | Phase | 状态 | 备注 |
 |---|---|---|
 | 阶段门控（stage-gate.md） | ✅ 已完成 | 3 层门控（工作流 / 子流程 / 子任务） |
@@ -199,7 +199,20 @@
 | SKILL.md 集成双模式 §8.0-8.6 | ✅ 已完成 | 默认设计交接；实施扩展可选 |
 | 脚本补实现 | ✅ 已完成 | 字段对齐、QA、SQL、HTML、并行委派、语义 smoke test |
 | 模板与文档同步 | ✅ 已完成 | dev 设计模板 + cookiecutter 链接修正 |
-| **CHANGELOG 升 [1.3.0] tag** | ⬜ 待开始 | dev 稳定后发布正式版 |
+
+### v1.4.0-dev — 开发中 🚧
+| Phase | 状态 | 备注 |
+|---|---|---|
+| 26 个 skill 目录骨架 | ✅ 已完成 | 2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline |
+| 9 个 user-invoked 动作 | ✅ 已完成 | grill-task / to-brd / to-prd / dev-design / qa-audit / handoff 等 |
+| 2 个 router | ✅ 已完成 | ask-delivery / using-superpowers |
+| 1 个 orchestration | ✅ 已完成 | analysis-delivery-workflow(9 阶段 + superpowers 衔接) |
+| 7 个 superpowers bridge | ✅ 已完成 | brainstorming / writing-plans / tdd / 等(桥接层,内容指向官方) |
+| 7 个 discipline | ✅ 已完成 | no-field-guessing / no-self-invent / stage-gate 等 |
+| 删除 references/ | ✅ 已完成 | 13 篇已迁移到对应 skill |
+| smoke test 适配 | ✅ 已完成 | 检查 26 个 skill + 各类目数量 |
+| README / CHANGELOG 同步 | ✅ 已完成 | 加 v1.4.0-dev 条目 + 新结构说明 |
+| **CHANGELOG 升 [1.3.0] tag** | ⬜ 待开始 | v1.3 稳定后发布正式版 |
 
 ### v2.0 — 待开始 ⬜
 | Phase | 状态 | 备注 |

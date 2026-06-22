@@ -1,0 +1,34 @@
+---
+name: ask-delivery
+description: 分析到交付的入口 — 根据你的目标路由到正确的 skill。Use when unsure which skill to use.
+disable-model-invocation: true
+---
+
+# Ask Delivery — 路由
+
+## 我该用哪个 skill?
+
+**告诉我你想做什么**,我从下面选一个:
+
+| 你想做的事 | 用这个 skill |
+|---|---|
+| 首次给新项目接这套工作流 | `/setup-analysis-delivery` |
+| 澄清一个需求 / 拉齐字段 | `/grill-task` |
+| 出一份业务需求文档 (BRD) | `/to-brd` |
+| 做合规评审 (GSP/HIPAA/SOX/...) | `/compliance-review` |
+| 写测试用例 / 验收标准 | `/test-case-design` |
+| 出一份产品需求文档 (PRD) | `/to-prd` |
+| 出 FSD + 数据模型 + 开发设计 | `/dev-design` |
+| 跑 QA 审计 | `/qa-audit` |
+| 收尾生成交接文档 | `/handoff` |
+| **走完整 9 阶段(新手/复杂项目)** | `/analysis-delivery-workflow` |
+| **进入开发实施子流程** | `/using-superpowers` |
+
+## 不确定?
+
+用 `/analysis-delivery-workflow` — 它会按顺序自动调上面 9 个动作。
+设计完成后,用 `/using-superpowers` 进入 superpowers 5 步实施。
+
+## 路由方式
+
+我会问你 1-2 个澄清问题,然后告诉你用哪个。如果你已经知道,直接 `/skill-name`。

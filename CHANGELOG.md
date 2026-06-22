@@ -8,20 +8,21 @@
 ## [Unreleased]
 
 ### 新增
+- 🆕 **v1.4.0-dev 拆分为 26 个独立 skill（mattpocock 风格）**
+  - **架构重构**:从"1 个大 SKILL + 10 阶段强流程"拆为 26 个独立可组合 skill
+  - **2 个 router**(`disable-model-invocation: true`,零 context load):
+    - `ask-delivery` — 路由 9 动作 + 1 编排
+    - `using-superpowers` — 路由 7 个 superpowers 实施 skill
+  - **9 个 user-invoked 动作**:setup-analysis-delivery / grill-task / to-brd / compliance-review / test-case-design / to-prd / dev-design / qa-audit / handoff
+  - **1 个 orchestration 编排**:analysis-delivery-workflow(9 阶段)
+  - **7 个 superpowers bridge**(桥接层,不复制内容):brainstorming / design-an-interface / domain-modeling / writing-plans / tdd / executing-plans / verification-before-completion
+  - **7 个 discipline**(model-invoked,自动调用):no-field-guessing / no-self-invent / ascii-flowchart / stage-gate / sql-dialect-discipline / doc-numbering / context-pointer
+  - 删除 `references/`(13 篇已迁移到对应 skill)
+  - 删除 `examples/01-wms-warehouse/REVIEW_*.md` 等(已合并到 user-invoked skill)
+  - 顶层 `SKILL.md` 改为简短入口(指向 `skills/` 下)
+  - `smoke-test.sh` 适配新结构,检查 26 个 skill + 各类目数量
+  - 总规模:26 SKILL.md,平均 < 200 行,职责单一
 - 🆕 **v1.3.0-dev 双模式 + 脚本补实现 + 开发实施纪律**
-  - `references/stage-gate.md` — 3 层门控（工作流 / 子流程 / 子任务），含 HARD GATE 签字机制
-  - `references/design-backtest.md` — 设计回测 4 大类（数据模型 / 业务规则 / 状态机 / 字段对齐）
-  - `references/task-retrospective.md` — 5 问复盘模板 + 知识库沉淀流程
-  - SKILL.md 阶段 8 扩展为 §8.0-8.6：
-    - §8.0 开发实施子流程（brainstorming → spec → plan → TDD → execute）
-    - §8.4 设计回测（HARD GATE：不通过禁入阶段 9）
-    - §8.5 任务复盘（5 问 + 沉淀）
-    - §8.6 阶段门控（3 层签字）
-  - `templates/开发设计说明书.md` 加 §5 设计回测 / §6 子流程门控 / §7 任务复盘汇总
-  - 默认“设计交接模式”，显式授权后才进入“实施扩展模式”
-  - 字段对齐、SQL 方言、QA 审计、PRD HTML、并行委派脚本从占位升级为可运行实现
-  - cookiecutter 模板同步，修复生成项目后的 reference 链接问题
-  - smoke test 增加版本一致性、旧占位标记、脚本 help 等语义检查
 
 ## [1.2.0] - 2026-06-22
 
@@ -87,6 +88,7 @@
 - **1.1.0**（2026-06-22）：项目级 config 体系 + 阶段 8 简化
 - **1.2.0**（2026-06-22）：skill 自检 + 文档校验 + cookiecutter 引擎化
 - **1.3.0-dev**（开发中）：双模式 + 阶段门控 + 设计回测 + 任务复盘 + 脚本补实现
+- **1.4.0-dev**（开发中）：拆分为 26 个独立 skill（mattpocock 风格）
 - **1.x.x**：配置库完善阶段，向完全可用演进
 - **2.x.x**：多领域示例 + CI 阶段
 - **3.x.x**：工具链集成 + 可视化阶段

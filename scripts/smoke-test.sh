@@ -231,10 +231,39 @@ for f in field-alignment-check.py full-qa-audit.py sql-dialect-check.py postproc
   check_file "scripts/$f" false
 done
 
-# 6. references
-section "6. 方法论"
-check_dir "references"
-check_count "references" "*.md" 10 "references 文档"
+# 6. skills(26 个独立 skill)
+section "6. skills 结构(v1.4+ 拆分)"
+check_dir "skills"
+check_dir "skills/ask-delivery"
+check_dir "skills/using-superpowers"
+check_dir "skills/user-invoked"
+check_dir "skills/orchestration"
+check_dir "skills/orchestration/analysis-delivery-workflow"
+check_dir "skills/orchestration/development"
+check_dir "skills/disciplines"
+# 数量校验(用 find 递归查 SKILL.md,因为 check_count 只查顶层)
+for d in ask-delivery:1 using-superpowers:1 user-invoked:9 orchestration:8 orchestration/development:7 disciplines:7; do
+  dir="${d%:*}"
+  expect="${d#*:}"
+  actual=$(find "$SKILL_DIR/skills/$dir" -name "SKILL.md" 2>/dev/null | wc -l)
+  if [ "$actual" -eq "$expect" ]; then
+    ok "skills/$dir: $actual 个 SKILL.md(期望 $expect)"
+  else
+    err "skills/$dir: $actual 个 SKILL.md(期望 $expect)"
+  fi
+done
+total=$(find "$SKILL_DIR/skills" -name "SKILL.md" 2>/dev/null | wc -l)
+if [ "$total" -eq 26 ]; then
+  ok "skills/ 总数 26 个"
+else
+  err "skills/ 总数 $total 个(期望 26)"
+fi
+# references 已迁移到 disciplines/
+if [ -d "$SKILL_DIR/references" ]; then
+  warn "references/ 仍存在(应已迁移到 skills/disciplines/)"
+else
+  ok "references/ 已迁移到 skills/disciplines/"
+fi
 
 # 7. config（skill 级 fallback）
 section "7. skill 级 config"

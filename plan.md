@@ -1,6 +1,6 @@
 # Plan — Analysis to Delivery
 
-> **当前版本**:v2.0.0-dev(2026-06-22)
+> **当前版本**:v3.0.0-dev(2026-06-22)
 > 路线图详见下方各版本节。最新进度看 [README.md](README.md)，详细规格看 [SPEC.md](SPEC.md)。
 
 ## 愿景
@@ -201,7 +201,7 @@
 | 脚本补实现 | ✅ 已完成 | 字段对齐、QA、SQL、HTML、并行委派、语义 smoke test |
 | 模板与文档同步 | ✅ 已完成 | dev 设计模板 + cookiecutter 链接修正 |
 
-### v1.4.0-dev — 开发中 🚧
+### v1.4.0-dev — 全部完成 ✅
 | Phase | 状态 | 备注 |
 |---|---|---|
 | 26 个 skill 目录骨架 | ✅ 已完成 | 2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline |
@@ -213,7 +213,6 @@
 | 删除 references/ | ✅ 已完成 | 13 篇已迁移到对应 skill |
 | smoke test 适配 | ✅ 已完成 | 检查 26 个 skill + 各类目数量 |
 | README / CHANGELOG 同步 | ✅ 已完成 | 加 v1.4.0-dev 条目 + 新结构说明 |
-| **CHANGELOG 升 [1.3.0] tag** | ⬜ 待开始 | v1.3 稳定后发布正式版 |
 
 ### v2.0 — 全部完成 ✅
 | Phase | 状态 | 备注 |
@@ -224,14 +223,25 @@
 | Issue / PR 模板 | ✅ 已完成 | bug_report.md / feature_request.md / PULL_REQUEST_TEMPLATE.md |
 | CONTRIBUTING.md | ✅ 已完成 | 行为准则 + 开发流程 + 验证脚本 + 目录约定 |
 
-### v3.0 — 全部完成 ✅
+### v3.0 — 核心完成 ✅(docx 推迟到 v4.0 候选)
 | Phase | 状态 | 备注 |
 |---|---|---|
 | ASCII 流程图 → Mermaid 转换器 | ✅ 已完成 | `scripts/flow-to-mermaid.py` |
 | mermaid CLI → SVG/PNG 渲染 | ✅ 已完成 | `scripts/flow-export.sh`(mmdc 包装)|
 | ASCII 流程图 → drawio XML 转换器 | ✅ 已完成 | `scripts/flow-to-drawio.py`(与 mermaid 互为补充)|
 | VSCode 扩展 scaffold | ✅ 已完成 | `vscode-extension/`(4 命令 + 配置)|
-| docx 模板 | ⬜ 待开始 | python-docx-template(可选) |
+| docx 模板 | ⬜ 推迟 | python-docx-template,v4.0 候选(非阻塞,用户问起再启动)|
+
+### 待发布的 Git tag(发布流程,非开发任务)
+
+| Tag | 触发条件 | 命令 |
+|---|---|---|
+| `[1.3.0]` | v1.3.0-dev 稳定后切 | `git tag -a 1.3.0 -m "v1.3.0: 双模式 + 设计回测 + 任务复盘"` |
+| `[1.4.0]` | v1.4.0-dev 稳定后切 | `git tag -a 1.4.0 -m "v1.4.0: 拆分为 26 个独立 skill"` |
+| `[2.0.0]` | v2.0 多示例 + CI 验证后切 | `git tag -a 2.0.0 -m "v2.0.0: 多领域示例 + GitHub Actions"` |
+| `[3.0.0]` | v3.0 工具链验证后切 | `git tag -a 3.0.0 -m "v3.0.0: drawio/mermaid CLI + VSCode 扩展"` |
+
+> 当前 main 已具备以上所有能力,但未打 tag — 是否切 tag 由维护者按发版节奏决定。
 
 ---
 

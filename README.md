@@ -3,17 +3,21 @@
 > 通用需求分析到开发实施工作流 — **26 个独立可组合 skill**、3 个完整行业示例、5 个 CI workflow。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-2.0.0--dev-blue.svg)](plan.md)
+[![Version](https://img.shields.io/badge/version-3.0.0--dev-blue.svg)](plan.md)
 [![Skills](https://img.shields.io/badge/skills-26-green.svg)](skills/)
 [![Examples](https://img.shields.io/badge/examples-3-orange.svg)](examples/)
 [![CI](https://img.shields.io/badge/CI-5%20workflows-purple.svg)](.github/workflows/)
 
 ## 它是什么
 
-一个 Claude Code / Hermes 的 **skill 集合**(v1.4 重大重构 + v2.0 多领域示例 + v3.0 工具链),
-提供从「需求澄清」到「开发实施」的标准化工作流。
+一个 Claude Code / Hermes 的 **skill 集合**,提供从「需求澄清」到「开发实施」的标准化工作流。
 
-参考 [mattpocock/skills](https://github.com/mattpocock/skills) 风格:**小而精、可组合、不拥有流程**。
+- **26 个独立可组合 skill** — 拆分为 2 router + 9 动作 + 1 编排 + 7 bridge + 7 纪律,职责单一,自由组合
+- **3 个完整行业示例** — 医药 WMS / SaaS 订单 / 移动 App 积分,看完即可照搬到同类项目
+- **5 个 GitHub Actions CI workflow** — smoke test / SQL 方言 / 文档校验 / 字段对齐 / 全量 QA 审计
+- **流程图工具链** — ASCII → Mermaid / Drawio → SVG / PNG(命令行 + VSCode 集成)
+
+**设计原则**:小而精、可组合、不拥有流程。每个 skill < 300 行,改一个不影响其他。
 
 任何团队拿到这个 skill 之后:
 
@@ -82,7 +86,7 @@ bash install.sh --dry-run
 bash install.sh --target /path/to/install
 
 # 指定版本
-bash install.sh --version v2.0.0
+bash install.sh --version v3.0.0
 
 # 卸载
 bash install.sh --uninstall
@@ -609,5 +613,5 @@ MIT — 详见 [LICENSE](LICENSE)
 ---
 
 **维护者**:Jason SUN (`sunj243909596@gmail.com`)
-**当前版本**:2.0.0-dev(2026-06-22)
+**当前版本**:3.0.0-dev(2026-06-22)
 **GitHub**:https://github.com/sunj243909596-collab/analysis-to-delivery

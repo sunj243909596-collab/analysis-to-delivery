@@ -72,8 +72,19 @@ curl -fsSL https://raw.githubusercontent.com/sunj243909596-collab/analysis-to-de
 ### 手动安装
 
 ```bash
-git clone https://github.com/sunj243909596-collab/analysis-to-delivery.git \
+# 稳定版(推荐生产用,锁定到 v3.0.0)
+git clone --branch 3.0.0 --depth 1 https://github.com/sunj243909596-collab/analysis-to-delivery.git \
   ~/.claude/skills/analysis-to-delivery
+
+# main 分支(尝鲜用,跟随最新提交)
+git clone --depth 1 https://github.com/sunj243909596-collab/analysis-to-delivery.git \
+  ~/.claude/skills/analysis-to-delivery
+```
+
+### 升级
+
+```bash
+cd ~/.claude/skills/analysis-to-delivery && git pull origin 3.0.0
 ```
 
 ### 安装选项

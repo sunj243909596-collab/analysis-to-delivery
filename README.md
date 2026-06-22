@@ -115,7 +115,7 @@ analysis-to-delivery/
 │   ├── flow-chart-ascii.md
 │   ├── figma-design-doc.md
 │   ├── prd-output.md
-│   ├── v1-v2-versioning.md
+│   ├── dev-design-spec.md       # 开发设计规范（v1.1：去 V1/V2 双版本）
 │   ├── qa-audit-checklist.md
 │   ├── safe-bulk-editing.md
 │   ├── drawio-guide.md

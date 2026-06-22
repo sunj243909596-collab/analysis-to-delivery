@@ -79,14 +79,14 @@ PRD 生成 → 文档委派 → 开发设计 → QA 审计 → 代码交接
 | 用户回答 / 项目状态 | 加载路径 |
 |---|---|
 | 项目根有 `knowledge-path.md`，列了真实路径 | **Level 1** 直接读项目填的路径 |
-| 项目根没有 `knowledge-path.md`，但行业是医药 | **Level 2** 用 `config/compliance/gsp.md` 作为示例参考（标注来源） |
+| 项目根没有 `*-path.md`，且命中 skill 级 fallback（如行业关键字） | **Level 2** 用 `config/compliance/{行业}.md` 或 `config/tech-stack/{栈}.md` 作为示例参考（标注来源） |
 | 项目根 + skill 都没有匹配 | **Level 3** Claude 必须主动问用户，禁止编造 |
 
 ### 4 个项目级 config 文件一览
 
 | 文件 | 作用 | 详见 |
 |------|------|------|
-| `knowledge-path.md` | 列项目涉及的外部知识库（WMOS 表结构、GSP 法规等）的真实路径 | [templates/project-config/knowledge-path.md](templates/project-config/knowledge-path.md) |
+| `knowledge-path.md` | 列项目涉及的外部知识库（领域表结构、合规法规等）的真实路径 | [templates/project-config/knowledge-path.md](templates/project-config/knowledge-path.md) |
 | `compliance-path.md` | 列项目适用的合规规则文件路径 + 启用开关 | [templates/project-config/compliance-path.md](templates/project-config/compliance-path.md) |
 | `tech-stack-path.md` | 列后端/前端/数据库/中间件 + 团队规范路径 | [templates/project-config/tech-stack-path.md](templates/project-config/tech-stack-path.md) |
 | `doc-naming.md` | 文档编号、命名前缀、存放目录 | [templates/project-config/doc-naming.md](templates/project-config/doc-naming.md) |
@@ -208,7 +208,7 @@ PRD 生成 → 文档委派 → 开发设计 → QA 审计 → 代码交接
 
 | 条款编号 | 缺陷等级 | 检查要点 | 合规设计 | 证据位置 | 状态 |
 |---|---|---|---|---|---|
-| **00201 | 严重 | 追溯完整性 | ... | FSD §3 | ✅ |
+| **{条款编号} | {严重/主要/一般} | {检查要点} | {合规设计摘要} | FSD §{章节号} | ✅ |
 
 **判定标准**：
 - ✅ 符合：完全满足
@@ -345,7 +345,7 @@ PRD 生成 → 文档委派 → 开发设计 → QA 审计 → 代码交接
 - 严禁降级为伪代码 / TODO 列表
 - 遇错重试，不跳过
 - 字段名 / 表名 / 状态码必须与 `knowledge-path.md` 引用的知识库一致
-- PL/SQL 包、tXML 接口等不再单独成文档；如确需，**内嵌在 FSD 的接口契约或开发设计的异常处理小节**
+- PL/SQL 包、专有消息协议接口等不再单独成文档；如确需，**内嵌在 FSD 的接口契约或开发设计的异常处理小节**
 
 ---
 

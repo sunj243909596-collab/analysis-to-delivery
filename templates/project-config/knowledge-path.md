@@ -16,9 +16,9 @@
 
 | 标签 | 路径 | 用途 | 必读？ |
 |------|------|------|--------|
-| 示例：wms-core | `/root/WMOS 知识库/01-WMOS核心/WMOS 数据表结构.md` | WMOS 原生表结构 | ✅ 阶段 1.3 / 8 |
-| 示例：gsp-rules | `/root/WMOS 知识库/03-GSP法规/GSP 法规知识库索引.md` | GSP 法规条款 | ✅ 阶段 3 |
-| 示例：bar-app-db | `/root/WMOS 知识库/巴枪 4A 架构/巴枪 PG 数据库字典/巴枪PG全量表结构字典_20260426.md` | 巴枪 PG 表结构 | ✅ 阶段 8 |
+| 示例：domain-core | `/path/to/your-domain/核心表结构.md` | 你的领域核心表结构 | ✅ 阶段 1.3 / 8 |
+| 示例：compliance-rules | `/path/to/your-domain/合规规则.md` | 你的领域合规条款 | ✅ 阶段 3 |
+| 示例：mobile-app-db | `/path/to/your-domain/移动端字典.md` | 移动端表结构（如适用） | ✅ 阶段 8 |
 |  |  |  |  |
 
 ## 加载规则

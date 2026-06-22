@@ -13,20 +13,20 @@
 
 ```yaml
 # 是否启用合规评审（true = 必须评审 / false = 跳过阶段 3）
-enabled = true
+enabled = false
 
 # 合规模式（一对一，不允许多选）
-# 可选: gsp（中国医药） / hipaa（美国医疗） / sox（金融） / 
-#       等保2.0（中国信息安全） / gdpr（欧盟隐私） / pci-dss（支付卡） / 
+# 可选: gsp（中国医药） / hipaa（美国医疗） / sox（金融） /
+#       等保2.0（中国信息安全） / gdpr（欧盟隐私） / pci-dss（支付卡） /
 #       none（无强合规） / custom（自定义规则）
-mode = gsp
+mode = none
 ```
 
 ## 路径列表
 
 | 标签 | 路径 | 缺陷等级覆盖 | 备注 |
 |------|------|------|------|
-| 示例：gsp-rules | `/root/WMOS 知识库/03-GSP法规/GSP 法规知识库索引.md` | 严重 / 主要 / 一般 | WMOS 项目使用 |
+| 示例：compliance-rules | `/path/to/your-domain/合规规则.md` | 严重 / 主要 / 一般 | 你的项目适用 |
 |  |  |  |  |
 
 ## 内置合规规则（skill 自带）

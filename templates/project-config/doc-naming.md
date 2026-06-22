@@ -79,8 +79,8 @@ root_dir = "docs/requirements"
 
 | 端 | 命名格式 | 示例 |
 |----|---------|------|
-| PC | `Figma设计文档_{功能名}_PC.md` | `Figma设计文档_入库收货_PC.md` |
-| 巴枪 | `Figma设计文档_{功能名}_巴枪.md` | `Figma设计文档_入库收货_巴枪.md` |
+| PC | `Figma设计文档_{功能名}_PC.md` | `Figma设计文档_{功能名}_PC.md` |
+| 移动端 | `Figma设计文档_{功能名}_移动端.md` | `Figma设计文档_{功能名}_移动端.md` |
 | Pad | `Figma设计文档_{功能名}_Pad.md` | - |
 
 ## 加载规则

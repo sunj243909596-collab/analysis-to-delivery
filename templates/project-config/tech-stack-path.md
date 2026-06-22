@@ -25,8 +25,8 @@
 
 | 端 | 框架 | 规范路径 |
 |----|------|---------|
-| PC | Vue 3 + TS + Element Plus + Vite | `/path/to/vue3-standards.md` |
-| 巴枪/移动 | uni-app + uView | `/path/to/uniapp-standards.md` |
+| PC | （如 Vue 3 + TS + Element Plus + Vite） | `/path/to/your-pc-standards.md` |
+| 移动端 / APP | （如 uni-app + uView） | `/path/to/your-mobile-standards.md` |
 | Pad | （无） | - |
 
 ## 数据库
@@ -55,7 +55,7 @@
 |----|-----------|--------|
 | 主键策略 | SEQUENCE | SEQUENCE |
 | 审计字段 | 5 件套 | 5 件套 |
-| 表前缀 | （按业务） | `APP_` 巴枪 / `C_` 业务 |
+| 表前缀 | （按业务） | `APP_` 移动端 / `C_` 业务 |
 | 状态码 | （按业务） | 2 位码 |
 
 ## 加载规则
@@ -71,7 +71,7 @@ Claude 按以下优先级加载技术栈：
 一个项目可以同时有**多个后端 + 多个前端**，例如：
 
 - 后端：Java（主业务）+ Python（报表）
-- 前端：PC（Vue 3）+ 巴枪（uni-app）+ 小程序（uni-app）
+- 前端：PC（Vue 3）+ 移动端（uni-app）+ 小程序（uni-app）
 
 只需在对应小节**重复添加行**，Claude 会按端分别应用。
 

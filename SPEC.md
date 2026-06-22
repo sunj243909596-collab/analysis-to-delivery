@@ -189,7 +189,7 @@ Claude 进入项目
 - 详见 `references/workflow-discipline.md`
 
 #### 阶段 8：开发设计
-**目标**：把 PRD 翻译为可执行的技术实现方案，**只产出一个代码版**（v1.1 起去掉 V1/V2 双版本概念）。
+**目标**：把 PRD 翻译为可执行的技术实现方案。v1.3-dev 采用双模式：默认只产出设计交接文档；用户明确启用实施扩展时，才继续编排 TDD / execute / commit。
 
 **8.1 FSD（功能规格说明书）范围**：
 - 模块清单
@@ -450,46 +450,43 @@ bash ~/.claude/skills/analysis-to-delivery/scripts/init-project-config.sh /path/
 
 ### 7.1 `scripts/sql-dialect-check.py`
 
-**功能**：检查 SQL 文档中是否混用不同数据库方言。
+**功能**：检查 Markdown/SQL 文档中是否混用 Oracle / PostgreSQL / MySQL 方言。
 
-**输入**：markdown 文件路径或 glob 模式。
+**输入**：文件、目录或 glob；可选 `--dialect auto|oracle|postgres|mysql`；可选 `--json`。
 
-**输出**：
-- 通过：退出码 0
-- 不通过：退出码 1 + 违规行号列表
-
-**支持方言**：Oracle / PostgreSQL / MySQL（v1.0 仅 Oracle + PG，v1.1 加 MySQL）。
+**输出**：退出码 0 表示通过，1 表示发现方言问题，2 表示参数或路径错误。
 
 ### 7.2 `scripts/full-qa-audit.py`
 
-**功能**：对开发文档做 6 大类全量 QA 审计。
+**功能**：聚合文档校验、内部链接、编号冲突、核心文档完整性、SQL 方言、字段对齐。
 
-**输入**：项目目录路径或具体文件列表。
+**输入**：项目目录或单个 Markdown 文件；可选 `--json`。
 
-**输出**：
-- 审计报告（按 P0/P1/P2 分级）
-- 通过：退出码 0
-- 不通过：退出码 1
+**输出**：按 P0/P1/P2 分级的审计报告；P0 存在时退出码 1。
 
 ### 7.3 `scripts/field-alignment-check.py`
 
-**功能**：检查文档中引用的字段是否与知识库定义一致。
+**功能**：检查文档引用字段是否在知识库中定义，并在双方都有定义时比较类型和可空性。
 
-**输入**：文档路径 + 知识库文件路径。
+**输入**：文档路径 + 知识库文件路径；知识库支持 Markdown 表格和 SQL DDL；可选 `--json`。
 
-**输出**：
-- 对齐：✅
-- 不对齐：❌ + 字段名 + 知识库定义
+**输出**：missing / type_mismatch / nullable_mismatch；任一不一致退出码 1。
 
 ### 7.4 `scripts/parallel-delegate.sh`
 
-**功能**：并行委派多个 Claude 子代理。
+**功能**：基于本机 Claude CLI 并行执行多个任务文件。
 
-**输入**：TASK 文件列表。
+**输入**：任务文件列表；可选 `--jobs`、`--out-dir`、`--timeout`、`--dry-run`。
 
-**输出**：
-- 进度监控
-- 完成后汇总报告
+**输出**：每个任务一份日志，全部成功退出码 0，有任务失败退出码 1，依赖缺失或参数错误退出码 2。
+
+### 7.5 `scripts/postprocess_prd_html.py`
+
+**功能**：将 pandoc 或普通 HTML 重组为带封面、目录、章节卡片、响应式和打印样式的 PRD HTML。
+
+**输入**：`<input.html> <output.html>`。
+
+**输出**：可直接浏览和打印的 HTML 文件。
 
 ## 8. 错误处理
 

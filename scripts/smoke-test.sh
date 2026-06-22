@@ -314,6 +314,37 @@ if [ -f "$SKILL_DIR/SKILL.md" ]; then
   fi
 fi
 
+
+
+# 12. 语义一致性
+section "12. 语义一致性"
+if [ -f "$SKILL_DIR/SKILL.md" ] && [ -f "$SKILL_DIR/README.md" ]; then
+  skill_version=$(grep -E '^version:' "$SKILL_DIR/SKILL.md" | head -1 | awk '{print $2}' | tr -d '"')
+  if grep -q "$skill_version" "$SKILL_DIR/README.md" && grep -q "$skill_version" "$SKILL_DIR/plan.md"; then
+    ok "版本号一致：$skill_version"
+  else
+    warn "版本号不完全一致：SKILL.md=$skill_version"
+  fi
+fi
+placeholder_hits=$(grep -R "v1.0 [占]位\|MVP [占]位" "$SKILL_DIR/scripts" 2>/dev/null || true)
+if [ -z "$placeholder_hits" ]; then
+  ok "scripts/ 无旧占位实现标记"
+else
+  warn "scripts/ 仍包含旧占位标记"
+fi
+for helper in doc-validate.py field-alignment-check.py full-qa-audit.py sql-dialect-check.py postprocess_prd_html.py; do
+  if python3 "$SKILL_DIR/scripts/$helper" --help >/dev/null 2>&1; then
+    ok "scripts/$helper --help 可运行"
+  else
+    warn "scripts/$helper --help 运行失败"
+  fi
+done
+if bash "$SKILL_DIR/scripts/parallel-delegate.sh" --help >/dev/null 2>&1; then
+  ok "scripts/parallel-delegate.sh --help 可运行"
+else
+  warn "scripts/parallel-delegate.sh --help 运行失败"
+fi
+
 # ---------- 总结 ----------
 if [ "$JSON_MODE" = true ]; then
   echo "{\"results\": $json_results, \"summary\": {\"pass\": $pass_count, \"warn\": $warn_count, \"fail\": $fail_count}}"

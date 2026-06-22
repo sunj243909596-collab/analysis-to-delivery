@@ -75,9 +75,9 @@
 - 文档产物模板添加"自动校验"按钮
 - 模板引擎化（用 cookiecutter / copier 替代手写）
 
-### v1.3（计划 2026-Q3）— 开发实施纪律（**核心方向**）
+### v1.3.0-dev（开发中，2026-Q3）— 双模式 + 开发实施纪律
 > 痛点回顾：阶段 8 写完即进 QA，缺过程纪律 → 设计漏洞 / 知识无法沉淀 / 跑偏无法发现。
-> 调整方向：**superpowers 5 步子流程 + 3 层门控 + 设计回测 + 任务复盘**。
+> 调整方向：**默认设计交接 + 可选实施扩展 + 3 层门控 + 设计回测 + 任务复盘**。
 
 **核心变更**：
 - ✅ 新增 3 个方法论参考文档（`references/`）：
@@ -190,14 +190,16 @@
 | 模板引擎化（cookiecutter） | ✅ 已完成 | ed8cc29 | `templates/cookiecutter-analysis/` + `scripts/cookiecutter-gen.sh` |
 | 文档同步 | ✅ 已完成 | b5e8de0 | README / SKILL / plan / CHANGELOG |
 
-### v1.3 — 待开始 ⬜
+### v1.3.0-dev — 开发中 🚧
 | Phase | 状态 | 备注 |
 |---|---|---|
-| 阶段门控（stage-gate.md） | ⬜ 待开始 | 3 层门控（工作流 / 子流程 / 子任务） |
-| 设计回测（design-backtest.md） | ⬜ 待开始 | 4 大类：数据 / 业务 / 状态机 / 字段 |
-| 任务复盘（task-retrospective.md） | ⬜ 待开始 | 5 问 + 知识库沉淀 |
-| SKILL.md 集成 §8.0-8.6 | ⬜ 待开始 | 含开发实施子流程 + 3 机制 |
-| 模板与文档同步 | ⬜ 待开始 | dev 设计模板加 §5/6/7；cookiecutter 同步 |
+| 阶段门控（stage-gate.md） | ✅ 已完成 | 3 层门控（工作流 / 子流程 / 子任务） |
+| 设计回测（design-backtest.md） | ✅ 已完成 | 4 大类：数据 / 业务 / 状态机 / 字段 |
+| 任务复盘（task-retrospective.md） | ✅ 已完成 | 5 问 + 知识库沉淀 |
+| SKILL.md 集成双模式 §8.0-8.6 | ✅ 已完成 | 默认设计交接；实施扩展可选 |
+| 脚本补实现 | ✅ 已完成 | 字段对齐、QA、SQL、HTML、并行委派、语义 smoke test |
+| 模板与文档同步 | ✅ 已完成 | dev 设计模板 + cookiecutter 链接修正 |
+| **CHANGELOG 升 [1.3.0] tag** | ⬜ 待开始 | dev 稳定后发布正式版 |
 
 ### v2.0 — 待开始 ⬜
 | Phase | 状态 | 备注 |

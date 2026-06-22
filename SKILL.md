@@ -2,9 +2,9 @@
 name: analysis-to-delivery
 description: 通用需求分析到开发设计工作流 - 跨行业、跨技术栈的 10 阶段标准化流程，支持合规规则、技术栈、领域知识库的可插拔配置
 category: software-development
-version: 1.0.0-mvp
+version: 1.3.0-dev
 created: 2026-06-22
-updated: "2026-06-22: MVP 初版"
+updated: "2026-06-22: v1.3.0-dev 双模式与脚本补实现"
 ---
 
 # Analysis to Delivery
@@ -17,7 +17,7 @@ updated: "2026-06-22: MVP 初版"
 用户提出任意业务功能需求（不限于特定行业/技术栈）时，按本工作流进行系统化分析和文档输出。
 
 **不适用**：
-- 纯编码任务（用 `wms-code-implementation` 等编码 skill）
+- 默认不处理纯编码任务；如用户明确启用“实施扩展模式”，可编排 TDD / execute / commit
 - 极简单需求（"加个字段"级别，直接改就行）
 
 ## 装完先跑 smoke test（v1.2+）
@@ -353,68 +353,33 @@ PRD 生成 → 文档委派 → 开发设计 → QA 审计 → 代码交接
 
 ## 阶段 8：开发设计
 
-> v1.1 起去掉 V1（存储过程版）/ V2（代码实现版）双版本概念，统一为单一"代码实现版"工作流。
-> 业务逻辑不再单独出 PL/SQL 包文档，直接在开发设计说明书中体现。
-> v1.3 起增加开发实施子流程（§8.0）+ 阶段门控（§8.6）+ 设计回测（§8.4）+ 任务复盘（§8.5）。
+> v1.1 起去掉 V1（存储过程版）/ V2（代码实现版）双版本概念，统一为单一“代码实现版”设计产物。
+> v1.3.0-dev 起采用**双模式**：默认只完成开发设计与交接；用户明确要求继续实施时，才启用实施扩展模式。
 
-### 8.0 开发实施子流程（v1.3，强制）
+### 8.0 双模式入口（v1.3.0-dev）
 
-阶段 8 内部按 superpowers 工作流拆 5 步子流程，每步有**硬性签字门**：
+| 模式 | 触发 | 输出 | 是否写代码 |
+|---|---|---|---|
+| 设计交接模式（默认） | 用户只要求分析、设计、PRD、交接 | FSD / 数据模型 / 开发设计 / 回测 / QA / HANDOVER | 否 |
+| 实施扩展模式（可选） | 用户明确说“继续实施 / 编码 / TDD / execute” | 设计产物 + 实施计划 + 测试 + 代码变更 + 复盘 | 是 |
 
+**默认规则**：未得到用户明确授权时，阶段 8 只产出设计文档，不 scaffold 项目、不改业务代码、不提交实现 commit。
+
+#### 实施扩展模式子流程（可选）
+
+启用后，阶段 8 内部按 5 步子流程推进，每步有硬性签字门：
+
+```text
+brainstorming  ->  writing-specs  ->  writing-plans  ->  TDD  ->  execute
+     |                 |                  |              |        |
+   设计稿           spec 拆分          实施计划       RED-GREEN  逐步开发
+   + 用户签字       + 小 review        + 用户确认    -REFACTOR   + 复盘
 ```
-brainstorming  →  writing-specs  →  writing-plans  →  TDD  →  execute
-     ↓                ↓                ↓              ↓        ↓
-   设计稿          spec 拆分        实施计划       RED-GREEN  逐步开发
-   + 用户签字      + 小 review      + 用户确认    -REFACTOR   + 复盘
-```
 
-#### 第 1 步：brainstorming（设计稿 + HARD GATE）
-
-- **工具**：superpowers 的 `brainstorming` skill（强制）
-- **输出**：`docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
-- **签字**：用户
-- **HARD GATE**：设计稿未批准，**禁止写任何代码 / scaffold 任何项目**
-
-#### 第 2 步：writing-specs（拆分成 spec + 小 review）
-
-- **工具**：superpowers 的 `design-an-interface` / `domain-modeling` skill
-- **输出**：FSD（功能拆模块）+ 数据模型设计（按域拆表）
-- **小 review**：spec 写完后做 1 次内联自检（无占位符 / 无矛盾 / 范围明确）
-- **签字**：用户
-
-#### 第 3 步：writing-plans（实施计划 + 用户确认）
-
-- **工具**：superpowers 的 `writing-plans` skill
-- **输出**：实施计划，每个任务粒度 **≤ 2 小时**，必须含：
-  - 涉及的文件路径
-  - 关键代码行号 / 改动点
-  - 完整代码片段（不是伪代码）
-  - **验证命令**（编译 / 测试 / lint 完整命令，复制即可跑）
-- **核心原则**：好计划 = 实施时不需要任何猜测。**让人猜 = 计划不完整**
-- **签字**：用户
-
-#### 第 4 步：TDD（RED-GREEN-REFACTOR）
-
-- **工具**：superpowers 的 `test-driven-development` skill
-- **节奏**：
-  1. 🔴 RED：写测试 → 跑 → 确认失败
-  2. 🟢 GREEN：写最小实现 → 跑 → 测试通过
-  3. ♻️ REFACTOR：清理代码 → 跑 → 测试仍通过
-- **核心纪律**：**没看测试失败 = 不知道测试测得对不对**
-- **签字**：Claude 自检 + 用户抽查
-
-#### 第 5 步：execute（逐步开发 + 复盘）
-
-- **二选一**：
-  - **`subagent-driven-development`** — 多任务独立、需要并行 + 两阶段 review（spec / quality）
-  - **`executing-plans`** — 串行 + 用户在循环中审
-- **每个子任务完成后**：
-  - commit（含任务编号）
-  - 5 问复盘（见 [references/task-retrospective.md](references/task-retrospective.md)）
-  - 通用知识沉淀到 `knowledge-path.md`
-- **签字**：Claude 自检 + 用户抽查
-
-> **HARD GATE**：每步未签字不得进入下一步。具体门控规则见 [references/stage-gate.md](references/stage-gate.md)。
+- **推荐依赖**：可使用 superpowers 的 `brainstorming` / `design-an-interface` / `domain-modeling` / `writing-plans` / `test-driven-development`。
+- **降级路径**：如果环境没有这些 skill，使用本仓库 `references/stage-gate.md`、`references/design-backtest.md`、`references/task-retrospective.md` 和对应模板手工执行同等门控。
+- **HARD GATE**：设计稿未批准，禁止写代码或 scaffold；实施计划未确认，禁止进入 TDD；测试未经历 RED，禁止宣称 TDD 完成。
+- **复盘沉淀**：每个子任务完成后记录 5 问复盘，通用知识写回 `knowledge-path.md` 指向的知识库或项目文档。
 
 ### 8.1 FSD（功能规格说明书）
 
@@ -688,6 +653,6 @@ DDL/DML 操作必须由用户人工执行，Claude 标记为"待人工执行"清
 
 ---
 
-**版本**：1.0.0-mvp（2026-06-22）
+**版本**：1.3.0-dev（2026-06-22）
 **维护者**：Jason sun
 **协议**：MIT

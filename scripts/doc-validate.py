@@ -25,7 +25,7 @@ P0 = 致命（章节缺失、链接指向明显错的地方）
 P1 = 警告（占位符遗留、链接失效、frontmatter 字段缺失）
 P2 = 建议（代码块无语言标签）
 
-状态：v1.2 实现
+状态：v1.3-dev 实现（支持模板模式）
 """
 import argparse
 import json
@@ -152,9 +152,11 @@ def check_code_blocks(text: str) -> list[dict]:
     return issues
 
 
-def check_placeholders(text: str) -> list[dict]:
+def check_placeholders(text: str, template_mode: bool = False) -> list[dict]:
     """检查未替换的占位符。"""
     issues = []
+    if template_mode:
+        return []
     # 排除在代码块内的占位符
     text_no_code = re.sub(r"^```.*?^```", "", text, flags=re.MULTILINE | re.DOTALL)
     # 排除 Jinja2 语法（{{ ... }}、{% ... %}）
@@ -203,7 +205,7 @@ def check_h1(text: str) -> list[dict]:
     return issues
 
 
-def validate_file(path: Path, base: Path, doc_type: str | None) -> dict:
+def validate_file(path: Path, base: Path, doc_type: str | None, template_mode: bool = False) -> dict:
     """校验单个文档，返回结果。"""
     try:
         text = path.read_text(encoding="utf-8")
@@ -219,7 +221,8 @@ def validate_file(path: Path, base: Path, doc_type: str | None) -> dict:
     issues.extend(check_frontmatter(text))
     issues.extend(check_internal_links(text, path.parent))  # 相对当前文件所在目录
     issues.extend(check_code_blocks(text))
-    issues.extend(check_placeholders(text))
+    local_template_mode = template_mode or "templates" in path.parts or "cookiecutter" in str(path)
+    issues.extend(check_placeholders(text, local_template_mode))
     if doc_type:
         issues.extend(check_required_sections(text, doc_type))
 
@@ -236,6 +239,7 @@ def main():
     parser.add_argument("--type", choices=list(REQUIRED_SECTIONS.keys()), help="指定文档类型（用于必备章节检查）")
     parser.add_argument("--json", action="store_true", help="JSON 输出")
     parser.add_argument("--level", choices=["P0", "P1", "P2"], default="P2", help="只显示 ≤ 此严重度的问题（P2=全显示，P0=只看致命）")
+    parser.add_argument("--template-mode", action="store_true", help="模板模式：忽略未替换占位符，适合校验 templates/ 和 cookiecutter 模板")
     args = parser.parse_args()
 
     level_rank = {"P0": 0, "P1": 1, "P2": 2}
@@ -260,15 +264,20 @@ def main():
     p0_count = 0
     p1_count = 0
     p2_count = 0
+    visible_p0_count = 0
+    visible_p1_count = 0
 
     for f in sorted(files):
-        result = validate_file(f, base, args.type)
+        result = validate_file(f, base, args.type, args.template_mode)
         all_results.append(result)
         for issue in result["issues"]:
             rank = level_rank.get(issue["level"], 2)
             if issue["level"] == "P0": p0_count += 1
             elif issue["level"] == "P1": p1_count += 1
             elif issue["level"] == "P2": p2_count += 1
+            if rank <= max_rank:
+                if issue["level"] == "P0": visible_p0_count += 1
+                elif issue["level"] == "P1": visible_p1_count += 1
             if rank > max_rank:  # noqa
                 continue
             if args.json:
@@ -282,14 +291,14 @@ def main():
 
     if not args.json:
         print(f"\n📊 校验结果：{len(files)} 个文档 | P0={p0_count} P1={p1_count} P2={p2_count}")
-        if p0_count > 0:
+        if visible_p0_count > 0:
             print("❌ 有 P0 问题，需修复")
             sys.exit(2)
-        elif p1_count > 0:
+        elif visible_p1_count > 0:
             print("⚠️  有 P1 警告，建议关注")
             sys.exit(1)
         else:
-            print("✅ 全部通过")
+            print("✅ 所选级别通过")
             sys.exit(0)
 
 

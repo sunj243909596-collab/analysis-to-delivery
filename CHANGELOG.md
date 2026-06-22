@@ -8,6 +8,22 @@
 ## [Unreleased]
 
 ### 新增
+- 🆕 **v1.3 开发实施纪律：阶段门控 + 设计回测 + 任务复盘**
+  - `references/stage-gate.md` — 3 层门控（工作流 / 子流程 / 子任务），含 HARD GATE 签字机制
+  - `references/design-backtest.md` — 设计回测 4 大类（数据模型 / 业务规则 / 状态机 / 字段对齐）
+  - `references/task-retrospective.md` — 5 问复盘模板 + 知识库沉淀流程
+  - SKILL.md 阶段 8 扩展为 §8.0-8.6：
+    - §8.0 开发实施子流程（brainstorming → spec → plan → TDD → execute）
+    - §8.4 设计回测（HARD GATE：不通过禁入阶段 9）
+    - §8.5 任务复盘（5 问 + 沉淀）
+    - §8.6 阶段门控（3 层签字）
+  - `templates/开发设计说明书.md` 加 §5 设计回测 / §6 子流程门控 / §7 任务复盘汇总
+  - cookiecutter 模板同步
+  - plan.md 加 v1.3 章节与进度看板
+
+## [1.2.0] - 2026-06-22
+
+### 新增
 - 🆕 **v1.2 skill 自检 + 文档校验 + 模板引擎化**
   - `scripts/smoke-test.sh` — Skill 装完自检（11 节 / 37 项检查），支持 `--verbose` / `--json`
   - `scripts/doc-validate.py` — 单文档格式校验（P0/P1/P2 分级），支持 `--type` / `--json` / `--level`
@@ -67,7 +83,8 @@
 
 - **1.0.0-mvp**：MVP 首发。功能完整但配置库/模板/脚本不全，**生产环境慎用**
 - **1.1.0**（2026-06-22）：项目级 config 体系 + 阶段 8 简化
-- **1.2.0**（开发中）：skill 自检 + 文档校验 + cookiecutter 引擎化
+- **1.2.0**（2026-06-22）：skill 自检 + 文档校验 + cookiecutter 引擎化
+- **1.3.0**（开发中）：阶段门控 + 设计回测 + 任务复盘
 - **1.x.x**：配置库完善阶段，向完全可用演进
 - **2.x.x**：多领域示例 + CI 阶段
 - **3.x.x**：工具链集成 + 可视化阶段

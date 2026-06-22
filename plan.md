@@ -75,6 +75,34 @@
 - 文档产物模板添加"自动校验"按钮
 - 模板引擎化（用 cookiecutter / copier 替代手写）
 
+### v1.3（计划 2026-Q3）— 开发实施纪律（**核心方向**）
+> 痛点回顾：阶段 8 写完即进 QA，缺过程纪律 → 设计漏洞 / 知识无法沉淀 / 跑偏无法发现。
+> 调整方向：**superpowers 5 步子流程 + 3 层门控 + 设计回测 + 任务复盘**。
+
+**核心变更**：
+- ✅ 新增 3 个方法论参考文档（`references/`）：
+  - `stage-gate.md` — 3 层门控（工作流 / 子流程 / 子任务）
+  - `design-backtest.md` — 设计回测 4 大类（数据 / 业务 / 状态机 / 字段）
+  - `task-retrospective.md` — 5 问复盘 + 知识库沉淀
+- ✅ SKILL.md 阶段 8 扩展为 8.0-8.6 七个子节
+  - §8.0 开发实施子流程（brainstorming → spec → plan → TDD → execute）
+  - §8.1-8.3 FSD / 数据模型 / 开发设计说明书
+  - §8.4 设计回测（HARD GATE：不通过禁入阶段 9）
+  - §8.5 任务复盘（5 问 + 沉淀）
+  - §8.6 阶段门控（3 层签字）
+- ✅ `templates/开发设计说明书.md` 加 §5 设计回测 / §6 子流程门控 / §7 任务复盘汇总
+- ✅ cookiecutter 模板同步
+
+**用户承诺（v1.3）**：
+- 阶段 8 有明确的"开始 / 暂停 / 继续"信号
+- 设计回测能在 QA 前发现 80%+ 的字段 / 状态机 / 业务规则漏洞
+- 任务复盘把"个人经验"沉淀为"团队知识"
+- 跨项目经验回流到 `references/`，skill 自我进化
+
+**明确不做的**（v1.4+ 也不会做）：
+- ❌ 不写自动回测脚本（设计回测需要人判断哪些样本有意义，自动化反而不准）
+- ❌ 不做强制 IDE 插件（门控在文档 / commit message 层就够）
+
 ### v2.0（计划 2026-Q4）— 多领域示例 + CI
 - 补充 2 个完整示例：
   - `examples/02-saas-dashboard`（SaaS 后台，Node + React + PostgreSQL）
@@ -157,9 +185,19 @@
 ### v1.2 — 全部完成 ✅
 | Phase | 状态 | Commit | 备注 |
 |---|---|---|---|
-| skill 自检 smoke test | ✅ 已完成 | pending | `scripts/smoke-test.sh`（11 节 / 37 项检查） |
-| 文档产物自动校验 | ✅ 已完成 | pending | `scripts/doc-validate.py`（P0/P1/P2 分级，CI 可集成） |
-| 模板引擎化（cookiecutter） | ✅ 已完成 | pending | `templates/cookiecutter-analysis/` + `scripts/cookiecutter-gen.sh` |
+| skill 自检 smoke test | ✅ 已完成 | 6fae30f | `scripts/smoke-test.sh`（11 节 / 37 项检查） |
+| 文档产物自动校验 | ✅ 已完成 | 0330181 | `scripts/doc-validate.py`（P0/P1/P2 分级，CI 可集成） |
+| 模板引擎化（cookiecutter） | ✅ 已完成 | ed8cc29 | `templates/cookiecutter-analysis/` + `scripts/cookiecutter-gen.sh` |
+| 文档同步 | ✅ 已完成 | b5e8de0 | README / SKILL / plan / CHANGELOG |
+
+### v1.3 — 待开始 ⬜
+| Phase | 状态 | 备注 |
+|---|---|---|
+| 阶段门控（stage-gate.md） | ⬜ 待开始 | 3 层门控（工作流 / 子流程 / 子任务） |
+| 设计回测（design-backtest.md） | ⬜ 待开始 | 4 大类：数据 / 业务 / 状态机 / 字段 |
+| 任务复盘（task-retrospective.md） | ⬜ 待开始 | 5 问 + 知识库沉淀 |
+| SKILL.md 集成 §8.0-8.6 | ⬜ 待开始 | 含开发实施子流程 + 3 机制 |
+| 模板与文档同步 | ⬜ 待开始 | dev 设计模板加 §5/6/7；cookiecutter 同步 |
 
 ### v2.0 — 待开始 ⬜
 | Phase | 状态 | 备注 |

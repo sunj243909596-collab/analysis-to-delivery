@@ -355,6 +355,28 @@ PRD 生成 → 文档委派 → 开发设计 → QA 审计 → 代码交接
 
 > v1.1 起去掉 V1（存储过程版）/ V2（代码实现版）双版本概念，统一为单一"代码实现版"工作流。
 > 业务逻辑不再单独出 PL/SQL 包文档，直接在开发设计说明书中体现。
+> v1.3 起增加开发实施子流程（§8.0）+ 阶段门控（§8.6）+ 设计回测（§8.4）+ 任务复盘（§8.5）。
+
+### 8.0 开发实施子流程（v1.3，强制）
+
+阶段 8 内部按 superpowers 工作流拆 5 步子流程，每步有**硬性签字门**：
+
+```
+brainstorming  →  writing-specs  →  writing-plans  →  TDD  →  execute
+     ↓                ↓                ↓              ↓        ↓
+   设计稿           spec           实施计划       RED-GREEN  逐步开发
+   签字             自检           签字确认      -REFACTOR   + 复盘
+```
+
+| 子流程 | 工具 / 参考 | 输出物 | 签字 |
+|---|---|---|---|
+| 1. **brainstorming** | superpowers 的 `brainstorming` skill | `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` | 用户 |
+| 2. **writing-specs** | superpowers 的 `design-an-interface` / `domain-modeling` | FSD + 数据模型设计 | 用户 |
+| 3. **writing-plans** | superpowers 的 `writing-plans` skill | 实施计划（任务 ≤ 2h）| 用户 |
+| 4. **TDD** | superpowers 的 `test-driven-development` | RED → GREEN → REFACTOR | Claude + 用户抽查 |
+| 5. **execute** | `subagent-driven-development` 或 `executing-plans` | commit + 复盘 | Claude + 用户抽查 |
+
+> **HARD GATE**：每步未签字不得进入下一步。具体门控规则见 [references/stage-gate.md](references/stage-gate.md)。
 
 ### 8.1 FSD（功能规格说明书）
 
@@ -405,6 +427,56 @@ PRD 生成 → 文档委派 → 开发设计 → QA 审计 → 代码交接
 - 遇错重试，不跳过
 - 字段名 / 表名 / 状态码必须与 `knowledge-path.md` 引用的知识库一致
 - PL/SQL 包、专有消息协议接口等不再单独成文档；如确需，**内嵌在 FSD 的接口契约或开发设计的异常处理小节**
+
+### 8.4 设计回测（强制）
+
+**目的**：拿历史数据反向跑一遍新设计，找出没考虑到的边界。
+
+**触发条件**（满足任一即必做）：
+- 数据模型有新增 / 扩展表
+- 业务规则新增 / 修改
+- 状态机新增 / 修改
+- `field-alignment-check.py` 报错
+- 合规相关变更（GSP / HIPAA / SOX）
+
+**回测 4 大类**（详见 [references/design-backtest.md](references/design-backtest.md)）：
+1. 数据模型回测 — 跑历史样本验证 DDL / 索引 / 查询
+2. 业务规则回测 — 关键场景样本手工重跑
+3. 状态机回测 — 历史单据状态变化回放
+4. 字段对齐回测 — 文档 vs 知识库 vs 生产库
+
+**输出**：`08-设计回测报告.md`
+
+**HARD GATE**：回测不通过（`❌`）禁止进入阶段 9。
+
+### 8.5 任务复盘（每个子任务）
+
+**目的**：每个 writing-plans 子任务完成后做 5 问复盘，通用知识沉淀到知识库。
+
+**5 问**（详见 [references/task-retrospective.md](references/task-retrospective.md)）：
+1. 我做了什么？
+2. 我跑偏了哪里？
+3. 我发现什么通用知识？（**没沉淀 = 没复盘**）
+4. 我哪里慢了 / 卡了？
+5. 下次会改什么？
+
+**沉淀去向**：
+- 任务级复盘 → commit message / PR 描述
+- 通用知识（Q3）→ `knowledge-path.md` 指向的知识库
+- 流程改进（Q5）→ 累计到阶段 8 整体复盘
+- 跨项目经验 → 写回 `references/`（贡献给 skill 本身）
+
+### 8.6 阶段门控（贯穿阶段 8 全部）
+
+三层层级（详见 [references/stage-gate.md](references/stage-gate.md)）：
+
+| 层级 | 粒度 | 签字方 |
+|---|---|---|
+| 第 1 层 | 10 阶段之间 | 用户 |
+| 第 2 层 | 阶段 8 内 5 个子流程 | 用户 + Claude 双向 |
+| 第 3 层 | writing-plans 每个子任务 | 测试 + 用户抽查 |
+
+> **HARD GATE**：上一阶段 / 子流程未签字，禁止进入下一步。
 
 ---
 
@@ -506,6 +578,9 @@ PRD 生成 → 文档委派 → 开发设计 → QA 审计 → 代码交接
 | 安全批量编辑 | [references/safe-bulk-editing.md](references/safe-bulk-editing.md) |
 | Draw.io 生成 | [references/drawio-guide.md](references/drawio-guide.md) |
 | 文档编号 | [references/doc-numbering.md](references/doc-numbering.md) |
+| 阶段门控（v1.3） | [references/stage-gate.md](references/stage-gate.md) |
+| 设计回测（v1.3） | [references/design-backtest.md](references/design-backtest.md) |
+| 任务复盘（v1.3） | [references/task-retrospective.md](references/task-retrospective.md) |
 
 ## 关联模板
 

@@ -197,3 +197,136 @@ def test_cli_template_rejected(tmp_path):
         cwd=Path(__file__).parent.parent,
     )
     assert result.returncode == 1, f"expected fail, got: {result.stdout}"
+
+
+# ===== --strict / --loose 模式 =====
+
+def _make_loose_failing_files(tmp_path):
+    """构造一个 Check 3/4/5 失败、Check 1/2 通过的样本。"""
+    tc = tmp_path / "tc.md"
+    rc = tmp_path / "rc.md"
+    rf = tmp_path / "rf.md"
+    # Check 1 PASS: ✅ 状态
+    # Check 2 PASS: 无 TBD 词
+    # Check 3 FAIL: 只有 3 个章节（缺 四、五）
+    tc.write_text(
+        "# 任务\n"
+        "> 状态：✅ 已确认\n"
+        "\n"
+        "## 一、x\n"
+        "## 二、x\n"
+        "## 三、x\n",
+        encoding="utf-8",
+    )
+    # Check 4 FAIL: 第八节有 T-01
+    rc.write_text(
+        "## 八、待明确事项\n"
+        "| T-01 | 缺字段 |  |  |\n",
+        encoding="utf-8",
+    )
+    # Check 5 FAIL: 🔴=3
+    rf.write_text(
+        "| ❓ 待确认 | 0 |\n"
+        "| 🔴 缺失 | 3 |\n",
+        encoding="utf-8",
+    )
+    return tc, rc, rf
+
+
+def test_cli_strict_mode_blocks_loose_failures(tmp_path):
+    """--strict 模式（默认）：Check 3/4/5 失败仍 BLOCK,exit 1。"""
+    import subprocess
+    tc, rc, rf = _make_loose_failing_files(tmp_path)
+    result = subprocess.run(
+        [
+            "python3",
+            "scripts/task-confirm-check.py",
+            "--strict",
+            str(tc),
+            str(rc),
+            str(rf),
+        ],
+        capture_output=True,
+        text=True,
+        cwd=Path(__file__).parent.parent,
+    )
+    assert result.returncode == 1, f"strict should BLOCK, got rc=0\n{result.stdout}"
+    # 至少 1 个 ❌ 错误（来自 Check 3/4/5）
+    assert "❌" in result.stdout
+
+
+def test_cli_loose_mode_downgrades_checks_345(tmp_path):
+    """--loose 模式:Check 3/4/5 失败降级为 warning,exit 0。"""
+    import subprocess
+    tc, rc, rf = _make_loose_failing_files(tmp_path)
+    result = subprocess.run(
+        [
+            "python3",
+            "scripts/task-confirm-check.py",
+            "--loose",
+            str(tc),
+            str(rc),
+            str(rf),
+        ],
+        capture_output=True,
+        text=True,
+        cwd=Path(__file__).parent.parent,
+    )
+    assert result.returncode == 0, f"loose should exit 0, got rc={result.returncode}\n{result.stdout}\n{result.stderr}"
+    # Check 3/4/5 应显示为 ⚠️ 警告,不是 ❌ 错误
+    assert "⚠️" in result.stdout
+
+
+def test_cli_loose_mode_still_blocks_check_1_and_2(tmp_path):
+    """--loose 模式:Check 1(状态字段)/Check 2(TBD)仍然 BLOCK。"""
+    import subprocess
+    tc = tmp_path / "tc.md"
+    rc = tmp_path / "rc.md"
+    rf = tmp_path / "rf.md"
+    # Check 1 FAIL: ⬜ 状态
+    # Check 2 FAIL: 含 TBD 词
+    tc.write_text(
+        "# 任务\n"
+        "> 状态：⬜ 待填写\n"
+        "## 一、x\n## 二、x\n## 三、x\n## 四、x\n## 五、x\n"
+        "此处有 TODO 词\n",
+        encoding="utf-8",
+    )
+    rc.write_text(
+        "## 八、待明确事项\n| 编号 | 待明确事项 |\n|------|----------|",
+        encoding="utf-8",
+    )
+    rf.write_text("| ❓ 待确认 | 0 |\n| 🔴 缺失 | 0 |\n", encoding="utf-8")
+    result = subprocess.run(
+        [
+            "python3",
+            "scripts/task-confirm-check.py",
+            "--loose",
+            str(tc),
+            str(rc),
+            str(rf),
+        ],
+        capture_output=True,
+        text=True,
+        cwd=Path(__file__).parent.parent,
+    )
+    assert result.returncode == 1, "loose mode must still BLOCK Check 1 / Check 2"
+    assert "❌" in result.stdout
+
+
+def test_cli_strict_loose_mutually_exclusive():
+    """--strict 与 --loose 不能同时指定。"""
+    import subprocess
+    result = subprocess.run(
+        [
+            "python3",
+            "scripts/task-confirm-check.py",
+            "--strict",
+            "--loose",
+        ],
+        capture_output=True,
+        text=True,
+        cwd=Path(__file__).parent.parent,
+    )
+    # argparse 互斥组 → exit 2
+    assert result.returncode == 2, f"expected rc=2, got rc={result.returncode}"

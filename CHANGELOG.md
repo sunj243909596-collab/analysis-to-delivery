@@ -27,6 +27,13 @@
 - `grill-task` SKILL 结束条件从模糊"已签字"改为 7 条硬门控
 - `stage-gate` 2→3 门控从 1 条拆为 3 条独立门
 
+### 增强
+- **`scripts/task-confirm-check.py` 升至 v1.1.0** — 新增 `--strict` / `--loose` 双模式
+  - `--strict`（默认）：5 项检查全部 BLOCK
+  - `--loose`：Check 1/2 仍 BLOCK,Check 3/4/5 降级为 warning(⚠️)
+  - argparse 互斥组,`--strict --loose` 同时传会 exit 2
+- **examples 三套 REVIEW 文档**全部对齐 v3.x 格式(4 态状态字段 + 对齐结论表 + 第七/八节),`--strict` 模式 5/5 check 通过
+
 ### 新增
 - 🆕 **v3.0-dev 工具链 + VSCode 集成**(开发中)
   - **`scripts/flow-to-mermaid.py`** — ASCII 流程图 → Mermaid 源码转换器

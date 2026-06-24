@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 """
-TASK_CONFIRM 门控验证器（v1.0.0）
+TASK_CONFIRM 门控验证器（v1.1.0）
 
 校验 TASK_CONFIRM_xxx.md + REVIEW_需求确认书.md + REVIEW_字段对齐分析.md
-是否满足进入 BRD 的最低条件。5 项检查全过才 exit 0。
+是否满足进入 BRD 的最低条件。
+
+双模式:
+    --strict (默认):5 项检查全部 BLOCK,任一失败 exit 1
+    --loose:Check 1(状态字段)/ Check 2(TBD) 仍 BLOCK;
+            Check 3/4/5 降级为 warning(打印 ⚠️ 但不计入 errors),exit 0
 
 用法：
-    python3 task-confirm-check.py <TASK_CONFIRM.md> <REVIEW_需求确认书.md> <REVIEW_字段对齐分析.md>
+    python3 task-confirm-check.py [--strict|--loose] <TC.md> <RC.md> <RF.md>
     python3 task-confirm-check.py --self-test
 
-退出码：0 = 全部通过；1 = 检查未通过；2 = 参数错误
+退出码：0 = 全部通过(strict)/ 仅 warning(loose);1 = 检查未通过;2 = 参数错误
 """
 import argparse
 import re
@@ -122,6 +127,22 @@ def main() -> int:
     parser.add_argument("review_confirm", nargs="?", help="REVIEW_需求确认书.md 路径")
     parser.add_argument("review_field", nargs="?", help="REVIEW_字段对齐分析.md 路径")
     parser.add_argument("--self-test", action="store_true", help="跑内置自检")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument(
+        "--strict",
+        dest="mode",
+        action="store_const",
+        const="strict",
+        default="strict",
+        help="严格模式（默认）：5 项检查全部 BLOCK,任一失败 exit 1",
+    )
+    mode.add_argument(
+        "--loose",
+        dest="mode",
+        action="store_const",
+        const="loose",
+        help="宽松模式：Check 1/2 仍 BLOCK;Check 3/4/5 降级为 warning",
+    )
     args = parser.parse_args()
 
     if args.self_test:
@@ -136,6 +157,18 @@ def main() -> int:
     rc = Path(args.review_confirm).read_text(encoding="utf-8")
     rf = Path(args.review_field).read_text(encoding="utf-8")
     all_errors = []
+    warnings = []
+
+    def _emit(check_name: str, fn, text: str, source: str):
+        """根据模式分发到 errors 或 warnings。"""
+        errs = fn(text, source)
+        if not errs:
+            return
+        if args.mode == "loose" and check_name in ("check_3", "check_4", "check_5"):
+            for e in errs:
+                warnings.append(f"[{check_name}] {e}")
+        else:
+            all_errors.extend(errs)
 
     # 模板文件例外：templates/ 下的源模板不应被校验（含自指的 ⬜/TBD 警告文本）
     is_template = "templates/" in str(tc_path) and tc_path.name == "TASK_CONFIRM.md"
@@ -145,16 +178,29 @@ def main() -> int:
         all_errors.extend(check_status(tc, "TASK_CONFIRM"))
     else:
         all_errors.extend(check_status(tc, "TASK_CONFIRM"))
-        all_errors.extend(check_tbd_keywords(tc, "TASK_CONFIRM"))
-        all_errors.extend(check_sections(tc, "TASK_CONFIRM"))
-    all_errors.extend(check_review_pending_section(rc, "REVIEW_需求确认书"))
-    all_errors.extend(check_field_alignment_counts(rf, "REVIEW_字段对齐分析"))
+        _emit("check_2", check_tbd_keywords, tc, "TASK_CONFIRM")
+        _emit("check_3", check_sections, tc, "TASK_CONFIRM")
+    _emit("check_4", check_review_pending_section, rc, "REVIEW_需求确认书")
+    _emit("check_5", check_field_alignment_counts, rf, "REVIEW_字段对齐分析")
 
+    # 输出:errors → ❌;warnings → ⚠️
     if all_errors:
         for e in all_errors:
             print(f"❌ {e}")
+        if warnings:
+            print(f"\n⚠️  --loose 模式额外警告 {len(warnings)} 项（不 BLOCK）:")
+            for w in warnings:
+                print(f"   {w}")
         print(f"\n共 {len(all_errors)} 项未通过")
         return 1
+    if warnings:
+        print("✅ Check 1 通过：状态字段 = ✅")
+        print("✅ Check 2 通过：无 12 词 TBD 残留")
+        print(f"⚠️  --loose 模式：以下 Check 仅 warning,不 BLOCK:")
+        for w in warnings:
+            print(f"   {w}")
+        print("（如需严格门控，请用 --strict 重跑）")
+        return 0
     print("✅ Check 1 通过：状态字段 = ✅")
     print("✅ Check 2 通过：无 12 词 TBD 残留")
     print("✅ Check 3 通过：5 章节完整")

@@ -195,6 +195,10 @@ Claude 会自动:
   - `全部完成，继续`
   - `approved, proceed to next stage`
 - **TASK_CONFIRM 模板状态字段**：硬约束为二态（⬜ / ✅），删除 🟡 中间态
+- **双模式**：
+  - `--strict`（默认）：5 项检查全部 BLOCK,任一失败 exit 1
+  - `--loose`：Check 1(状态字段) / Check 2(TBD) 仍 BLOCK;Check 3/4/5 降级为 warning,exit 0
+  - `--strict` 与 `--loose` 互斥（argparse 强制）
 
 ### Bridge(7 个)— 实施扩展
 

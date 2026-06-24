@@ -1,6 +1,8 @@
 ---
 name: doc-numbering
 description: 文档编号 01-08 严格对应阶段,同项目目录不允许重号,Figma 文档不受编号约束。Use when creating or organizing any design document.
+version: 3.0.1
+
 ---
 
 # Doc-Numbering — 文档编号规范

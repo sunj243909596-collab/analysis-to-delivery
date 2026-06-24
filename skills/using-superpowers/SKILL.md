@@ -2,6 +2,8 @@
 name: using-superpowers
 description: 开发实施子流程入口 — brainstorming / writing-plans / TDD / executing / verification,以及 superpowers 体系其他 skill。Use when ready to start implementation after design is done.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # Using Superpowers — 开发实施入口

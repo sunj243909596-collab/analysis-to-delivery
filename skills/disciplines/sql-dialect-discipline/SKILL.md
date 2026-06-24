@@ -1,6 +1,8 @@
 ---
 name: sql-dialect-discipline
 description: SQL 方言严格对齐 Target_DB — Oracle / PostgreSQL / MySQL 函数混用检查。Use when writing or reviewing any SQL in design docs or DDL.
+version: 3.0.1
+
 ---
 
 # SQL-Dialect-Discipline — SQL 方言纪律

@@ -44,12 +44,12 @@ jobs:
       - name: 校验文档格式
         run: |
           shopt -s globstar nullglob
-          python3 scripts/doc-validate.py examples/**/*.md
+          python3 scripts/doc-validate.py --template-mode examples/**/*.md
 
       - name: 校验 SKILL 文档格式
         run: |
           shopt -s globstar nullglob
-          python3 scripts/doc-validate.py skills/**/*.md
+          python3 scripts/doc-validate.py --template-mode skills/**/*.md
 
       - name: 上传校验报告
         if: always()

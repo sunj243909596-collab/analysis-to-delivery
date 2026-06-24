@@ -2,6 +2,8 @@
 name: dev-design
 description: 开发设计 — 含 FSD + 数据模型 + 开发设计说明书 + 设计回测 + 任务复盘,合并原 10 阶段中的 7/8/8.4/8.5 子流程。Use when PRD is signed and you need technical design output.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # Dev-Design — 开发设计(7 件套)

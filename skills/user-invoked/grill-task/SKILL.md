@@ -2,6 +2,8 @@
 name: grill-task
 description: 需求澄清 + 字段对齐分析 — 反复提问拉齐用户意图,生成 TASK_CONFIRM 和字段对齐分析。Use when starting a new feature, clarifying requirements, or aligning field names with existing tables.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # Grill-Task — 需求澄清 + 字段对齐

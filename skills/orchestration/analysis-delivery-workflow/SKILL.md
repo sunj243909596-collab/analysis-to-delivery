@@ -2,6 +2,8 @@
 name: analysis-delivery-workflow
 description: 严守 9 阶段流程(分析-设计)— 适合新手/复杂项目,按顺序自动调 9 个 user-invoked skill。Use when you want the full structured workflow without making decisions per step.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # Analysis to Delivery Workflow — 9 阶段流程编排

@@ -1,6 +1,8 @@
 ---
 name: no-field-guessing
 description: 严禁猜测字段名 — 数据库/接口字段必须从知识库或契约文档获取。Use when writing SQL, designing data models, generating API contracts, or any task that names database fields.
+version: 3.0.1
+
 ---
 
 # No-Field-Guessing — 严禁猜测字段名

@@ -2,6 +2,8 @@
 name: setup-analysis-delivery
 description: 首次为新项目接 analysis-to-delivery 工作流 — 生成 4 个项目级 *-path.md 配置文件。Use when starting a new project or adding this skill to an existing project.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # Setup Analysis-Delivery — 项目配置初始化

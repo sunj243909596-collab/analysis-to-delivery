@@ -2,6 +2,8 @@
 name: test-case-design
 description: 测试用例设计 — 覆盖正常路径/边界条件/异常路径/合规校验/性能安全。Use when defining acceptance criteria before development.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # Test-Case-Design — 测试用例设计

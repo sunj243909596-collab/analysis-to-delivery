@@ -1,6 +1,8 @@
 ---
 name: stage-gate
 description: 阶段门控纪律 — 任何阶段结束前必须签字才能进入下一步,设计回测不通过禁入 QA,任务复盘必须沉淀到知识库。Use when finishing any workflow stage, ending a sub-task, or before QA audit.
+version: 3.0.1
+
 ---
 
 # Stage-Gate — 3 层门控 + 设计回测 + 任务复盘

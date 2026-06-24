@@ -1,6 +1,8 @@
 ---
 name: context-pointer
 description: 项目级配置优先(读 *-path.md),skill 级 config 仅作 fallback,严禁编造配置。Use when needing to look up domain knowledge, compliance rules, or tech stack conventions.
+version: 3.0.1
+
 ---
 
 # Context-Pointer — 三层配置加载

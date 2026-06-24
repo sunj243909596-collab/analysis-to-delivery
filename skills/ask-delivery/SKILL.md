@@ -2,6 +2,8 @@
 name: ask-delivery
 description: 分析到交付的入口 — 根据你的目标路由到正确的 skill。Use when unsure which skill to use.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # Ask Delivery — 路由

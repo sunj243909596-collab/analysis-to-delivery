@@ -2,6 +2,8 @@
 name: to-brd
 description: 生成业务需求文档(BRD)— 含业务流程图、角色职责、功能模块、字段映射。Use when business requirements need to be documented formally.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # To-BRD — 业务需求文档生成

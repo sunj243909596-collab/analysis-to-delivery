@@ -1,6 +1,8 @@
 ---
 name: no-self-invent
 description: 严禁自创字段、表名、状态码 — 字段从知识库来,表名带 C_/APP_ 前缀,状态码引用 config。Use when designing new tables, fields, or business state codes.
+version: 3.0.1
+
 ---
 
 # No-Self-Invent — 严禁自创

@@ -2,6 +2,8 @@
 name: handoff
 description: 代码交接文档 — 整理已完成文档、待办事项、已知风险、后续工作建议。Use when ending design phase and handing over to implementation.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # Handoff — 代码交接

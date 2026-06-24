@@ -1,6 +1,8 @@
 ---
 name: ascii-flowchart
 description: 用 ASCII 字符画状态流转/业务流程/泳道图,禁用 Mermaid。回流路径必须汇聚到同一目标节点。Use when drawing any flow diagram, state machine, or swimlane.
+version: 3.0.1
+
 ---
 
 # ASCII-Flowchart — ASCII 流程图规范

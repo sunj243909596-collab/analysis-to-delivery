@@ -2,6 +2,8 @@
 name: compliance-review
 description: 合规性评审 — 按 compliance-path.md 引用的合规规则,逐条评估设计。Use when dealing with GSP / HIPAA / SOX / GDPR / 等强合规场景。
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # Compliance-Review — 合规评审

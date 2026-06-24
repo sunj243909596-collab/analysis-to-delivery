@@ -1,6 +1,8 @@
 ---
 name: design-an-interface
 description: 设计接口契约 — 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 ~/.claude/skills/design-an-interface/。
+version: 3.0.1
+
 ---
 
 # Design-an-Interface(桥接到 superpowers)

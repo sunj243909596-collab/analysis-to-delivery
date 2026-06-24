@@ -2,6 +2,8 @@
 name: qa-audit
 description: QA 审计 — 跑全量文档质量检查,按 P0/P1/P2 分级输出审计报告。Use when design is done and before code handoff.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # QA-Audit — 文档质量审计

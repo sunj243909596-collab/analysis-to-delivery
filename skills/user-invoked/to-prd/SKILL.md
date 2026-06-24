@@ -2,6 +2,8 @@
 name: to-prd
 description: 生成产品需求文档(PRD) — 含用户故事、功能需求、非功能需求、验收标准。Use when formalizing product requirements for handoff to design and dev.
 disable-model-invocation: true
+version: 3.0.1
+
 ---
 
 # To-PRD — 产品需求文档生成

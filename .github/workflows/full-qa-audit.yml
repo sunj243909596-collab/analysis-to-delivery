@@ -71,9 +71,9 @@ jobs:
         continue-on-error: false
         run: |
           shopt -s globstar nullglob
-          python3 scripts/doc-validate.py examples/**/*.md
+          python3 scripts/doc-validate.py --template-mode examples/**/*.md
           shopt -s globstar nullglob
-          python3 scripts/doc-validate.py skills/**/*.md
+          python3 scripts/doc-validate.py --template-mode skills/**/*.md
 
       - name: 4. 字段对齐审计
         id: field

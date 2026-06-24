@@ -641,5 +641,5 @@ MIT — 详见 [LICENSE](LICENSE)
 ---
 
 **维护者**:Jason SUN (`sunj243909596@gmail.com`)
-**当前版本**:3.0.0-dev(2026-06-22)
+**当前版本**:3.0.1(2026-06-24)
 **GitHub**:https://github.com/sunj243909596-collab/analysis-to-delivery

@@ -2,9 +2,9 @@
 name: analysis-to-delivery
 description: 通用需求分析到开发设计工作流 — 26 个独立 skill 自由组合(2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline)。跨行业、跨技术栈。Use when starting any new feature requiring structured analysis-to-delivery workflow.
 category: software-development
-version: 3.0.0-dev
+version: 3.0.1
 created: 2026-06-22
-updated: "2026-06-22: v3.0.0-dev 增加 drawio CLI + 流程图工具链 + VSCode 扩展"
+updated: "2026-06-24: v3.0.1 增加 grill-task 门控加固(task-confirm-check.py + 5 check + --strict/--loose 双模式)"
 ---
 
 # Analysis to Delivery

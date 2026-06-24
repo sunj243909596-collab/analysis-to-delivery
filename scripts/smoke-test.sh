@@ -478,8 +478,9 @@ else
     echo -e "${GREEN}🎉 完美：skill 装得完全正确，可以放心使用。${NC}"
     exit 0
   elif [ "$fail_count" -eq 0 ]; then
+    # 有 warning 但无 fail:warn 仅作提醒,不阻塞 CI
     echo -e "${YELLOW}⚠️  通过（有警告）：skill 可用，建议关注上面的警告项。${NC}"
-    exit 1
+    exit 0
   else
     echo -e "${RED}❌ 未通过：skill 安装有问题，请修复上面 ❌ 项后重试。${NC}"
     exit 2

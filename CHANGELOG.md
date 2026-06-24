@@ -41,7 +41,7 @@
 
 ### 示例同步
 
-- `examples/01-wms-warehouse/`:TASK_CONFIRM 重写为 v3.0.0-dev 5 章节格式;REVIEW 文档加 4 态状态字段 + 对齐结论表 + 第七/八节
+- `examples/01-wms-warehouse/`:TASK_CONFIRM 重写为 v3.0.1 5 章节格式;REVIEW 文档加 4 态状态字段 + 对齐结论表 + 第七/八节
 - `examples/02-saas-dashboard/`:同上
 - `examples/03-mobile-app/`:同上
 - 3 套示例在 `--strict` 与 `--loose` 模式下均 5/5 check 通过

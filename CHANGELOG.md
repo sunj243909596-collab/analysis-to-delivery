@@ -7,6 +7,26 @@
 
 ## [Unreleased]
 
+### Breaking Changes (v3.x)
+
+- **TASK_CONFIRM 模板状态字段**：从三态 `⬜/🟡/✅` 改为二态 `⬜/✅`。现有 🟡 文档需手动改为 ⬜ 或 ✅
+- **触发话术**：用户必须用白名单话术（`我已全部确认，可以进入下一步` / `确认通过，进入 BRD` / `全部完成，继续` / `approved, proceed to next stage`）才能进入下一阶段。仅说"已填写"不再有效
+- **新增门控脚本**：`scripts/task-confirm-check.py`（5 项检查），替代 `field-alignment-check.py` 在 grill-task 中的引用
+- **grill-task 章节数**：从"4 章节"改为"5 章节"（一~五），SKILL 文档同步
+
+### 新增
+- 🆕 **`scripts/task-confirm-check.py`**（v1.0.0）— TASK_CONFIRM 门控验证器
+  - 5 项检查：状态字段 / 12 词 TBD / 5 章节完整 / REVIEW 第八节为空 / 字段对齐 🔴❓ 计数
+  - CLI：`python3 task-confirm-check.py <TASK_CONFIRM.md> <REVIEW_需求确认书.md> <REVIEW_字段对齐分析.md>`
+  - 退出码：0 = pass / 1 = fail / 2 = 参数错误
+  - 模板文件 `templates/TASK_CONFIRM.md` 自动跳过 Check 2/3（含自指占位符）
+- 🆕 **`.github/workflows/task-confirm-check.yml`** — PR 时自动跑 task-confirm-check.py
+
+### 修复
+- `field-alignment-check.py` docstring 显式声明不接 TASK_CONFIRM（仅校验 PRD/FSD 字段引用）
+- `grill-task` SKILL 结束条件从模糊"已签字"改为 7 条硬门控
+- `stage-gate` 2→3 门控从 1 条拆为 3 条独立门
+
 ### 新增
 - 🆕 **v3.0-dev 工具链 + VSCode 集成**(开发中)
   - **`scripts/flow-to-mermaid.py`** — ASCII 流程图 → Mermaid 源码转换器

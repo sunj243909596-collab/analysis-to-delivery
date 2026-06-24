@@ -93,6 +93,29 @@ def check_review_pending_section(text: str, source: str) -> list[str]:
     return errors
 
 
+def check_field_alignment_counts(text: str, source: str) -> list[str]:
+    """Check 5: 对齐结论表中 🔴=0 且 ❓=0。"""
+    errors = []
+    # 至少要有一个 🔴 计数行（说明表格存在）
+    has_red_row = re.search(r"\|\s*🔴", text)
+    if not has_red_row:
+        errors.append(f"[{source}] 找不到对齐结论表（缺 🔴 行）")
+        return errors
+    # 解析 ❓ 和 🔴 计数行
+    for marker, label in [("❓", "❓ 待确认"), ("🔴", "🔴 缺失")]:
+        row_pattern = re.compile(
+            rf"\|\s*{re.escape(label)}\s*\|\s*(\d+)\s*\|",
+        )
+        match = row_pattern.search(text)
+        if match:
+            count = int(match.group(1))
+            if count > 0:
+                errors.append(
+                    f"[{source}] 对齐结论表 {label} = {count}（必须为 0）"
+                )
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="TASK_CONFIRM 门控验证器")
     parser.add_argument("task_confirm", nargs="?", help="TASK_CONFIRM_xxx.md 路径")
@@ -110,11 +133,13 @@ def main() -> int:
 
     tc = Path(args.task_confirm).read_text(encoding="utf-8")
     rc = Path(args.review_confirm).read_text(encoding="utf-8")
+    rf = Path(args.review_field).read_text(encoding="utf-8")
     all_errors = []
     all_errors.extend(check_status(tc, "TASK_CONFIRM"))
     all_errors.extend(check_tbd_keywords(tc, "TASK_CONFIRM"))
     all_errors.extend(check_sections(tc, "TASK_CONFIRM"))
     all_errors.extend(check_review_pending_section(rc, "REVIEW_需求确认书"))
+    all_errors.extend(check_field_alignment_counts(rf, "REVIEW_字段对齐分析"))
 
     if all_errors:
         for e in all_errors:
@@ -125,6 +150,7 @@ def main() -> int:
     print("✅ Check 2 通过：无 12 词 TBD 残留")
     print("✅ Check 3 通过：5 章节完整")
     print("✅ Check 4 通过：REVIEW 第八节为空")
+    print("✅ Check 5 通过：字段对齐 🔴=0, ❓=0")
     return 0
 
 

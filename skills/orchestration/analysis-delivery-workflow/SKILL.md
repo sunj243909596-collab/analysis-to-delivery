@@ -54,10 +54,21 @@ brainstorming → design-an-interface → domain-modeling → writing-plans → 
 
 ## 关键纪律
 
+- **严禁自动推进**：本编排"按顺序触发"9 个 skill，但每阶段产物必须经用户显式签字（白名单话术）后才能进入下一阶段。LLM 不得自行解释"OK""继续""好"等模糊回复为签字。
 - 严禁跳阶段(从 1 跳 3 / 从 5 跳 7)
 - 每阶段产物必须签字
 - HARD GATE:阶段 7 设计回测 ❌ 禁入阶段 8
 - HARD GATE:阶段 8 QA 审计 P0>0 禁入阶段 9
+
+## 2→3 门控（2026-06-24 强化）
+
+阶段 2 → 阶段 3 之间，必须同时满足：
+
+1. TASK_CONFIRM 状态 = ✅
+2. REVIEW 文档中 ❓=0 且 🔴=0
+3. 用户白名单话术签字（详见 `skills/disciplines/stage-gate/SKILL.md`）
+
+详见 `scripts/task-confirm-check.py` 自动化校验。
 
 ## 调用的 discipline
 

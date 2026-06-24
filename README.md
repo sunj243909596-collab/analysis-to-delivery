@@ -3,7 +3,7 @@
 > 通用需求分析到开发实施工作流 — **26 个独立可组合 skill**、3 个完整行业示例、5 个 CI workflow。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-3.0.0--dev-blue.svg)](plan.md)
+[![Version](https://img.shields.io/badge/version-3.0.1-blue.svg)](plan.md)
 [![Skills](https://img.shields.io/badge/skills-26-green.svg)](skills/)
 [![Examples](https://img.shields.io/badge/examples-3-orange.svg)](examples/)
 [![CI](https://img.shields.io/badge/CI-5%20workflows-purple.svg)](.github/workflows/)

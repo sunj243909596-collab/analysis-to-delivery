@@ -7,6 +7,51 @@
 
 ## [Unreleased]
 
+## [v3.0.1] - 2026-06-24
+
+> **grill-task 门控加固**:从需求澄清到 BRD 的硬门控,避免 LLM 在用户未完成确认时自动推进。
+
+### 新增
+
+- 🆕 **`scripts/task-confirm-check.py` v1.1.0** — TASK_CONFIRM 门控验证器(5 项 check + 双模式)
+  - **Check 1**:状态字段必须 = `✅`(硬约束 `⬜/✅` 二态,删 🟡)
+  - **Check 2**:12 词 TBD 红线扫描(`TBD`/`TODO`/`待定`/`稍后`/`下次`/`N/A`/`待确认`/`暂定`/`未定`/`待补充`/`⬜`/`❓`)+ `\b` 整词匹配(ID_TODO_FIELD 不误报)
+  - **Check 3**:TASK_CONFIRM 必须含 5 个章节(一~五)
+  - **Check 4**:REVIEW_需求确认书 第八节"待明确事项"必须为空(无 T-XX 残留)
+  - **Check 5**:REVIEW_字段对齐分析 对齐结论表 `🔴=0` 且 `❓=0`(BLOCK 规则)
+  - **双模式**:`--strict`(默认,5 项全 BLOCK)/ `--loose`(Check 1/2 仍 BLOCK,Check 3/4/5 降级为 warning)
+  - argparse 互斥组:`--strict --loose` 同时传 → rc=2
+  - 模板文件例外:`templates/TASK_CONFIRM.md` 自动跳过 Check 2/3(自指占位符)
+  - 退出码:0 = pass(strict)/ 仅 warning(loose);1 = fail;2 = 参数错误
+- 🆕 **`.github/workflows/task-confirm-check.yml`** — PR 时自动跑 self-test + pytest + 集成 + 模板拒绝
+- 🆕 **`tests/test_task_confirm_check.py`** — 22 个 pytest case(覆盖 5 check + CLI + 双模式 + 互斥)
+
+### 修复
+
+- `grill-task` SKILL 结束条件从模糊"已签字"改为 7 条硬门控
+- `stage-gate` 2→3 门控从 1 条拆为 3 条独立门
+- `field-alignment-check.py` docstring 显式声明不接 TASK_CONFIRM(仅校验 PRD/FSD 字段引用)
+- `analysis-delivery-workflow` 加"严禁自动推进"规则 + 2→3 门控交叉引用 `task-confirm-check.py`
+
+### 模板硬约束
+
+- `templates/TASK_CONFIRM.md`:状态字段 `⬜/✅` 二态(删 🟡);trigger 4 句白名单话术;12 词红线引用脚本
+- `templates/REVIEW_需求确认书.md`:第七节"AI 助手补充确认项"(设计假设)+ 第八节"待明确事项"空表;用户操作改为"进入阶段 3(BRD)" + HARD BLOCK
+- `templates/REVIEW_字段对齐分析.md`:状态字段扩 4 态(`✅/⚠️/❓/🔴`)+ BLOCK 规则 + 阶段号 2→3
+
+### 示例同步
+
+- `examples/01-wms-warehouse/`:TASK_CONFIRM 重写为 v3.0.0-dev 5 章节格式;REVIEW 文档加 4 态状态字段 + 对齐结论表 + 第七/八节
+- `examples/02-saas-dashboard/`:同上
+- `examples/03-mobile-app/`:同上
+- 3 套示例在 `--strict` 与 `--loose` 模式下均 5/5 check 通过
+
+### 留痕
+
+- `docs/superpowers/specs/2026-06-24-grill-task-bugfix-design.md` — 设计 spec
+- `docs/plans/2026-06-24-grill-task-bugfix.md` — 18 Task 实施计划
+- `logs/STEP-P0-review.md` / `STEP-P1-review.md` / `STEP-P2-review.md` / `STEP-P3-review.md` — B+C 留痕 + 用户签字
+
 ### Breaking Changes (v3.x)
 
 - **TASK_CONFIRM 模板状态字段**：从三态 `⬜/🟡/✅` 改为二态 `⬜/✅`。现有 🟡 文档需手动改为 ⬜ 或 ✅

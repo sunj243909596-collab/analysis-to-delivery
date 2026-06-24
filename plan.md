@@ -1,6 +1,7 @@
 # Plan — Analysis to Delivery
 
-> **当前版本**:v3.0.0-dev(2026-06-22)
+> **当前版本**:v3.0.1(2026-06-24)— grill-task 门控加固
+> 前置版本:v3.0.0(2026-06-22)— 工具链 + VSCode 扩展
 > 路线图详见下方各版本节。最新进度看 [README.md](README.md)，详细规格看 [SPEC.md](SPEC.md)。
 
 ## 愿景

@@ -43,6 +43,21 @@ def check_status(text: str, source: str) -> list[str]:
     return errors
 
 
+def check_tbd_keywords(text: str, source: str) -> list[str]:
+    """Check 2: 扫描 12 词 TBD 列表。"""
+    errors = []
+    for keyword in TBD_KEYWORDS:
+        # 整词匹配:中文不需要 \b;英文用 \b 防止 ID_TODO 误报
+        if re.match(r"^[A-Za-z]+$", keyword):
+            pattern = rf"\b{re.escape(keyword)}\b"
+        else:
+            pattern = re.escape(keyword)
+        for match in re.finditer(pattern, text):
+            line_no = text[:match.start()].count("\n") + 1
+            errors.append(f"[{source}] 第 {line_no} 行发现 TBD 词 '{keyword}'")
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="TASK_CONFIRM 门控验证器")
     parser.add_argument("task_confirm", nargs="?", help="TASK_CONFIRM_xxx.md 路径")
@@ -59,13 +74,17 @@ def main() -> int:
         parser.error("需要 3 个文件参数，或使用 --self-test")
 
     tc = Path(args.task_confirm).read_text(encoding="utf-8")
-    all_errors = check_status(tc, "TASK_CONFIRM")
+    all_errors = []
+    all_errors.extend(check_status(tc, "TASK_CONFIRM"))
+    all_errors.extend(check_tbd_keywords(tc, "TASK_CONFIRM"))
 
     if all_errors:
         for e in all_errors:
             print(f"❌ {e}")
+        print(f"\n共 {len(all_errors)} 项未通过")
         return 1
     print("✅ Check 1 通过：状态字段 = ✅")
+    print("✅ Check 2 通过：无 12 词 TBD 残留")
     return 0
 
 

@@ -51,9 +51,21 @@ disable-model-invocation: true
 - `disciplines/no-self-invent` — 严禁自创字段
 - `disciplines/context-pointer` — 三层知识库加载
 
+## 关键纪律（2026-06-24 更新）
+
+- ❌ 删除"4 章节"表述——实际为 5 章节（一~五）
+- ❌ 删除 `field-alignment-check.py` 作为门控脚本的引用——该脚本只校验 PRD/FSD 字段引用，不接 TASK_CONFIRM
+- ✅ 新增 `scripts/task-confirm-check.py` 作为唯一门控脚本
+- 🟡 删除：状态字段不再有 🟡 中间态，仅 ⬜/✅ 二态
+- 🔒 HARD GATE：用户必须用白名单话术之一明确签字，LLM 不接受隐式同意
+
 ## 结束条件
 
-- [ ] TASK_CONFIRM 4 个必备章节填完
-- [ ] REVIEW_需求确认书已签字
-- [ ] REVIEW_字段对齐分析无 🔴 缺失项
-- [ ] `field-alignment-check.py` 通过
+- [ ] TASK_CONFIRM 状态字段 = ✅ 已确认（二态，无 🟡）
+- [ ] TASK_CONFIRM 5 个必备章节（一~五）填完
+- [ ] TASK_CONFIRM 无 12 词 TBD（见 `scripts/task-confirm-check.py` TBD_KEYWORDS）
+- [ ] REVIEW_需求确认书 第八节"待明确事项"为空
+- [ ] REVIEW_字段对齐分析 对齐结论表中 ❓=0 且 🔴=0（⚠️ 可保留，状态字段可为 ✅ 或 ⚠️）
+- [ ] `scripts/task-confirm-check.py` exit 0
+- [ ] 用户白名单话术签字（详见 `templates/TASK_CONFIRM.md` L48-55）
+- [ ] ~~`field-alignment-check.py` 通过~~（已废弃此引用；该脚本不接 TASK_CONFIRM，仅校验 PRD/FSD 字段引用）

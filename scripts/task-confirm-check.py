@@ -71,6 +71,28 @@ def check_sections(text: str, source: str) -> list[str]:
     return errors
 
 
+def check_review_pending_section(text: str, source: str) -> list[str]:
+    """Check 4: REVIEW_需求确认书 第八节表格必须为空。"""
+    errors = []
+    # 找到第八节
+    section_pattern = re.compile(
+        r"^##\s*八[、.]\s*待明确事项\s*$(.*?)(?=^##\s|\Z)",
+        re.MULTILINE | re.DOTALL,
+    )
+    match = section_pattern.search(text)
+    if not match:
+        errors.append(f"[{source}] 找不到第八节'待明确事项'")
+        return errors
+    section_body = match.group(1)
+    # 表格行匹配:T-01 起
+    pending = re.findall(r"\|\s*T-\d+\s*\|", section_body)
+    if pending:
+        errors.append(
+            f"[{source}] 第八节'待明确事项'有 {len(pending)} 项未确认（T-01 等），必须清空"
+        )
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="TASK_CONFIRM 门控验证器")
     parser.add_argument("task_confirm", nargs="?", help="TASK_CONFIRM_xxx.md 路径")
@@ -87,10 +109,12 @@ def main() -> int:
         parser.error("需要 3 个文件参数，或使用 --self-test")
 
     tc = Path(args.task_confirm).read_text(encoding="utf-8")
+    rc = Path(args.review_confirm).read_text(encoding="utf-8")
     all_errors = []
     all_errors.extend(check_status(tc, "TASK_CONFIRM"))
     all_errors.extend(check_tbd_keywords(tc, "TASK_CONFIRM"))
     all_errors.extend(check_sections(tc, "TASK_CONFIRM"))
+    all_errors.extend(check_review_pending_section(rc, "REVIEW_需求确认书"))
 
     if all_errors:
         for e in all_errors:
@@ -100,6 +124,7 @@ def main() -> int:
     print("✅ Check 1 通过：状态字段 = ✅")
     print("✅ Check 2 通过：无 12 词 TBD 残留")
     print("✅ Check 3 通过：5 章节完整")
+    print("✅ Check 4 通过：REVIEW 第八节为空")
     return 0
 
 

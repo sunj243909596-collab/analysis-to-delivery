@@ -183,6 +183,19 @@ Claude 会自动:
 /analysis-delivery-workflow  → 9 阶段分析设计 + 衔接 superpowers 实施
 ```
 
+### 需求澄清门控(v3.x 新增)
+
+`grill-task` 阶段新增 `scripts/task-confirm-check.py` 硬门控脚本：
+
+- **5 项检查**：状态字段、12 词 TBD 扫描、5 章节完整、REVIEW 第八节为空、字段对齐 🔴/❓=0
+- **12 词 TBD 红线**：`TBD` / `TODO` / `待定` / `稍后` / `下次` / `N/A` / `待确认` / `暂定` / `未定` / `待补充` / `⬜` / `❓`
+- **白名单话术**：用户必须用以下 4 句之一才能进入下一阶段：
+  - `我已全部确认，可以进入下一步`
+  - `确认通过，进入 BRD`
+  - `全部完成，继续`
+  - `approved, proceed to next stage`
+- **TASK_CONFIRM 模板状态字段**：硬约束为二态（⬜ / ✅），删除 🟡 中间态
+
 ### Bridge(7 个)— 实施扩展
 
 ```

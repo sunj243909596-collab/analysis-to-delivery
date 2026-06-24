@@ -1,0 +1,68 @@
+name: task-confirm-check
+
+on:
+  pull_request:
+    paths:
+      - 'templates/**'
+      - 'skills/**'
+      - 'examples/**'
+      - 'scripts/task-confirm-check.py'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Self-test
+        run: python3 scripts/task-confirm-check.py --self-test
+
+      - name: Validate script on examples
+        run: |
+          set -e
+          cat > /tmp/rc.md << 'EOF'
+          # REVIEW
+          ## 八、待明确事项
+          | 编号 | 待明确事项 | 责任方 | 截止 |
+          |------|----------|------|------|
+          EOF
+          cat > /tmp/rf.md << 'EOF'
+          # REVIEW
+          ## 对齐结论
+          | 类别 | 数量 |
+          |---|---|
+          | ❓ 待确认 | 0 |
+          | 🔴 缺失 | 0 |
+          EOF
+          for ex in examples/0*/TASK_CONFIRM_*.md; do
+            echo "--- $ex ---"
+            python3 scripts/task-confirm-check.py "$ex" /tmp/rc.md /tmp/rf.md
+          done
+          rm -f /tmp/rc.md /tmp/rf.md
+
+      - name: Verify template is rejected (Check 1)
+        run: |
+          cat > /tmp/rc.md << 'EOF'
+          # REVIEW
+          ## 八、待明确事项
+          | 编号 | 待明确事项 | 责任方 | 截止 |
+          |------|----------|------|------|
+          EOF
+          cat > /tmp/rf.md << 'EOF'
+          # REVIEW
+          ## 对齐结论
+          | 类别 | 数量 |
+          |---|---|
+          | ❓ 待确认 | 0 |
+          | 🔴 缺失 | 0 |
+          EOF
+          # Template should fail Check 1 (state = ⬜)
+          if python3 scripts/task-confirm-check.py templates/TASK_CONFIRM.md /tmp/rc.md /tmp/rf.md; then
+            echo "❌ ERROR: template should be rejected (Check 1)"
+            exit 1
+          fi
+          echo "✅ Template correctly rejected by Check 1"
+          rm -f /tmp/rc.md /tmp/rf.md

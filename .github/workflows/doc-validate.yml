@@ -43,11 +43,13 @@ jobs:
 
       - name: 校验文档格式
         run: |
-          python3 scripts/doc-validate.py "examples/**/*.md"
+          shopt -s globstar nullglob
+          python3 scripts/doc-validate.py examples/**/*.md
 
       - name: 校验 SKILL 文档格式
         run: |
-          python3 scripts/doc-validate.py "skills/**/*.md"
+          shopt -s globstar nullglob
+          python3 scripts/doc-validate.py skills/**/*.md
 
       - name: 上传校验报告
         if: always()

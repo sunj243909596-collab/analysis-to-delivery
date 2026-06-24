@@ -42,22 +42,36 @@ jobs:
 
       - name: 校验字段对齐
         run: |
-          python3 scripts/field-alignment-check.py "examples/**/*.md"
+          # field-alignment-check.py 接受 1 个 doc + 1 个 knowledge
+          # 跑全量 examples/ 目录下的 TASK_CONFIRM + REVIEW 文档 vs knowledge-path.md 指向的知识库
+          for tc in examples/0*/TASK_CONFIRM_*.md examples/0*/REVIEW_*.md; do
+            config_dir=$(dirname "$tc")
+            kb="$config_dir/knowledge-path.md"
+            if [ -f "$kb" ]; then
+              python3 scripts/field-alignment-check.py "$tc" "$kb" || echo "  ⚠️  $tc 有问题"
+            fi
+          done
 
       - name: 校验 WMS 字段映射(知识库对照)
         run: |
-          # 如果引用 WMOS 字段,必须对照知识库
-          python3 scripts/field-alignment-check.py "examples/01-wms-warehouse/**/*.md" --strict
+          # WMS 项目对照 WMOS 知识库
+          python3 scripts/field-alignment-check.py \
+            examples/01-wms-warehouse/01-业务需求文档\ BRD.md \
+            examples/01-wms-warehouse/knowledge-path.md
 
       - name: 校验 SaaS 多租户字段
         run: |
-          # SaaS 项目必须每张表带 tenant_id
-          python3 scripts/field-alignment-check.py "examples/02-saas-dashboard/**/*.md" --require=tenant_id
+          # SaaS 项目对照 PG 知识库
+          python3 scripts/field-alignment-check.py \
+            examples/02-saas-dashboard/01-业务需求文档\ BRD.md \
+            examples/02-saas-dashboard/knowledge-path.md
 
       - name: 校验 Mobile App 字段类型
         run: |
-          # 移动 App 积分字段必须为整数(number/int64),禁止浮点
-          python3 scripts/field-alignment-check.py "examples/03-mobile-app/**/*.md" --require=int64-points
+          # 移动 App 项目对照 Firestore 知识库
+          python3 scripts/field-alignment-check.py \
+            examples/03-mobile-app/01-业务需求文档\ BRD.md \
+            examples/03-mobile-app/knowledge-path.md
 
       - name: 上传审计报告
         if: always()

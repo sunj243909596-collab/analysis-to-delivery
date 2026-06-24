@@ -40,7 +40,8 @@ jobs:
       - name: 校验 Oracle 文档
         run: |
           # Oracle 文档不应有 PG 语法
-          python3 scripts/sql-dialect-check.py "examples/01-wms-warehouse/**/*.md" --dialect=oracle
+          shopt -s globstar nullglob
+          python3 scripts/sql-dialect-check.py examples/01-wms-warehouse/**/*.md --dialect=oracle
 
   sql-dialect-postgresql:
     name: PostgreSQL 方言校验
@@ -57,7 +58,8 @@ jobs:
       - name: 校验 PostgreSQL 文档
         run: |
           # PostgreSQL 文档不应有 Oracle 语法
-          python3 scripts/sql-dialect-check.py "examples/02-saas-dashboard/**/*.md" --dialect=postgresql
+          shopt -s globstar nullglob
+          python3 scripts/sql-dialect-check.py examples/02-saas-dashboard/**/*.md --dialect=postgres
 
   sql-dialect-mix-check:
     name: 跨方言一致性

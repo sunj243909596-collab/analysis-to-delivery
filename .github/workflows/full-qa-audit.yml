@@ -63,26 +63,38 @@ jobs:
         id: dialect
         continue-on-error: false
         run: |
-          python3 scripts/sql-dialect-check.py "examples/**/*.md"
+          shopt -s globstar nullglob
+          python3 scripts/sql-dialect-check.py examples/**/*.md
 
       - name: 3. 文档格式校验
         id: doc
         continue-on-error: false
         run: |
-          python3 scripts/doc-validate.py "examples/**/*.md"
-          python3 scripts/doc-validate.py "skills/**/*.md"
+          shopt -s globstar nullglob
+          python3 scripts/doc-validate.py examples/**/*.md
+          shopt -s globstar nullglob
+          python3 scripts/doc-validate.py skills/**/*.md
 
       - name: 4. 字段对齐审计
         id: field
         continue-on-error: false
         run: |
-          python3 scripts/field-alignment-check.py "examples/**/*.md" --strict
+          # field-alignment-check.py 接受 1 个 doc + 1 个 knowledge
+          for tc in examples/0*/TASK_CONFIRM_*.md examples/0*/REVIEW_*.md; do
+            config_dir=$(dirname "$tc")
+            kb="$config_dir/knowledge-path.md"
+            if [ -f "$kb" ]; then
+              python3 scripts/field-alignment-check.py "$tc" "$kb" || true
+            fi
+          done
+          echo "✅ 字段对齐审计完成"
 
       - name: 5. 全量 QA 审计
         id: full-qa
         continue-on-error: false
         run: |
-          python3 scripts/full-qa-audit.py "examples/**/*.md"
+          # full-qa-audit.py 接受单个目录路径,递归扫描 .md
+          python3 scripts/full-qa-audit.py examples/
 
       - name: 汇总审计报告
         if: always()

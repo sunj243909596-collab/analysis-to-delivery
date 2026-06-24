@@ -58,6 +58,19 @@ def check_tbd_keywords(text: str, source: str) -> list[str]:
     return errors
 
 
+def check_sections(text: str, source: str) -> list[str]:
+    """Check 3: 必须含 5 个章节标题（一~五）。"""
+    errors = []
+    expected = ["一、", "二、", "三、", "四、", "五、"]
+    found = [m for m in expected if re.search(rf"^##\s*{re.escape(m)}", text, re.MULTILINE)]
+    if len(found) < 5:
+        missing = [m for m in expected if m not in found]
+        errors.append(
+            f"[{source}] 章节不完整：发现 {len(found)}/5 个，缺失 {missing}"
+        )
+    return errors
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="TASK_CONFIRM 门控验证器")
     parser.add_argument("task_confirm", nargs="?", help="TASK_CONFIRM_xxx.md 路径")
@@ -77,6 +90,7 @@ def main() -> int:
     all_errors = []
     all_errors.extend(check_status(tc, "TASK_CONFIRM"))
     all_errors.extend(check_tbd_keywords(tc, "TASK_CONFIRM"))
+    all_errors.extend(check_sections(tc, "TASK_CONFIRM"))
 
     if all_errors:
         for e in all_errors:
@@ -85,6 +99,7 @@ def main() -> int:
         return 1
     print("✅ Check 1 通过：状态字段 = ✅")
     print("✅ Check 2 通过：无 12 词 TBD 残留")
+    print("✅ Check 3 通过：5 章节完整")
     return 0
 
 

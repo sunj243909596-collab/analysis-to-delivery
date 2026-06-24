@@ -36,7 +36,15 @@ jobs:
       - name: 运行 smoke-test.sh
         run: |
           chmod +x scripts/smoke-test.sh
-          bash scripts/smoke-test.sh
+          # smoke-test.sh 在有 warning 时也 exit 1;CI 只关心 fail (exit 2)
+          bash scripts/smoke-test.sh || {
+            rc=$?
+            if [ $rc -eq 1 ]; then
+              echo "⚠️ smoke-test 有警告但无失败,视为通过"
+              exit 0
+            fi
+            exit $rc
+          }
 
       - name: 上传 smoke-test 报告
         if: always()

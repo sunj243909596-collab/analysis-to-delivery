@@ -131,13 +131,22 @@ def main() -> int:
     if not (args.task_confirm and args.review_confirm and args.review_field):
         parser.error("需要 3 个文件参数，或使用 --self-test")
 
-    tc = Path(args.task_confirm).read_text(encoding="utf-8")
+    tc_path = Path(args.task_confirm)
+    tc = tc_path.read_text(encoding="utf-8")
     rc = Path(args.review_confirm).read_text(encoding="utf-8")
     rf = Path(args.review_field).read_text(encoding="utf-8")
     all_errors = []
-    all_errors.extend(check_status(tc, "TASK_CONFIRM"))
-    all_errors.extend(check_tbd_keywords(tc, "TASK_CONFIRM"))
-    all_errors.extend(check_sections(tc, "TASK_CONFIRM"))
+
+    # 模板文件例外：templates/ 下的源模板不应被校验（含自指的 ⬜/TBD 警告文本）
+    is_template = "templates/" in str(tc_path) and tc_path.name == "TASK_CONFIRM.md"
+    if is_template:
+        print(f"ℹ️  检测到模板文件 {tc_path.name}，跳过 Check 2（TBD）与 Check 3（章节）")
+        print(f"   （模板本身含自指占位符，不应被门控脚本校验）")
+        all_errors.extend(check_status(tc, "TASK_CONFIRM"))
+    else:
+        all_errors.extend(check_status(tc, "TASK_CONFIRM"))
+        all_errors.extend(check_tbd_keywords(tc, "TASK_CONFIRM"))
+        all_errors.extend(check_sections(tc, "TASK_CONFIRM"))
     all_errors.extend(check_review_pending_section(rc, "REVIEW_需求确认书"))
     all_errors.extend(check_field_alignment_counts(rf, "REVIEW_字段对齐分析"))
 

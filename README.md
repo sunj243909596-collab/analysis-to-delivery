@@ -66,18 +66,18 @@
 ### 一键安装(推荐)
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/sunj243909596-collab/analysis-to-delivery/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/BlueprintOS/analysis-to-delivery/main/install.sh | bash
 ```
 
 ### 手动安装
 
 ```bash
 # 稳定版(推荐生产用,锁定到 v3.0.0)
-git clone --branch 3.0.0 --depth 1 https://github.com/sunj243909596-collab/analysis-to-delivery.git \
+git clone --branch 3.0.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git \
   ~/.claude/skills/analysis-to-delivery
 
 # main 分支(尝鲜用,跟随最新提交)
-git clone --depth 1 https://github.com/sunj243909596-collab/analysis-to-delivery.git \
+git clone --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git \
   ~/.claude/skills/analysis-to-delivery
 ```
 
@@ -620,7 +620,7 @@ analysis-to-delivery/
 
 | 角色 | 方式 |
 |---|---|
-| 用户 | 在 [GitHub Issues](https://github.com/sunj243909596-collab/analysis-to-delivery/issues) 报 bug / 提需求 / 分享使用案例 |
+| 用户 | 在 [GitHub Issues](https://github.com/BlueprintOS/analysis-to-delivery/issues) 报 bug / 提需求 / 分享使用案例 |
 | 贡献者 | Fork → 修改 → PR(详见 [CONTRIBUTING.md](CONTRIBUTING.md))|
 
 **优先欢迎的贡献**:
@@ -656,4 +656,4 @@ MIT — 详见 [LICENSE](LICENSE)
 
 **维护者**:Jason SUN (`sunj243909596@gmail.com`)
 **当前版本**:3.0.1(2026-06-24)
-**GitHub**:https://github.com/sunj243909596-collab/analysis-to-delivery
+**GitHub**:https://github.com/BlueprintOS/analysis-to-delivery

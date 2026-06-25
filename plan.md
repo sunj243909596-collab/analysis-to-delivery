@@ -171,7 +171,7 @@
 | 蒸馏 examples/01-wms-warehouse | ✅ 已完成 | 129dea6 | 8 个文件（BRD / 流程图 / 配置） |
 | 写 README/LICENSE/CHANGELOG | ✅ 已完成 | 129dea6 | |
 | 本地验证 | ✅ 已完成 | 129dea6 | 脚本 --help 全跑通 |
-| git init + 推送 GitHub | ✅ 已完成 | b35d53e | sunj243909596-collab/analysis-to-delivery |
+| git init + 推送 GitHub | ✅ 已完成 | b35d53e | BlueprintOS/analysis-to-delivery |
 
 ### v1.1 — 全部完成 ✅（不含 fallback 库）
 | Phase | 状态 | Commit | 备注 |

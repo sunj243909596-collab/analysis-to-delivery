@@ -51,7 +51,7 @@ code --install-extension analysis-to-delivery-0.1.0.vsix
 
 1. **skill 已安装**:
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/sunj243909596-collab/analysis-to-delivery/main/install.sh | bash
+   curl -fsSL https://raw.githubusercontent.com/BlueprintOS/analysis-to-delivery/main/install.sh | bash
    ```
 
 2. **mermaid-cli**(可选,仅 renderFlowChart 需要):
@@ -125,7 +125,7 @@ vscode-extension/
 ```bash
 # 创建发布者(首次)
 npm install -g @vscode/vsce
-vsce create-publisher sunj243909596-collab
+vsce create-publisher BlueprintOS
 
 # 打包
 vsce package
@@ -145,8 +145,8 @@ vsce publish
 
 ## 反馈
 
-- 🐛 [GitHub Issues](https://github.com/sunj243909596-collab/analysis-to-delivery/issues)
-- 💡 [Feature Request](https://github.com/sunj243909596-collab/analysis-to-delivery/issues/new?template=feature_request.md)
+- 🐛 [GitHub Issues](https://github.com/BlueprintOS/analysis-to-delivery/issues)
+- 💡 [Feature Request](https://github.com/BlueprintOS/analysis-to-delivery/issues/new?template=feature_request.md)
 
 ## 协议
 

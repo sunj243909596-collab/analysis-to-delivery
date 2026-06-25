@@ -133,7 +133,7 @@ async function applySkillCommand(): Promise<void> {
     void vscode.window.showInformationMessage("已复制到剪贴板。粘贴到 Claude Chat 即可触发。");
   } else if (choice === "打开 README") {
     await vscode.env.openExternal(
-      vscode.Uri.parse("https://github.com/sunj243909596-collab/analysis-to-delivery"),
+      vscode.Uri.parse("https://github.com/BlueprintOS/analysis-to-delivery"),
     );
   }
 }
@@ -235,7 +235,7 @@ async function openDocumentationCommand(): Promise<void> {
 
   if (pick.label === "GitHub Repository") {
     await vscode.env.openExternal(
-      vscode.Uri.parse("https://github.com/sunj243909596-collab/analysis-to-delivery"),
+      vscode.Uri.parse("https://github.com/BlueprintOS/analysis-to-delivery"),
     );
     return;
   }

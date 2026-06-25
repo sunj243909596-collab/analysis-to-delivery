@@ -74,7 +74,7 @@ git clone git@github.com:<your-username>/analysis-to-delivery.git
 cd analysis-to-delivery
 
 # 3. 添加 upstream 远程
-git remote add upstream git@github.com:sunj243909596-collab/analysis-to-delivery.git
+git remote add upstream git@github.com:BlueprintOS/analysis-to-delivery.git
 
 # 4. 验证
 git remote -v
@@ -158,7 +158,7 @@ git commit -m "ci(workflows): 添加 full-qa-audit 5 个 workflow"
 git push origin feat/<branch-name>
 
 # 2. 在 GitHub 上创建 Pull Request
-#    目标: sunj243909596-collab/analysis-to-delivery:main
+#    目标: BlueprintOS/analysis-to-delivery:main
 #    模板: .github/PULL_REQUEST_TEMPLATE.md
 ```
 
@@ -360,7 +360,7 @@ description: <一句话描述,触发场景,适用对象>
 
 | 角色 | GitHub | 职责 |
 |---|---|---|
-| Owner | @sunj243909596-collab | 决策 + 发布 |
+| Owner | @BlueprintOS | 决策 + 发布 |
 | Maintainer | (招募中) | Review + 合并 |
 
 ### 10.3 致谢

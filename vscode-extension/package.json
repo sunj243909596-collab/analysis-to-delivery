@@ -3,11 +3,11 @@
   "displayName": "Analysis to Delivery",
   "description": "AI-powered workflow from requirements analysis to delivery — 26 skills, 3 examples, 5 CI workflows",
   "version": "0.1.0",
-  "publisher": "sunj243909596-collab",
+  "publisher": "BlueprintOS",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sunj243909596-collab/analysis-to-delivery.git"
+    "url": "https://github.com/BlueprintOS/analysis-to-delivery.git"
   },
   "icon": "resources/icon.svg",
   "engines": {

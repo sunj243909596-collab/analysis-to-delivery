@@ -64,7 +64,7 @@ mvn test && npm run test
 需求 → 阶段 1-10
 ```
 
-详细见 [analysis-to-delivery SKILL.md](https://github.com/sunj243909596-collab/analysis-to-delivery/blob/main/SKILL.md)
+详细见 [analysis-to-delivery SKILL.md](https://github.com/BlueprintOS/analysis-to-delivery/blob/main/SKILL.md)
 
 ## 领域特定规则
 

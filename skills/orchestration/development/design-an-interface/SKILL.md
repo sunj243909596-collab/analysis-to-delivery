@@ -7,6 +7,14 @@ version: 3.0.1
 
 # Design-an-Interface(桥接到 superpowers)
 
+## Contract
+
+- Inputs: design spec, domain constraints, integration points
+- Outputs: interface contract document
+- Gates: interface is testable and accepted by caller/implementer
+- Required disciplines: `stage-gate`
+- Next: `/domain-modeling` or `/writing-plans`
+
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
 > `~/.claude/skills/design-an-interface/SKILL.md`
 

@@ -34,7 +34,7 @@
 | 审计字段 | DATE 类型 | TIMESTAMPTZ 类型 | 改用时区感知 |
 | 主键策略 | SEQUENCE | SERIAL / BIGSERIAL / UUID | 推荐 UUID(v4) |
 
-## 三、新增表(待 `/dev-design` 阶段 8.2 详细设计)
+## 三、新增表(待 `/dev-design` 阶段 7 详细设计)
 
 ### orders(订单主表)
 
@@ -89,7 +89,7 @@ CREATE TABLE order_items (
 
 - ✅ `tech-stack-path.md` 已标 PostgreSQL
 - ✅ `knowledge-path.md` 指向 PostgreSQL 16 文档
-- ✅ `doc-naming.md` 用 01-08 编号
+- ✅ `doc-naming.md` 用 01-09 编号
 - ✅ `compliance-path.md` 选 none
 
 ## 六、对齐结论

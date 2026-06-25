@@ -1,7 +1,8 @@
 # 配置使用说明(移动 App — 会员积分管理)
 
 > 项目:移动 App — 会员积分管理
-> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 0 引用
+> 文件身份:配置使用记录 / ADR,由 `/setup-analysis-delivery` 阶段 1 可选生成
+> 注意:本文件不参与配置加载,配置加载只读取 4 个 `*-path.md`
 > 用途:汇总本项目引用的全部配置路径,便于审计与回溯
 
 ## 一、配置清单
@@ -12,8 +13,8 @@
 | 知识库 | `knowledge-path.md`(本目录)| Flutter + Firebase |
 | 技术栈 | `tech-stack-path.md`(本目录)| Flutter 3.24 + Firebase |
 | 合规 | `compliance-path.md`(本目录)| PIPL 自检清单 |
-| 文档命名 | `doc-naming.md`(本目录)| 01-08 编号 |
-| 配置汇总 | `config-used.md`(本文件)| 本文件 |
+| 文档命名 | `doc-naming.md`(本目录)| 01-09 编号 |
+| 配置使用记录 / ADR | `config-used.md`(本文件)| 不参与配置加载 |
 
 ## 二、与全局默认的差异
 
@@ -30,7 +31,7 @@
 | 字符分隔 | `\|\|` | 不适用 | **差异**:NoSQL |
 | 整数除法 | `1.0/3` 必须 | 不适用(Dart 强类型)| **差异** |
 | 审计字段 | 五件套 | 子集(4 件:`createdAt` / `updatedAt` / `createdBy` / `version`)| **差异** |
-| 文档编号 | 01-08 | 01-08(省略 02/04)| 一致(SaaS 模式)|
+| 文档编号 | 01-09 | 01-09(省略 02/04/08/09)| 一致(SaaS 模式)|
 | 实时性 | 异步队列 | 实时(Firestore listener)| **重大差异** |
 | 离线 | 不涉及 | 必须 | **重大差异** |
 | 推送 | 不涉及 | FCM 推送 | **重大差异** |
@@ -149,8 +150,8 @@
 ├── compliance-path.md ← 引用 none.md + PIPL 自检
 ├── knowledge-path.md ← 引用 Flutter + Firebase 文档
 ├── tech-stack-path.md ← 引用 Flutter 3.24 + Firebase
-├── doc-naming.md ← 引用全局 01-08 规则
-└── config-used.md ←【本文件】
+├── doc-naming.md ← 引用全局 01-09 规则
+└── config-used.md ←【ADR 记录,不参与配置加载】
 ```
 
 ## 五、回溯与审计
@@ -184,7 +185,7 @@
 | 字符分隔 | `\|\|` | `\|\|` | 不适用 | NoSQL |
 | 整数除法 | `1.0/3` | `1.0/3` | 不适用 | 强类型 |
 | 审计字段 | 五件套 | 五件套 | 子集(4 件)| Firestore 简化 |
-| 文档编号 | 01-08 全 | 01-08 省 02/04 | 01-08 省 02/04 | 一致 |
+| 文档编号 | 01-09 全 | 01-09 省 02/04/08/09 | 01-09 省 02/04/08/09 | 一致 |
 
 ## 七、配置变更流程
 
@@ -195,7 +196,7 @@
 
 2. **中变更**(技术选型调整)
    - 评估影响范围
-   - 更新 `*.path.md` + `config-used.md` 的 ADR
+   - 更新 `*-path.md`,并在 `config-used.md` 追加 ADR
    - 提交 Git,需团队 review
 
 3. **大变更**(合规、数据库切换)

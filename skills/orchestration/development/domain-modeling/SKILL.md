@@ -7,6 +7,14 @@ version: 3.0.1
 
 # Domain-Modeling(桥接到 superpowers)
 
+## Contract
+
+- Inputs: design spec, terminology, entities, business rules
+- Outputs: domain model diagram and entity list
+- Gates: user agrees canonical terms and relationships
+- Required disciplines: `stage-gate`
+- Next: `/writing-plans`
+
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
 > `~/.claude/skills/domain-modeling/SKILL.md`
 

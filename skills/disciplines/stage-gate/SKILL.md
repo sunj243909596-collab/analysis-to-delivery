@@ -7,6 +7,14 @@ version: 3.0.1
 
 # Stage-Gate — 3 层门控 + 设计回测 + 任务复盘
 
+## Contract
+
+- Inputs: current stage output, gate checklist, user signoff text
+- Outputs: proceed/block decision and required remediation
+- Gates: explicit whitelist signoff where required; hard gates pass; no ambiguous approval interpretation
+- Required disciplines: none
+- Next: next workflow stage or remediation loop
+
 ## 三层门控
 
 按粒度从粗到细分三层。**任何一步没签字,就不能进下一步**。

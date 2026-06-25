@@ -1,48 +1,66 @@
 ---
 name: doc-numbering
-description: 文档编号 01-08 严格对应阶段,同项目目录不允许重号,Figma 文档不受编号约束。Use when creating or organizing any design document.
+description: 文档编号 01-09 严格对应编号文档,同项目目录不允许重号;HANDOVER/AGENTS/REVIEW/TASK_CONFIRM/RETRO 不占编号。Use when creating or organizing any design document.
 version: 3.0.1
 
 ---
 
 # Doc-Numbering — 文档编号规范
 
+## Contract
+
+- Inputs: proposed document filenames and project directory
+- Outputs: filenames aligned to `01-09` numbered documents and non-numbered whitelist
+- Gates: no duplicate numbered prefix in one project directory; non-numbered docs do not consume numbers
+- Required disciplines: none
+- Next: calling skill continues
+
 ## 编号映射(强制)
 
-| 编号 | 文档 | 阶段 |
+| 编号 | 编号文档 | 阶段 |
 |---|---|---|
-| 01 | 业务需求文档 BRD | 2 |
+| 01 | 业务需求文档 BRD | 3 |
 | 02 | 功能规格说明书 FSD | 7 |
 | 03 | 数据模型设计 | 7 |
-| 04 | 合规评审 | 3 |
+| 04 | 合规评审 | 4 |
 | 05 | 产品需求文档 PRD | 6 |
 | 06 | 开发设计说明书 | 7 |
 | 07 | 测试用例设计 | 5 |
-| 08 | 业务流程图.drawio / 设计回测报告 | 2 / 7 |
+| 08 | 设计回测报告 | 7 |
 | 09 | QA 审计报告 | 8 |
-| - | AGENTS.md | 7 |
-| - | TASK_CONFIRM_*.md | 1 |
-| - | REVIEW_*.md | 1 |
-| - | HANDOVER.md | 9 |
-| - | Figma设计文档_{功能名}_{端}.md | 4(可选) |
+
+## 非编号文档(不占编号)
+
+| 文档 | 阶段 | 说明 |
+|---|---|---|
+| AGENTS.md | 7 | 项目级 AI 助手配置 |
+| TASK_CONFIRM_*.md | 2 | 需求确认表 |
+| REVIEW_*.md | 2 | 需求确认书 / 字段对齐分析 |
+| RETRO_*.md | 7 / 实施扩展 | 任务复盘 / 复盘汇总 |
+| HANDOVER.md | 9 | 交接清单 |
+| Figma设计文档_{功能名}_{端}.md | 6(可选) | 设计稿说明 |
 
 ## 规则
 
-1. **同一项目目录**,每个编号**只允许一个 `0X-` 开头的文件**
-2. Figma 文档不受编号约束(命名为 `Figma设计文档_{功能名}_{端}.md`)
-3. 编号冲突时 `full-qa-audit.py` 会报 P0 错误
-4. AGENTS.md / TASK_CONFIRM / REVIEW / HANDOVER 不占编号
+1. **同一项目目录**,每个编号**只允许一个 `0X-` 开头的文件**。
+2. 只有 `01-` 到 `09-` 是编号文档;`00-` 不属于默认编号体系。
+3. `HANDOVER.md` / `AGENTS.md` / `REVIEW_*` / `TASK_CONFIRM_*` / `RETRO_*` 不占编号。
+4. Figma 文档不受编号约束,命名为 `Figma设计文档_{功能名}_{端}.md`。
+5. 编号冲突时 `full-qa-audit.py` 会报 P0 错误。
 
 ## 反例
 
 ```bash
 # ❌ 错误:同一目录有 2 个 01- 开头的文件
 01-业务需求文档 BRD.md
-01-业务需求文档 BRD-v2.md  # ❌ 编号冲突
+01-业务需求文档 BRD-v2.md  # 编号冲突
 
-# ✅ 正确:v2 用日期后缀
+# ✅ 正确:v2 不占用新编号,归档到 history/
 01-业务需求文档 BRD.md
-01-业务需求文档 BRD-2026-06-22-v2.md  # 或归档到 history/
+history/01-业务需求文档 BRD-2026-06-22-v2.md
+
+# ✅ 正确:复盘不占 07 编号
+RETRO_任务复盘汇总.md
 ```
 
 ## 自动检查

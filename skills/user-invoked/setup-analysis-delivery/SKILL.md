@@ -8,6 +8,14 @@ version: 3.0.1
 
 # Setup Analysis-Delivery — 项目配置初始化
 
+## Contract
+
+- Inputs: project root, detected project files, optional existing project configuration
+- Outputs: `knowledge-path.md`, `compliance-path.md`, `tech-stack-path.md`, `doc-naming.md`; optional `config-used.md` ADR
+- Gates: 4 `*-path.md` files exist and are non-empty; `knowledge-path.md` contains at least one real path before downstream field work
+- Required disciplines: `context-pointer`
+- Next: `/grill-task`
+
 ## 适用场景
 
 - 拿到一个新项目,需要接 analysis-to-delivery 工作流
@@ -30,7 +38,7 @@ version: 3.0.1
 
 ### 3. 生成 4 个项目级配置
 
-在项目根生成以下 4 个空模板(用户填写后提交到 git):
+在项目根生成以下 4 个空模板(用户填写后提交到 git)。这 4 个 `*-path.md` 是唯一项目级配置加载输入:
 
 | 文件 | 作用 | 模板 |
 |---|---|---|
@@ -39,7 +47,13 @@ version: 3.0.1
 | `tech-stack-path.md` | 列后端/前端/数据库/中间件 + 团队规范路径 | `templates/project-config/tech-stack-path.md` |
 | `doc-naming.md` | 文档编号、命名前缀、存放目录 | `templates/project-config/doc-naming.md` |
 
-### 4. 验证
+### 4. 可选记录配置使用 ADR
+
+- `config-used.md` 不是配置文件,不参与配置加载,不属于 4 个项目级配置
+- 如需记录"本项目用了哪些配置、为什么这么选",从 `templates/CONFIG_USED.md` 复制生成
+- `config-used.md` 应作为阶段 1 交付产物提交,用于审计和交接
+
+### 5. 验证
 
 - 4 个文件存在且非空(允许只有注释)
 - 跑 `python3 scripts/field-alignment-check.py --help` 确认脚本可用
@@ -52,4 +66,5 @@ version: 3.0.1
 
 - [ ] 4 个 `*-path.md` 全部生成在项目根
 - [ ] 用户已填写真实内容(knowledge-path 必须至少 1 个真实路径)
+- [ ] 如生成 `config-used.md`,已明确标注为配置使用记录 / ADR,而非配置输入
 - [ ] 已提交到 git(可选,但建议)

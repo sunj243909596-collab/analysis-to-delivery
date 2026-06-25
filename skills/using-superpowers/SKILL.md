@@ -8,6 +8,14 @@ version: 3.0.1
 
 # Using Superpowers — 开发实施入口
 
+## Contract
+
+- Inputs: signed design outputs or implementation goal
+- Outputs: recommended superpowers bridge skill and starting point
+- Gates: design phase complete or explicit implementation request
+- Required disciplines: `stage-gate`
+- Next: `/brainstorming`, `/design-an-interface`, `/domain-modeling`, `/writing-plans`, `/tdd`, `/executing-plans`, or `/verification-before-completion`
+
 > 本 skill 是 **桥接层**,不复制 superpowers 官方内容,具体纪律以 `~/.claude/skills/<name>/SKILL.md` 为准。
 > 完整 superpowers 体系文档:https://github.com/obra/superpowers
 

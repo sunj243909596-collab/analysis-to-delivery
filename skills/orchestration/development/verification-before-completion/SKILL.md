@@ -7,6 +7,14 @@ version: 3.0.1
 
 # Verification-Before-Completion(桥接到 superpowers)
 
+## Contract
+
+- Inputs: completion claim, verification commands, implementation/documentation outputs
+- Outputs: verification report using IDENTIFY/RUN/READ/VERIFY/THEN
+- Gates: full verification command succeeds and output supports the claim
+- Required disciplines: `stage-gate`
+- Next: commit, fix loop, or `/handoff`
+
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
 > `~/.claude/skills/verification-before-completion/SKILL.md`
 

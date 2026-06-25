@@ -7,6 +7,14 @@ version: 3.0.1
 
 # Writing-Plans(桥接到 superpowers)
 
+## Contract
+
+- Inputs: signed design spec, interface/domain model as available
+- Outputs: `docs/superpowers/plans/YYYY-MM-DD-<topic>-plan.md`
+- Gates: tasks are independently executable and each is no larger than 2 hours
+- Required disciplines: `stage-gate`
+- Next: `/tdd`
+
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
 > `~/.claude/skills/writing-plans/SKILL.md`
 

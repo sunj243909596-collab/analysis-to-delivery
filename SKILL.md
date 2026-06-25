@@ -9,6 +9,14 @@ updated: "2026-06-24: v3.0.1 增加 grill-task 门控加固(task-confirm-check.p
 
 # Analysis to Delivery
 
+## Contract
+
+- Inputs: new feature / project delivery request, domain, tech stack, optional project `*-path.md`
+- Outputs: routed skill recommendation or full 9-stage analysis-to-delivery workflow
+- Gates: use `/analysis-delivery-workflow` for full process; stage gates enforced by child skills
+- Required disciplines: `context-pointer`, `stage-gate`, `doc-numbering`, `no-field-guessing` as invoked by child skills
+- Next: `/ask-delivery`, `/analysis-delivery-workflow`, or a specific user-invoked skill
+
 > 26 个独立 skill 自由组合 — 走流程用 orchestration,做单件事用 action,纪律由 disciplines 自动加载。
 
 ## 快速开始

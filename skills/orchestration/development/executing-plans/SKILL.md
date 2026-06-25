@@ -7,6 +7,14 @@ version: 3.0.1
 
 # Executing-Plans(桥接到 superpowers)
 
+## Contract
+
+- Inputs: writing plan, passing task tests, implementation diff
+- Outputs: commit history and 5-question retrospective / knowledge updates
+- Gates: tests pass; verification command recorded; commit or explicit handoff state exists
+- Required disciplines: `stage-gate`
+- Next: next `/tdd` task or `/verification-before-completion`
+
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
 > `~/.claude/skills/executing-plans/SKILL.md`
 

@@ -8,6 +8,14 @@ version: 3.0.1
 
 # Compliance-Review — 合规评审
 
+## Contract
+
+- Inputs: signed `01-业务需求文档 BRD.md`, `compliance-path.md`
+- Outputs: `04-合规评审.md`
+- Gates: all applicable compliance clauses judged; severe gaps resolved or explicitly accepted; user/compliance signoff
+- Required disciplines: `context-pointer`, `stage-gate`
+- Next: `/test-case-design`
+
 ## 适用场景
 
 | 需求类型 | 是否需要 |
@@ -53,7 +61,7 @@ version: 3.0.1
 ## 调用的 discipline
 
 - `disciplines/context-pointer` — 三层合规规则加载(项目级 > skill 级 > 默认)
-- `disciplines/stage-gate` — 阶段 3 门控
+- `disciplines/stage-gate` — 阶段 4 门控
 
 ## 结束条件
 

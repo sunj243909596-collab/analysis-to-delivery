@@ -1,7 +1,7 @@
 # 合规路径(移动 App — 会员积分管理)
 
 > 项目:移动 App — 会员积分管理
-> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 0 引用
+> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 1 引用
 > 用途:明确本项目的合规要求与法规依据
 
 ## 一、合规等级

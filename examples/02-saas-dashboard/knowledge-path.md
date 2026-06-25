@@ -1,7 +1,7 @@
 # 知识库路径(SaaS 后台 — 客户订单管理)
 
 > 项目:SaaS 后台 — 客户订单管理
-> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 0 引用
+> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 1 引用
 > 用途:指向该项目所依赖的官方文档 / 内部知识库 / 第三方资料
 
 ## 一、PostgreSQL 16 知识库
@@ -160,7 +160,7 @@
 | Sentry | 前端错误 | https://docs.sentry.io/ |
 | pgBadger | PG 慢查询 | https://pgbadger.darold.net/ |
 
-## 七、关键注意事项(由 `/grill-task` 阶段 1.3 沉淀)
+## 七、关键注意事项(由 `/grill-task` 阶段 2 沉淀)
 
 1. **PostgreSQL 13+** 才支持 `gen_random_uuid()`(免扩展)
 2. **TIMESTAMPTZ 必带时区** — 不要混用 `TIMESTAMP`(无时区)

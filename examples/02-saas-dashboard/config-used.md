@@ -1,7 +1,8 @@
 # 配置使用说明(SaaS 后台 — 客户订单管理)
 
 > 项目:SaaS 后台 — 客户订单管理
-> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 0 引用
+> 文件身份:配置使用记录 / ADR,由 `/setup-analysis-delivery` 阶段 1 可选生成
+> 注意:本文件不参与配置加载,配置加载只读取 4 个 `*-path.md`
 > 用途:汇总本项目引用的全部配置路径,便于审计与回溯
 
 ## 一、配置清单
@@ -12,8 +13,8 @@
 | 知识库 | `knowledge-path.md`(本目录)| PostgreSQL + Node + React |
 | 技术栈 | `tech-stack-path.md`(本目录)| Node 22 + Express 5 + React 19 + PG 16 |
 | 合规 | `compliance-path.md`(本目录)| 软合规清单 |
-| 文档命名 | `doc-naming.md`(本目录)| 01-08 编号 |
-| 配置汇总 | `config-used.md`(本文件)| 本文件 |
+| 文档命名 | `doc-naming.md`(本目录)| 01-09 编号 |
+| 配置使用记录 / ADR | `config-used.md`(本文件)| 不参与配置加载 |
 
 ## 二、与全局默认的差异
 
@@ -29,7 +30,7 @@
 | 字符分隔 | `\|\|` | `\|\|` | **一致** |
 | 整数除法 | `1.0/3` | `1.0/3` | **一致** |
 | 审计字段 | 五件套 | 五件套(`created_at`/`created_by`/`updated_at`/`updated_by`/`version`)| **一致** |
-| 文档编号 | 01-08 | 01-08(省略 02/04)| **一致**(本项目按 SaaS 场景裁剪) |
+| 文档编号 | 01-09 | 01-09(省略 02/04/08/09)| **一致**(本项目按 SaaS 场景裁剪) |
 
 ## 三、关键决策记录
 
@@ -148,8 +149,8 @@
 ├── compliance-path.md ← 引用 none.md
 ├── knowledge-path.md ← 引用 PG 16 + Node + React 文档
 ├── tech-stack-path.md ← 引用 PG 16 + Node + React
-├── doc-naming.md ← 引用全局 01-08 规则
-└── config-used.md ←【本文件】
+├── doc-naming.md ← 引用全局 01-09 规则
+└── config-used.md ←【ADR 记录,不参与配置加载】
 ```
 
 ## 五、回溯与审计
@@ -177,7 +178,7 @@
 | 状态码 | 2 位数字 | 字符串枚举 | 可读性差异 |
 | 多租户 | 单租户 | 多租户 | 架构差异 |
 | 审计字段 | 五件套 | 五件套 | 一致 |
-| 文档编号 | 01-08(全 8 份)| 01-08(省 02/04)| 裁剪差异 |
+| 文档编号 | 01-09(全 9 份)| 01-09(省 02/04/08/09)| 裁剪差异 |
 | 字符分隔 | `\|\|` | `\|\|` | 一致 |
 | 整数除法 | `1.0/3` | `1.0/3` | 一致 |
 | 序列 | `SEQ.NEXTVAL` | `NEXTVAL('seq')` / UUID | 差异 |
@@ -191,7 +192,7 @@
 
 2. **中变更**(技术选型调整)
    - 评估影响范围
-   - 更新 `*.path.md` + `config-used.md` 的 ADR
+   - 更新 `*-path.md`,并在 `config-used.md` 追加 ADR
    - 提交 Git,需团队 review
 
 3. **大变更**(合规、数据库切换)

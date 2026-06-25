@@ -7,6 +7,14 @@ version: 3.0.1
 
 # Context-Pointer — 三层配置加载
 
+## Contract
+
+- Inputs: project root, `*-path.md`, skill-level config fallback
+- Outputs: resolved knowledge/compliance/tech-stack/doc-naming sources
+- Gates: project-level config preferred; missing facts trigger user question rather than invention
+- Required disciplines: none
+- Next: calling skill continues
+
 ## 三层优先级(从高到低)
 
 ```

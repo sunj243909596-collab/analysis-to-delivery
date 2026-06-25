@@ -52,7 +52,7 @@
 | 审计字段 | 五件套 | Firestore 字段子集(`created_at` / `updated_at` / `created_by` / `version`)|
 | 事务 | ACID | 单文档原子,跨文档用 Firestore transaction(限制 500)|
 
-## 四、合规要求确认（字段映射预测,待阶段 1.3 字段对齐）
+## 四、合规要求确认（字段映射预测,待阶段 2 字段对齐）
 
 | 业务概念 | Firestore 字段 | 备注 |
 |---|---|---|

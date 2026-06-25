@@ -11,22 +11,31 @@
 
 | 编号 | 文档 | 阶段 | 状态 |
 |---|---|---|---|
-| 01 | [业务需求文档 BRD.md](01-业务需求文档%20BRD.md) | 2 | ⬜ 待填写 |
-| 02 | [功能规格说明书 FSD.md](02-功能规格说明书%20FSD.md) | 8 | ⬜ 待填写 |
-| 03 | [数据模型设计.md](03-数据模型设计.md) | 8 | ⬜ 待填写 |
-| 04 | [合规评审.md](04-合规评审.md) | 3 | ⬜ 待填写 |
+| 01 | [业务需求文档 BRD.md](01-业务需求文档%20BRD.md) | 3 | ⬜ 待填写 |
+| 02 | [功能规格说明书 FSD.md](02-功能规格说明书%20FSD.md) | 7 | ⬜ 待填写 |
+| 03 | [数据模型设计.md](03-数据模型设计.md) | 7 | ⬜ 待填写 |
+| 04 | [合规评审.md](04-合规评审.md) | 4 | ⬜ 待填写 |
 | 05 | [产品需求文档 PRD.md](05-产品需求文档%20PRD.md) | 6 | ⬜ 待填写 |
-| 06 | [开发设计说明书.md](06-开发设计说明书.md) | 8 | ⬜ 待填写 |
+| 06 | [开发设计说明书.md](06-开发设计说明书.md) | 7 | ⬜ 待填写 |
 | 07 | [测试用例设计.md](07-测试用例设计.md) | 5 | ⬜ 待填写 |
-| -   | [TASK_CONFIRM.md](TASK_CONFIRM.md) | 1 | ⬜ 待填写 |
-| -   | [REVIEW_需求确认书.md](REVIEW_需求确认书.md) | 1 | ⬜ 待填写 |
-| -   | [REVIEW_字段对齐分析.md](REVIEW_字段对齐分析.md) | 1 | ⬜ 待填写 |
-| -   | [AGENTS.md](AGENTS.md) | 7 | ⬜ 待填写 |
-| -   | [HANDOVER.md](HANDOVER.md) | 10 | ⬜ 待填写 |
+| 08 | [设计回测报告.md](08-设计回测报告.md) | 7 | ⬜ 待填写 |
+| 09 | [QA 审计报告.md](09-QA审计报告.md) | 8 | ⬜ 待填写 |
+
+非编号文档(不占编号):
+
+| 文档 | 阶段 | 状态 |
+|---|---|---|
+| [TASK_CONFIRM.md](TASK_CONFIRM.md) | 2 | ⬜ 待填写 |
+| [REVIEW_需求确认书.md](REVIEW_需求确认书.md) | 2 | ⬜ 待填写 |
+| [REVIEW_字段对齐分析.md](REVIEW_字段对齐分析.md) | 2 | ⬜ 待填写 |
+| [AGENTS.md](AGENTS.md) | 7 | ⬜ 待填写 |
+| [config-used.md](config-used.md) | 1 | ⬜ 可选 ADR |
+| RETRO_*.md | 7 / 实施扩展 | ⬜ 按需 |
+| [HANDOVER.md](HANDOVER.md) | 9 | ⬜ 待填写 |
 
 ## 快速开始
 
-1. 填写 `TASK_CONFIRM.md`（阶段 1：需求确认）
+1. 填写 `TASK_CONFIRM.md`（阶段 2：需求确认）
 2. 按编号顺序填充文档
 3. 文档写完后跑格式校验：
 
@@ -36,4 +45,4 @@ python3 ~/.claude/skills/analysis-to-delivery/scripts/doc-validate.py . --level 
 
 ## 详细工作流
 
-参见 `~/.claude/skills/analysis-to-delivery/SKILL.md` 的 10 阶段工作流。
+参见 `~/.claude/skills/analysis-to-delivery/SKILL.md` 的 9 阶段工作流。

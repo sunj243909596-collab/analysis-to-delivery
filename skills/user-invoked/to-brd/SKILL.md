@@ -8,6 +8,14 @@ version: 3.0.1
 
 # To-BRD — 业务需求文档生成
 
+## Contract
+
+- Inputs: signed `TASK_CONFIRM_*.md`, `REVIEW_需求确认书.md`, `REVIEW_字段对齐分析.md`, `knowledge-path.md`
+- Outputs: `01-业务需求文档 BRD.md`, ASCII flow diagrams, optional `业务流程图.drawio`
+- Gates: BRD required sections complete; field mapping checked against knowledge source; user signoff
+- Required disciplines: `ascii-flowchart`, `no-field-guessing`, `doc-numbering`, `stage-gate`
+- Next: `/compliance-review`
+
 ## 适用场景
 
 - TASK_CONFIRM 和字段对齐分析已通过
@@ -31,7 +39,7 @@ version: 3.0.1
 | 三、业务流程 | ASCII 流程图 / drawio |
 | 四、功能模块 | TASK_CONFIRM §功能描述 |
 | 五、数据要求 | 字段对齐分析 + 知识库 |
-| 六、合规要点 | 预留,阶段 3 填 |
+| 六、合规要点 | 预留,阶段 4 填 |
 | 七、非功能需求 | 性能/可靠性/安全/可维护性 |
 | 八、风险与约束 | 团队约束 + 外部依赖 |
 | 九、上线计划 | 团队节奏 |
@@ -74,4 +82,4 @@ version: 3.0.1
 - [ ] BRD 9 个必备章节齐
 - [ ] ASCII 流程图 + 状态流转图
 - [ ] 字段映射表通过 `field-alignment-check.py`
-- [ ] 用户签字进入阶段 3
+- [ ] 用户签字进入阶段 4

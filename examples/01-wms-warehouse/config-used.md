@@ -1,7 +1,8 @@
-# 本示例使用的 config 清单（v1.1：项目级配置演示）
+# 本示例配置使用记录 / ADR（v1.1：项目级配置演示）
 
 > v1.1 起，**每个项目根目录**放自己的 4 个 `*-path.md` 文件，Claude 优先读项目级的。
 > 本目录（`examples/01-wms-warehouse/`）模拟一个完整迷你项目的根，演示项目级配置长什么样。
+> 本文件是配置使用记录 / ADR,不是配置文件,不参与配置加载。
 
 ## 项目级 config 文件（v1.1 推荐方式）
 
@@ -9,10 +10,10 @@
 
 | 文件 | 加载阶段 | 关联模板 |
 |------|---------|---------|
-| [`knowledge-path.md`](./knowledge-path.md) | 1.3 / 8 | [templates/project-config/knowledge-path.md](../../templates/project-config/knowledge-path.md) |
-| [`compliance-path.md`](./compliance-path.md) | 3 | [templates/project-config/compliance-path.md](../../templates/project-config/compliance-path.md) |
-| [`tech-stack-path.md`](./tech-stack-path.md) | 1 / 4 / 8 | [templates/project-config/tech-stack-path.md](../../templates/project-config/tech-stack-path.md) |
-| [`doc-naming.md`](./doc-naming.md) | 2-10 全部 | [templates/project-config/doc-naming.md](../../templates/project-config/doc-naming.md) |
+| [`knowledge-path.md`](./knowledge-path.md) | 2 / 7 | [templates/project-config/knowledge-path.md](../../templates/project-config/knowledge-path.md) |
+| [`compliance-path.md`](./compliance-path.md) | 4 | [templates/project-config/compliance-path.md](../../templates/project-config/compliance-path.md) |
+| [`tech-stack-path.md`](./tech-stack-path.md) | 1 / 7 | [templates/project-config/tech-stack-path.md](../../templates/project-config/tech-stack-path.md) |
+| [`doc-naming.md`](./doc-naming.md) | 2-9 全部 | [templates/project-config/doc-naming.md](../../templates/project-config/doc-naming.md) |
 
 ## 加载效果
 
@@ -22,7 +23,7 @@ Claude 进入 `examples/01-wms-warehouse/` 时：
 2. **不再 fallback 到 skill 级**（项目级已填）
 3. 按 4 个文件中的真实路径，去读 `/root/WMOS 知识库/` 等
 
-### 阶段 1.3 字段对齐时
+### 阶段 2 字段对齐时
 
 - 加载 `knowledge-path.md` → `wms-core` → WMOS 表结构（`TC_ASN_ID`、`ASN_DTL_ID`、`TC_LPN_ID`、`BATCH_NBR` 等）
 - 加载 `compliance-path.md` → `mode=gsp` → 00201/05805 等追溯条款
@@ -34,13 +35,13 @@ Claude 进入 `examples/01-wms-warehouse/` 时：
 - 应用 Java 分层架构约束（巴枪→Controller→Service→Repository 链路）
 - 按 `doc-naming.md` 默认规范生成 `01-业务需求文档 BRD.md`
 
-### 阶段 3 合规评审时
+### 阶段 4 合规评审时
 
 - 读 `compliance-path.md` 中列出的 `gsp-rules` 真实路径
 - 按缺陷等级评估
 - 输出 `04-合规评审.md`（本示例未生成）
 
-### 阶段 8 开发设计时
+### 阶段 7 开发设计时
 
 - 加载 Java 命名规范、5 件套审计字段、SEQUENCE 主键策略
 - 加载 Vue 3 组件规范、Element Plus 用法

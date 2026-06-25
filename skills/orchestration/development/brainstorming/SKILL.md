@@ -7,6 +7,14 @@ version: 3.0.1
 
 # Brainstorming(桥接到 superpowers)
 
+## Contract
+
+- Inputs: feature idea, user constraints, optional signed analysis-delivery docs
+- Outputs: `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
+- Gates: user agrees the design captures intent
+- Required disciplines: `stage-gate`
+- Next: `/design-an-interface` or `/writing-plans`
+
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
 > `~/.claude/skills/brainstorming/SKILL.md`
 

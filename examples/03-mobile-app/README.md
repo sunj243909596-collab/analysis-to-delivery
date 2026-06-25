@@ -36,7 +36,7 @@
 | `tech-stack-path.md` | `/setup-analysis-delivery` | 0 |
 | `compliance-path.md` | `/setup-analysis-delivery` | 0 |
 | `doc-naming.md` | `/setup-analysis-delivery` | 0 |
-| `config-used.md` | `/setup-analysis-delivery` | 0 |
+| `config-used.md` | 配置使用记录 / ADR | 1 |
 
 ## 与其他示例的差异
 
@@ -54,7 +54,7 @@
 | 推送 | 不涉及 | 不涉及 | FCM 推送 |
 | 字符分隔 | `\|\|` | `\|\|` | 不适用(NoSQL) |
 | 审计字段 | 五件套 | 五件套 | Firestore 字段子集 |
-| 文档编号 | 01-08 | 01-08 | 01-08 |
+| 文档编号 | 01-09 | 01-09 | 01-09 |
 
 ## Firestore 关键差异(NoSQL vs SQL)
 

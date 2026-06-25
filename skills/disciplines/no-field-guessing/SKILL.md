@@ -7,6 +7,14 @@ version: 3.0.1
 
 # No-Field-Guessing — 严禁猜测字段名
 
+## Contract
+
+- Inputs: SQL, data model, API contract, field mapping text, `knowledge-path.md`
+- Outputs: field names sourced from knowledge base or explicit placeholders
+- Gates: no invented database/API fields; unresolved names use `EXT_FIELD_X`
+- Required disciplines: `context-pointer`
+- Next: calling skill continues
+
 ## 规则
 
 ### 1. 字段来源(优先级从高到低)

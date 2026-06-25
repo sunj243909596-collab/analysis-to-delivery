@@ -116,7 +116,7 @@ git checkout -b example/<scenario-name>
 **Type 类型**:
 | Type | 说明 | 示例 |
 |---|---|---|
-| `feat` | 新功能 | `feat(skill): add dev-design 阶段 8.2 数据模型` |
+| `feat` | 新功能 | `feat(skill): add dev-design 数据模型` |
 | `fix` | 修复 | `fix(smoke-test): 修正 skill 计数错误` |
 | `docs` | 文档 | `docs(README): 补充 examples 02/03 说明` |
 | `refactor` | 重构 | `refactor(skill): 拆分为 26 个独立 skill` |
@@ -143,7 +143,7 @@ git checkout -b example/<scenario-name>
 
 **示例**:
 ```bash
-git commit -m "feat(skill): 新增 dev-design 阶段 8.2 数据模型设计"
+git commit -m "feat(skill): 新增 dev-design 数据模型设计"
 git commit -m "fix(smoke-test): 修正 skill 计数期望值"
 git commit -m "docs(README): 补充 examples 02 SaaS 场景说明"
 git commit -m "refactor(skill): 拆分为 26 个独立 skill (mattpocock 风格)"
@@ -245,17 +245,17 @@ examples/
 ```
 examples/NN-<scenario>/
 ├── README.md                          # 必含:场景 + skill 链 + 差异对比
-├── TASK_CONFIRM_<topic>.md            # 阶段 1 任务确认
-├── REVIEW_需求确认书.md               # 阶段 1 AI 理解
-├── REVIEW_字段对齐分析.md             # 阶段 1.3 字段对齐
-├── 01-业务需求文档 BRD.md             # 阶段 2 BRD
-├── 业务流程图-<topic1>.txt            # 阶段 2 业务流程
-├── 业务流程图-<topic2>.txt            # 阶段 2 状态流转
-├── knowledge-path.md                  # 阶段 0 知识库
-├── tech-stack-path.md                 # 阶段 0 技术栈
-├── compliance-path.md                 # 阶段 0 合规
-├── doc-naming.md                      # 阶段 0 文档命名
-└── config-used.md                     # 阶段 0 配置汇总
+├── TASK_CONFIRM_<topic>.md            # 阶段 2 任务确认
+├── REVIEW_需求确认书.md               # 阶段 2 AI 理解
+├── REVIEW_字段对齐分析.md             # 阶段 2 字段对齐
+├── 01-业务需求文档 BRD.md             # 阶段 3 BRD
+├── 业务流程图-<topic1>.txt            # 阶段 3 业务流程
+├── 业务流程图-<topic2>.txt            # 阶段 3 状态流转
+├── knowledge-path.md                  # 阶段 1 知识库
+├── tech-stack-path.md                 # 阶段 1 技术栈
+├── compliance-path.md                 # 阶段 1 合规
+├── doc-naming.md                      # 阶段 1 文档命名
+└── config-used.md                     # 阶段 1 ADR 记录
 ```
 
 ### 5.3 新增示例的检查清单

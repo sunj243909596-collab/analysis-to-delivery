@@ -8,6 +8,14 @@ version: 3.0.1
 
 # Ask Delivery — 路由
 
+## Contract
+
+- Inputs: user goal / uncertainty about which analysis-to-delivery skill to use
+- Outputs: recommended next skill name and 1-2 clarification questions if needed
+- Gates: none
+- Required disciplines: none
+- Next: selected skill or `/analysis-delivery-workflow`
+
 ## 我该用哪个 skill?
 
 **告诉我你想做什么**,我从下面选一个:

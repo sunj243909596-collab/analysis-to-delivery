@@ -40,7 +40,7 @@
 | 主键 | SEQUENCE | Document ID(UUID 或自定义)| 推荐 UUID v4 |
 | 软删除 | `is_deleted` | `is_deleted` | 一致 |
 
-## 三、核心数据模型(待 `/dev-design` 阶段 8.2 详细设计)
+## 三、核心数据模型(待 `/dev-design` 阶段 7 详细设计)
 
 ### users(用户档案)
 
@@ -153,7 +153,7 @@ interface RedemptionDoc {
 
 - ✅ `tech-stack-path.md` 已标 Firestore
 - ✅ `knowledge-path.md` 指向 Firestore 文档
-- ✅ `doc-naming.md` 用 01-08 编号
+- ✅ `doc-naming.md` 用 01-09 编号
 - ✅ `compliance-path.md` 选 none(轻度 PIPL 自检)
 
 ## 六、关键索引(待 `/dev-design` 配置)

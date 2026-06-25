@@ -7,6 +7,14 @@ version: 3.0.1
 
 # ASCII-Flowchart — ASCII 流程图规范
 
+## Contract
+
+- Inputs: business flow, state machine, swimlane description
+- Outputs: ASCII flow diagram text
+- Gates: no Mermaid as delivery source; return paths merge into the same target node
+- Required disciplines: none
+- Next: calling skill continues
+
 ## 为什么不用 Mermaid
 
 - 用户验证:终端渲染差(`"还是改为原来的吧,更不清楚了"`)

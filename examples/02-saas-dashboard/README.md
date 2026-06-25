@@ -35,7 +35,7 @@
 | `tech-stack-path.md` | `/setup-analysis-delivery` | 0 |
 | `compliance-path.md` | `/setup-analysis-delivery` | 0 |
 | `doc-naming.md` | `/setup-analysis-delivery` | 0 |
-| `config-used.md` | (说明) | 0 |
+| `config-used.md` | 配置使用记录 / ADR | 1 |
 
 ## 与 WMS 示例的差异
 
@@ -51,7 +51,7 @@
 | 整数除法 | `1.0/3` | `1.0/3`(PG 也需要) |
 | 序列 | `SEQ.NEXTVAL` | `SERIAL` / `BIGSERIAL` |
 | 审计字段五件套 | 必须 | 必须(同样) |
-| 文档编号 | 01-08 强制 | 01-08 强制 |
+| 文档编号 | 01-09 强制 | 01-09 强制 |
 
 ## 运行演示
 

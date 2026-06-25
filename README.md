@@ -145,7 +145,7 @@ Claude 会自动:
 1. 加载项目级 `*-path.md` 配置(若有,详见[📚 知识库配置](#-知识库配置项目级))
 2. 加载 `config/compliance/none.md`(无强合规)
 3. 加载 `config/tech-stack/node-nestjs.md`(如果存在)
-4. 按 10 阶段工作流推进
+4. 按 9 阶段工作流推进
 
 ## 26 个 skill 速查
 
@@ -166,15 +166,16 @@ Claude 会自动:
 ### User-invoked 动作(9 个)— 单步
 
 ```
-/setup-analysis-delivery → 生成项目级配置(knowledge/compliance/tech-stack/doc-naming/config-used)
-/grill-task              → 阶段 1:AI 反复追问澄清需求
-/to-brd                  → 阶段 2:生成业务需求文档(BRD)
-/compliance-review       → 阶段 3:合规评审(GSP / 等保 / GDPR / PIPL)
-/test-case-design        → 阶段 3.5:生成测试用例
-/to-prd                  → 阶段 4:生成产品需求文档(PRD)
-/dev-design              → 阶段 5-8:开发设计(FSD + 数据模型 + 开发设计说明书)
-/qa-audit                → 阶段 9:QA 审计(6 大类)
-/handoff                 → 阶段 10:交付清单
+/setup-analysis-delivery → 生成项目级配置(knowledge/compliance/tech-stack/doc-naming)
+/setup-analysis-delivery → 阶段 1:生成项目级配置
+/grill-task              → 阶段 2:AI 反复追问澄清需求
+/to-brd                  → 阶段 3:生成业务需求文档(BRD)
+/compliance-review       → 阶段 4:合规评审(GSP / 等保 / GDPR / PIPL)
+/test-case-design        → 阶段 5:生成测试用例
+/to-prd                  → 阶段 6:生成产品需求文档(PRD)
+/dev-design              → 阶段 7:开发设计(FSD + 数据模型 + 开发设计说明书)
+/qa-audit                → 阶段 8:QA 审计(6 大类)
+/handoff                 → 阶段 9:交付清单
 ```
 
 ### Orchestration(1 个)— 走完整流程
@@ -227,7 +228,7 @@ context-pointer
 
 ### 示例 1:医药物流 WMS 收货管理
 
-完整迷你示例,含 BRD + 字段对齐分析 + ASCII 流程图 + 配置 5 件套。
+完整迷你示例,含 BRD + 字段对齐分析 + ASCII 流程图 + 4 个项目级配置 + `config-used.md` ADR 产物。
 
 ```bash
 cd examples/01-wms-warehouse
@@ -291,17 +292,27 @@ cat 业务流程图-积分状态流转.txt  # 双状态机
 
 Claude 启动时按这个顺序找配置,找到即用。
 
-### 项目级配置(5 件套)
+### 项目级配置(4 个 `*-path.md`)
 
-每个真实项目根目录下生成这 5 个文件:
+每个真实项目根目录下生成这 4 个配置文件,它们是 Claude 的配置加载输入:
 
 | 文件 | 用途 | 示例内容 |
 |---|---|---|
 | `knowledge-path.md` | 列出真实知识库路径 | "WMOS 表结构在 `/root/WMOS 知识库/01-WMOS核心/`" |
 | `tech-stack-path.md` | 分端列技术栈 | "后端 Java 11 / 前端 Vue 3 / 数据库 Oracle" |
 | `compliance-path.md` | 启用合规 + 路径 | "启用 GSP,知识库在 `/root/WMOS 知识库/03-GSP法规/`" |
-| `doc-naming.md` | 文档编号规则 | "01-08 编号,文档存项目根" |
-| `config-used.md` | 配置汇总 + ADR | "为什么用行级多租户?" |
+| `doc-naming.md` | 文档编号规则 | "01-09 编号,文档存项目根" |
+
+### 配置使用记录 / ADR 产物
+
+`config-used.md` 不是配置文件,不参与配置加载,也不由 `init-project-config.sh` 生成。它是可选的交付产物,用于记录:
+
+- 本项目实际读取了哪些 `*-path.md` / skill fallback 配置
+- 为什么选择这些路径、技术栈、合规规则
+- 关键配置决策的 ADR(例如"为什么用行级多租户?")
+- 后续配置变更需要同步更新哪些文档
+
+可从 `templates/CONFIG_USED.md` 复制生成。
 
 ### 一键生成项目配置
 
@@ -333,7 +344,7 @@ config/
 看 [examples/02-saas-dashboard/config-used.md](examples/02-saas-dashboard/config-used.md):
 
 ```markdown
-# 配置使用说明
+# 配置使用记录 / ADR
 
 ## 一、配置清单
 | 配置项 | 路径 | 用途 |
@@ -535,9 +546,9 @@ analysis-to-delivery/
 |---|---|---|---|
 | `scripts/smoke-test.sh` | 安装后 / CI | 文件完整性、链接、版本一致性、脚本 help 自检 | Bash + Python |
 | `scripts/doc-validate.py` | 全阶段 | frontmatter、H1、章节、链接、代码块、占位符 | Python 标准库 |
-| `scripts/field-alignment-check.py` | 阶段 1/6/8/9 | Markdown 表格 + SQL DDL 字段对齐 | Python 标准库 |
-| `scripts/sql-dialect-check.py` | 阶段 8/9 | Oracle / PostgreSQL / MySQL 方言混用检查 | Python 标准库 |
-| `scripts/full-qa-audit.py` | 阶段 9 | 聚合文档校验、SQL、字段、编号、核心文档检查 | Python 标准库 |
+| `scripts/field-alignment-check.py` | 阶段 3/6/7/8 | Markdown 表格 + SQL DDL 字段对齐 | Python 标准库 |
+| `scripts/sql-dialect-check.py` | 阶段 7/8 | Oracle / PostgreSQL / MySQL 方言混用检查 | Python 标准库 |
+| `scripts/full-qa-audit.py` | 阶段 8 | 聚合文档校验、SQL、字段、编号、核心文档检查 | Python 标准库 |
 | `scripts/parallel-delegate.sh` | 阶段 7 / 实施扩展 | 基于 Claude CLI 的任务文件并行委派 | Bash + `claude` |
 | `scripts/postprocess_prd_html.py` | 阶段 6 | PRD HTML 封面、目录、章节容器 | Python 标准库 |
 | `scripts/init-project-config.sh` | 项目启动 | 生成 4 个项目级配置文件 | Bash |
@@ -562,18 +573,21 @@ analysis-to-delivery/
 
 ## 文档编号
 
-每个项目目录里,按以下编号组织文档(强制):
+每个项目目录里,`01-09` 是唯一编号文档(强制):
 
 | 编号 | 文档 | 阶段 |
 |---|---|---|
-| 01 | 业务需求文档 BRD.md | 2 |
-| 02 | 功能规格说明书 FSD.md | 8(可省略)|
-| 03 | 数据模型设计.md | 8 |
-| 04 | 合规评审.md | 3(可省略)|
-| 05 | 产品需求文档 PRD.md | 4 |
-| 06 | 开发设计说明书.md | 8 |
-| 07 | 测试用例设计.md | 3 |
-| 08 | 业务流程图.drawio | 2 |
+| 01 | 业务需求文档 BRD.md | 3 |
+| 02 | 功能规格说明书 FSD.md | 7 |
+| 03 | 数据模型设计.md | 7 |
+| 04 | 合规评审.md | 4(可省略) |
+| 05 | 产品需求文档 PRD.md | 6 |
+| 06 | 开发设计说明书.md | 7 |
+| 07 | 测试用例设计.md | 5 |
+| 08 | 设计回测报告.md | 7 |
+| 09 | QA 审计报告.md | 8 |
+
+不占编号:`HANDOVER.md` / `AGENTS.md` / `REVIEW_*` / `TASK_CONFIRM_*` / `RETRO_*`。
 
 ## 依赖
 
@@ -591,7 +605,7 @@ analysis-to-delivery/
 
 | 版本 | 内容 | 状态 |
 |---|---|---|
-| v1.0 | MVP,10 阶段工作流 + 1 个示例 | ✅ 2026-06 |
+| v1.0 | MVP,9 阶段工作流 + 1 个示例 | ✅ 2026-06 |
 | v1.1 | 项目级配置体系 + 阶段 8 简化 | ✅ 2026-06 |
 | v1.2 | skill 自检 + 模板引擎化 | ✅ 2026-06 |
 | v1.3 | 双模式 + 阶段门控 + 设计回测 + 任务复盘 | ✅ 2026-06 |

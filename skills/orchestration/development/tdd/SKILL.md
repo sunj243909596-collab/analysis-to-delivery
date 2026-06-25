@@ -7,6 +7,14 @@ version: 3.0.1
 
 # TDD(桥接到 superpowers)
 
+## Contract
+
+- Inputs: executable task from writing plan, test target, acceptance criteria
+- Outputs: RED test, GREEN implementation, refactor notes
+- Gates: RED observed before implementation; GREEN observed after implementation
+- Required disciplines: `stage-gate`
+- Next: `/executing-plans`
+
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
 > `~/.claude/skills/tdd/SKILL.md`
 

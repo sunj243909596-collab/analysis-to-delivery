@@ -8,6 +8,14 @@ version: 3.0.1
 
 # Test-Case-Design — 测试用例设计
 
+## Contract
+
+- Inputs: signed BRD, optional `04-合规评审.md`, business rules and acceptance criteria
+- Outputs: `07-测试用例设计.md`
+- Gates: BRD functions covered; normal/boundary/exception/compliance cases present; user signoff
+- Required disciplines: `stage-gate`, `doc-numbering`
+- Next: `/to-prd`
+
 ## 适用场景
 
 - BRD 通过,需要明确"什么算成功"

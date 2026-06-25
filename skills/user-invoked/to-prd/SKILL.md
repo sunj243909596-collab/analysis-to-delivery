@@ -8,6 +8,14 @@ version: 3.0.1
 
 # To-PRD — 产品需求文档生成
 
+## Contract
+
+- Inputs: signed BRD, compliance review, test cases, field alignment review
+- Outputs: `05-产品需求文档 PRD.md`, optional `05-PRD.html`, optional `05-PRD.docx`, optional Figma design document
+- Gates: PRD required sections complete; acceptance criteria signed; field mapping validates against knowledge source
+- Required disciplines: `no-field-guessing`, `doc-numbering`, `stage-gate`
+- Next: `/dev-design`
+
 ## 适用场景
 
 - BRD + 合规评审 + 测试用例已通过

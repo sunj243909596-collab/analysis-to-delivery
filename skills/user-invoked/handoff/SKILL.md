@@ -8,6 +8,14 @@ version: 3.0.1
 
 # Handoff — 代码交接
 
+## Contract
+
+- Inputs: QA audit with P0=0, completed design documents, known risks and TODOs
+- Outputs: `HANDOVER.md`
+- Gates: handover includes completed docs, TODOs, risks, follow-up recommendation; receiver acknowledged
+- Required disciplines: `stage-gate`, `doc-numbering`
+- Next: `/using-superpowers` or implementation team handoff
+
 ## 适用场景
 
 - QA 审计通过(P0=0)
@@ -80,7 +88,7 @@ version: 3.0.1
 
 ## 调用的 discipline
 
-- `disciplines/stage-gate` — 阶段 10 门控
+- `disciplines/stage-gate` — 阶段 9 门控
 - `disciplines/doc-numbering` — HANDOVER 不受编号约束
 
 ## 结束条件

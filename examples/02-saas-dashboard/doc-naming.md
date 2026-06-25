@@ -1,14 +1,13 @@
 # 文档命名规范(SaaS 后台 — 客户订单管理)
 
 > 项目:SaaS 后台 — 客户订单管理
-> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 0 引用
+> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 1 引用
 > 用途:定义项目文档的编号 / 命名 / 目录结构
 
-## 一、编号规则(01-08 强制)
+## 一、编号规则(01-09 强制)
 
 | 编号 | 文档类型 | skill 入口 | 说明 |
 |---|---|---|---|
-| **00** | 项目配置 | `/setup-analysis-delivery` | `knowledge-path` / `tech-stack-path` / `compliance-path` / `doc-naming` / `config-used` |
 | 01 | 业务需求文档 BRD | `/to-brd` | Business Requirements Document |
 | 02 | 功能规格说明书 FSD | `/to-fsd`(可选)| Functional Specification Document |
 | 03 | 数据模型设计 | `/dev-design` §8.2 | 表结构 / 关系图 / 索引 |
@@ -16,7 +15,8 @@
 | 05 | 产品需求文档 PRD | `/to-prd` | Product Requirements Document |
 | 06 | 开发设计说明书 | `/dev-design` | 包含数据模型 + API + 状态机 |
 | 07 | 测试用例 | `/test-case-design` | Test Cases |
-| 08 | QA 审计报告 | `/qa-audit` | QA Audit Report |
+| 08 | 设计回测报告 | `/dev-design` | Design Backtest Report |
+| 09 | QA 审计报告 | `/qa-audit` | QA Audit Report |
 
 > ⚠️ **SaaS 项目可省略 02(FSD)**,BRD 直接到 PRD;GSP 项目必须保留 04。
 > ⚠️ 04(合规检查清单)在无强合规场景可省略,本项目即省略。
@@ -33,22 +33,23 @@
 
 | 实际文件名 | 类型 | 阶段 |
 |---|---|---|
-| `01-业务需求文档 BRD.md` | BRD | 阶段 2 |
-| `03-数据模型设计.md` | 数据模型 | 阶段 8.2(待生成)|
-| `05-产品需求文档 PRD.md` | PRD | 阶段 4(待生成)|
-| `06-开发设计说明书.md` | 开发设计 | 阶段 8(待生成)|
-| `07-测试用例.md` | 测试用例 | 阶段 3(待生成)|
-| `08-QA 审计报告.md` | QA 审计 | 阶段 9(待生成)|
-| `REVIEW_需求确认书.md` | 阶段 1 确认 | 阶段 1 |
-| `REVIEW_字段对齐分析.md` | 阶段 1.3 字段对齐 | 阶段 1.3 |
-| `TASK_CONFIRM_订单管理.md` | 阶段 1 任务确认 | 阶段 1 |
+| `01-业务需求文档 BRD.md` | BRD | 阶段 3 |
+| `03-数据模型设计.md` | 数据模型 | 阶段 7(待生成)|
+| `05-产品需求文档 PRD.md` | PRD | 阶段 6(待生成)|
+| `06-开发设计说明书.md` | 开发设计 | 阶段 7(待生成)|
+| `07-测试用例.md` | 测试用例 | 阶段 5(待生成)|
+| `08-设计回测报告.md` | 设计回测 | 阶段 7(待生成)|
+| `09-QA 审计报告.md` | QA 审计 | 阶段 8(待生成)|
+| `REVIEW_需求确认书.md` | 阶段 2 确认 | 阶段 2 |
+| `REVIEW_字段对齐分析.md` | 阶段 2 字段对齐 | 阶段 2 |
+| `TASK_CONFIRM_订单管理.md` | 阶段 2 任务确认 | 阶段 2 |
 | `业务流程图-订单创建.txt` | 业务图 | 阶段 2 |
 | `业务流程图-订单状态流转.txt` | 业务图 | 阶段 2 |
-| `knowledge-path.md` | 阶段 0 配置 | 阶段 0 |
-| `tech-stack-path.md` | 阶段 0 配置 | 阶段 0 |
-| `compliance-path.md` | 阶段 0 配置 | 阶段 0 |
-| `doc-naming.md` | 阶段 0 配置(本文件)| 阶段 0 |
-| `config-used.md` | 阶段 0 配置 | 阶段 0 |
+| `knowledge-path.md` | 阶段 1 配置 | 阶段 1 |
+| `tech-stack-path.md` | 阶段 1 配置 | 阶段 1 |
+| `compliance-path.md` | 阶段 1 配置 | 阶段 1 |
+| `doc-naming.md` | 阶段 1 配置(本文件)| 阶段 1 |
+| `config-used.md` | 配置使用记录 / ADR | 阶段 1 |
 | `README.md` | 项目说明 | 顶层 |
 
 ## 三、目录结构
@@ -56,22 +57,23 @@
 ```
 examples/02-saas-dashboard/
 ├── README.md                          # 项目说明
-├── TASK_CONFIRM_订单管理.md           # 阶段 1
-├── REVIEW_需求确认书.md               # 阶段 1
-├── REVIEW_字段对齐分析.md             # 阶段 1.3
-├── 01-业务需求文档 BRD.md             # 阶段 2
-├── 业务流程图-订单创建.txt            # 阶段 2
-├── 业务流程图-订单状态流转.txt        # 阶段 2
-├── knowledge-path.md                  # 阶段 0
-├── tech-stack-path.md                 # 阶段 0
-├── compliance-path.md                 # 阶段 0
-├── doc-naming.md                      # 阶段 0(本文件)
-├── config-used.md                     # 阶段 0
-├── 03-数据模型设计.md                 # 阶段 8.2(待生成)
-├── 05-产品需求文档 PRD.md             # 阶段 4(待生成)
-├── 06-开发设计说明书.md               # 阶段 8(待生成)
-├── 07-测试用例.md                     # 阶段 3(待生成)
-└── 08-QA 审计报告.md                  # 阶段 9(待生成)
+├── TASK_CONFIRM_订单管理.md           # 阶段 2
+├── REVIEW_需求确认书.md               # 阶段 2
+├── REVIEW_字段对齐分析.md             # 阶段 2
+├── 01-业务需求文档 BRD.md             # 阶段 3
+├── 业务流程图-订单创建.txt            # 阶段 3
+├── 业务流程图-订单状态流转.txt        # 阶段 3
+├── knowledge-path.md                  # 阶段 1
+├── tech-stack-path.md                 # 阶段 1
+├── compliance-path.md                 # 阶段 1
+├── doc-naming.md                      # 阶段 1(本文件)
+├── config-used.md                     # 阶段 1 ADR 记录
+├── 03-数据模型设计.md                 # 阶段 7(待生成)
+├── 05-产品需求文档 PRD.md             # 阶段 6(待生成)
+├── 06-开发设计说明书.md               # 阶段 7(待生成)
+├── 07-测试用例.md                     # 阶段 5(待生成)
+├── 08-设计回测报告.md                  # 阶段 7(待生成)
+└── 09-QA 审计报告.md                  # 阶段 8(待生成)
 ```
 
 ## 四、命名禁区
@@ -97,10 +99,10 @@ examples/02-saas-dashboard/
 
 | 维度 | WMS(01)| SaaS(02)| 一致性 |
 |---|---|---|---|
-| 编号 01-08 | ✅ | ✅ | **一致** |
+| 编号 01-09 | ✅ | ✅ | **一致** |
 | REVIEW_ 前缀 | ✅ | ✅ | **一致** |
 | 业务流程图-*.txt | ✅ | ✅ | **一致** |
-| 路径配置 5 件套 | ✅ | ✅ | **一致** |
+| 4 个项目级配置 + config-used ADR | ✅ | ✅ | **一致** |
 | 状态机图 | 必需 | 必需 | **一致** |
 | ASCII 流程图 | ✅ | ✅ | **一致** |
 | 状态码风格 | 2 位数字 | 字符串枚举 | **差异**(项目特性) |
@@ -159,16 +161,15 @@ pnpm install
 按 skill 阶段顺序:
 
 ```
-0. setup-analysis-delivery  → 00 配置 5 件套 + README
-1. grill-task              → TASK_CONFIRM + REVIEW_需求确认书
-1.3. 字段对齐             → REVIEW_字段对齐分析
-2. to-brd                 → 01-BRD + 业务流程图-*.txt
-3. test-case-design       → 07-测试用例
-4. to-prd                 → 05-PRD
-5. dev-design (前置)      → 03-数据模型设计
-6. dev-design (主)        → 06-开发设计说明书
-7. qa-audit               → 08-QA 审计报告
-8. handoff                → 交付清单
+1. setup-analysis-delivery  → 4 个项目级配置 + README;可选 config-used ADR
+2. grill-task              → TASK_CONFIRM + REVIEW_需求确认书 + REVIEW_字段对齐分析
+3. to-brd                 → 01-BRD + 业务流程图-*.txt
+4. compliance-review      → 04-合规评审(按需)
+5. test-case-design       → 07-测试用例
+6. to-prd                 → 05-PRD
+7. dev-design             → 02/03/06/08 开发设计产物
+8. qa-audit               → 09-QA 审计报告
+9. handoff                → 交付清单
 ```
 
 ## 九、与 WMS 示例的命名差异
@@ -182,10 +183,11 @@ pnpm install
 | PRD | `05-产品需求文档 PRD.md` | `05-产品需求文档 PRD.md` | 一致 |
 | 开发设计 | `06-开发设计说明书.md` | `06-开发设计说明书.md` | 一致 |
 | 测试用例 | `07-测试用例.md` | `07-测试用例.md` | 一致 |
-| QA 审计 | `08-QA 审计报告.md` | `08-QA 审计报告.md` | 一致 |
+| 设计回测 | `08-设计回测报告.md` | `08-设计回测报告.md` | 一致 |
+| QA 审计 | `09-QA 审计报告.md` | `09-QA 审计报告.md` | 一致 |
 
 ## 十、变更记录
 
 | 日期 | 变更 | 原因 |
 |---|---|---|
-| 2026-06-22 | 初版 | 项目立项,确定 01-08 编号 |
+| 2026-06-22 | 初版 | 项目立项,确定 01-09 编号 |

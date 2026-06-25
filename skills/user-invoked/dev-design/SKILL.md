@@ -1,12 +1,20 @@
 ---
 name: dev-design
-description: 开发设计 — 含 FSD + 数据模型 + 开发设计说明书 + 设计回测 + 任务复盘,合并原 10 阶段中的 7/8/8.4/8.5 子流程。Use when PRD is signed and you need technical design output.
+description: 开发设计 — 含 FSD + 数据模型 + 开发设计说明书 + 设计回测 + 任务复盘,合并原 9 阶段中的 7/8/8.4/8.5 子流程。Use when PRD is signed and you need technical design output.
 disable-model-invocation: true
 version: 3.0.1
 
 ---
 
 # Dev-Design — 开发设计(7 件套)
+
+## Contract
+
+- Inputs: signed `05-产品需求文档 PRD.md`, `knowledge-path.md`, `tech-stack-path.md`, `doc-naming.md`
+- Outputs: `AGENTS.md`, `02-功能规格说明书 FSD.md`, `03-数据模型设计.md`, `06-开发设计说明书.md`, `08-设计回测报告.md`, optional `RETRO_任务复盘汇总.md`
+- Gates: field alignment passes; SQL dialect checks pass; design backtest passes; user signoff
+- Required disciplines: `no-field-guessing`, `no-self-invent`, `sql-dialect-discipline`, `stage-gate`, `doc-numbering`
+- Next: `/qa-audit`
 
 ## 适用场景
 
@@ -82,7 +90,7 @@ version: 3.0.1
 
 **输出**:`08-设计回测报告.md`
 
-**HARD GATE**:回测不通过(❌)禁止进入阶段 9。
+**HARD GATE**:回测不通过(❌)禁止进入阶段 8。
 
 ### §6. 子流程门控清单(可选实施扩展)
 
@@ -101,7 +109,7 @@ version: 3.0.1
 ### §7. 任务复盘汇总
 
 每个子任务完成后,按 `disciplines/stage-gate` 的 5 问复盘写到 commit / PR。
-此处汇总关键沉淀到 `07-任务复盘汇总.md`(可选)。
+此处汇总关键沉淀到 `RETRO_任务复盘汇总.md`(可选)。
 
 ## 调用的 discipline
 
@@ -118,7 +126,7 @@ version: 3.0.1
 - `03-数据模型设计.md`
 - `06-开发设计说明书.md`
 - `08-设计回测报告.md`
-- `07-任务复盘汇总.md`(可选,实施扩展模式才需要)
+- `RETRO_任务复盘汇总.md`(可选,实施扩展模式才需要)
 
 ## 结束条件
 

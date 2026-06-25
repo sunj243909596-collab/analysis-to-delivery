@@ -7,6 +7,14 @@ version: 3.0.1
 
 # SQL-Dialect-Discipline — SQL 方言纪律
 
+## Contract
+
+- Inputs: SQL snippets, DDL, target database declaration
+- Outputs: SQL aligned to `Target_DB`
+- Gates: no cross-dialect functions; no `SELECT *`; bindings and audit fields follow rules
+- Required disciplines: `context-pointer`
+- Next: calling skill continues
+
 ## Target_DB 标注(强制)
 
 任何 SQL 必须在文件头部标注 Target_DB:

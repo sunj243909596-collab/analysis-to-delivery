@@ -108,7 +108,7 @@
   - **`README.md` 全面重写**
     - 添加目录导航(11 节)
     - 添加 "26 个 skill 速查" 表
-    - 添加 "📚 知识库配置(项目级)" 完整章节(痛点 + 三层优先级 + 5 件套 + init 脚本 + 实战)
+    - 添加 "📚 知识库配置(项目级)" 完整章节(痛点 + 三层优先级 + 4 个 `*-path.md` + config-used ADR + init 脚本 + 实战)
     - 添加 "🔧 工具链" 章节(flow-export + VSCode 扩展用法)
     - 添加 "GitHub Actions CI" 章节
     - 更新依赖表(Node.js / mermaid-cli / cookiecutter)
@@ -155,7 +155,7 @@
 
 ### 新增
 - 🆕 **v1.4.0-dev 拆分为 26 个独立 skill（mattpocock 风格）**
-  - **架构重构**:从"1 个大 SKILL + 10 阶段强流程"拆为 26 个独立可组合 skill
+  - **架构重构**:从"1 个大 SKILL + 9 阶段强流程"拆为 26 个独立可组合 skill
   - **2 个 router**(`disable-model-invocation: true`,零 context load):
     - `ask-delivery` — 路由 9 动作 + 1 编排
     - `using-superpowers` — 路由 7 个 superpowers 实施 skill
@@ -201,7 +201,7 @@
 
 ### 新增
 - 🎉 MVP 首发版本
-- 10 阶段通用工作流（SKILL.md，16KB）
+- 9 阶段通用工作流（SKILL.md，16KB）
 - install.sh 一键安装脚本（支持 dry-run、target、uninstall、version 参数）
 - 配置目录（`config/`）：
   - 合规规则：gsp.md（医药示例）、none.md、template.md

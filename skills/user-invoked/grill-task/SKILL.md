@@ -8,6 +8,14 @@ version: 3.0.1
 
 # Grill-Task — 需求澄清 + 字段对齐
 
+## Contract
+
+- Inputs: `TASK_CONFIRM_*.md`, `knowledge-path.md`, user requirement notes
+- Outputs: `REVIEW_需求确认书.md`, `REVIEW_字段对齐分析.md`
+- Gates: `python3 scripts/task-confirm-check.py --strict TASK_CONFIRM_*.md REVIEW_需求确认书.md REVIEW_字段对齐分析.md`; user whitelist signoff
+- Required disciplines: `context-pointer`, `no-field-guessing`, `no-self-invent`, `stage-gate`
+- Next: `/to-brd`
+
 ## 适用场景
 
 - 用户提出新需求时
@@ -38,14 +46,19 @@ version: 3.0.1
   - ⚠️ 需 JOIN
   - ❓ 待确认(业务同义不同名)
   - 🔴 缺失
-- 跑 `python3 scripts/field-alignment-check.py` 自动验证
+
+### 4. 阶段 2 出口门控(唯一脚本)
+
+- 跑 `python3 scripts/task-confirm-check.py --strict TASK_CONFIRM_*.md REVIEW_需求确认书.md REVIEW_字段对齐分析.md`
+- `task-confirm-check.py` 是阶段 2 唯一门控脚本
+- `field-alignment-check.py` 不接 TASK_CONFIRM / REVIEW 文档,不得用于阶段 2 出口门控
 
 ## 关键纪律
 
 - 用户填写完 TASK_CONFIRM 后,**严禁直接跳进设计**
 - 必须先出确认书让用户审阅
 - 用户确认通过 → 进入 `/to-brd`
-- 字段对齐有 🔴 缺失项 → 严禁进入下一步
+- 字段对齐有 🔴 或 ❓ → `task-confirm-check.py --strict` 必须失败,严禁进入下一步
 
 ## 调用的 discipline
 
@@ -56,8 +69,8 @@ version: 3.0.1
 ## 关键纪律（2026-06-24 更新）
 
 - ❌ 删除"4 章节"表述——实际为 5 章节（一~五）
-- ❌ 删除 `field-alignment-check.py` 作为门控脚本的引用——该脚本只校验 PRD/FSD 字段引用，不接 TASK_CONFIRM
-- ✅ 新增 `scripts/task-confirm-check.py` 作为唯一门控脚本
+- 阶段 2 只允许 `scripts/task-confirm-check.py` 作为出口门控脚本
+- `field-alignment-check.py` 只校验 PRD/FSD/设计文档字段引用,不接 TASK_CONFIRM / REVIEW
 - 🟡 删除：状态字段不再有 🟡 中间态，仅 ⬜/✅ 二态
 - 🔒 HARD GATE：用户必须用白名单话术之一明确签字，LLM 不接受隐式同意
 
@@ -68,6 +81,5 @@ version: 3.0.1
 - [ ] TASK_CONFIRM 无 12 词 TBD（见 `scripts/task-confirm-check.py` TBD_KEYWORDS）
 - [ ] REVIEW_需求确认书 第八节"待明确事项"为空
 - [ ] REVIEW_字段对齐分析 对齐结论表中 ❓=0 且 🔴=0（⚠️ 可保留，状态字段可为 ✅ 或 ⚠️）
-- [ ] `scripts/task-confirm-check.py` exit 0
+- [ ] `python3 scripts/task-confirm-check.py --strict TASK_CONFIRM_*.md REVIEW_需求确认书.md REVIEW_字段对齐分析.md` exit 0
 - [ ] 用户白名单话术签字（详见 `templates/TASK_CONFIRM.md` L48-55）
-- [ ] ~~`field-alignment-check.py` 通过~~（已废弃此引用；该脚本不接 TASK_CONFIRM，仅校验 PRD/FSD 字段引用）

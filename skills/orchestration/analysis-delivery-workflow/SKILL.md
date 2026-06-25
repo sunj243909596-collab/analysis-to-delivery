@@ -8,6 +8,14 @@ version: 3.0.1
 
 # Analysis to Delivery Workflow — 9 阶段流程编排
 
+## Contract
+
+- Inputs: project goal, domain, tech stack, optional existing `*-path.md`
+- Outputs: 9-stage delivery chain ending in `HANDOVER.md`
+- Gates: stage-gate signoff between every stage; `task-confirm-check.py --strict` for 2->3; QA P0=0 for 8->9
+- Required disciplines: `stage-gate`, `no-field-guessing`, `doc-numbering`
+- Next: `/setup-analysis-delivery` then sequential workflow; after stage 9 optionally `/using-superpowers`
+
 ## 适用场景
 
 - 复杂项目(中等+)

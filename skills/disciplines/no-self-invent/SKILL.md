@@ -7,6 +7,14 @@ version: 3.0.1
 
 # No-Self-Invent — 严禁自创
 
+## Contract
+
+- Inputs: proposed fields, table names, status codes, business state model
+- Outputs: names/codes aligned to knowledge base or approved project conventions
+- Gates: no invented native table changes; new tables use approved prefixes; no hardcoded unknown status codes
+- Required disciplines: `context-pointer`, `no-field-guessing`
+- Next: calling skill continues
+
 ## 规则
 
 ### 1. 字段

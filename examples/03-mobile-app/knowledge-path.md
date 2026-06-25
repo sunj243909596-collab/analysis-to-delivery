@@ -1,7 +1,7 @@
 # 知识库路径(移动 App — 会员积分管理)
 
 > 项目:移动 App — 会员积分管理
-> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 0 引用
+> 路径配置:本文档被 `/setup-analysis-delivery` 阶段 1 引用
 > 用途:指向该项目所依赖的官方文档 / 内部知识库 / 第三方资料
 
 ## 一、Flutter 3.24 知识库

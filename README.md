@@ -1,12 +1,14 @@
 # Analysis to Delivery
 
-> 通用需求分析到开发实施工作流 — **26 个独立可组合 skill**、3 个完整行业示例、5 个 CI workflow。
+> 通用需求分析到开发实施工作流 — **26 个独立可组合 skill**、3 个完整行业示例、13 个 CI workflow、26 个自动化脚本、14 个 pytest 测试。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)](plan.md)
 [![Skills](https://img.shields.io/badge/skills-26-green.svg)](skills/)
 [![Examples](https://img.shields.io/badge/examples-3-orange.svg)](examples/)
-[![CI](https://img.shields.io/badge/CI-5%20workflows-purple.svg)](.github/workflows/)
+[![CI](https://img.shields.io/badge/CI-13%20workflows-purple.svg)](.github/workflows/)
+[![Scripts](https://img.shields.io/badge/scripts-26-blue.svg)](scripts/)
+[![Tests](https://img.shields.io/badge/tests-14%20pytest-green.svg)](tests/)
 
 ## 它是什么
 
@@ -29,15 +31,17 @@
 
 ## 核心特性
 
-- ✅ **26 个独立 skill**(v1.4 拆分):2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline
-- ✅ **3 个完整行业示例**(v2.0):医药 WMS / SaaS 订单 / 移动 App 积分
-- ✅ **5 个 GitHub Actions workflow**(v2.0):smoke-test / sql-dialect / doc-validate / field-alignment / full-qa-audit
-- ✅ **流程图工具链**(v3.0):ASCII → Mermaid/Drawio → SVG/PNG(命令行 + VSCode 集成)
-- ✅ **VSCode 扩展**(v3.0):4 个命令直接桥接到 skill 脚本
-- ✅ **可组合**:不强制流程,自由调任意 skill
-- ✅ **可插拔配置**:`config/` 目录放行业/技术栈/领域知识库,按需加载
-- ✅ **框架层通用**:流程骨架/门控/纪律与具体语言无关(见[覆盖范围](#覆盖范围已覆盖-vs-未覆盖))
-- ✅ **社区治理**:CONTRIBUTING.md + Issue/PR 模板 + Conventional Commits
+- ✅ **26 个独立 skill** — 2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline,职责单一,自由组合
+- ✅ **3 个完整行业示例** — 医药 WMS / SaaS 订单 / 移动 App 积分,各 16 文件,看完照搬
+- ✅ **26 个自动化脚本** — 7 阶段门控 + 5 静态审计 + 4 元数据校验 + 3 流程图工具 + 5 基础设施 + 2 状态管理
+- ✅ **13 个 GitHub Actions workflow** — smoke-test / sql-dialect / doc-validate / field-alignment / full-qa-audit + 8 个 P0/P1 增量校验
+- ✅ **14 个 pytest 测试** — 每个 gate 脚本有对应测试,覆盖 CLI / 双模式 / 互斥参数 / 边界条件
+- ✅ **流程图工具链** — ASCII → Mermaid/Drawio → SVG/PNG(命令行 + VSCode 集成)
+- ✅ **VSCode 扩展** — 4 个命令直接桥接到 skill 脚本
+- ✅ **可组合** — 不强制流程,自由调任意 skill
+- ✅ **可插拔配置** — `config/` 目录放行业/技术栈/领域知识库,按需加载
+- ✅ **框架层通用** — 流程骨架/门控/纪律与具体语言无关(见[覆盖范围](#覆盖范围已覆盖-vs-未覆盖))
+- ✅ **社区治理** — CONTRIBUTING.md + Issue/PR 模板 + Conventional Commits
 
 ## 目录
 
@@ -278,13 +282,13 @@ context-pointer
 
 | # | 名称 | 行业 | 技术栈 | 文件数 |
 |---|---|---|---|---|
-| 01 | [wms-warehouse](examples/01-wms-warehouse/) | 医药物流 WMS | Oracle + Spring Boot + Vue 3 | 12 |
-| 02 | [saas-dashboard](examples/02-saas-dashboard/) | B2B SaaS 后台 | PostgreSQL + Express 5 + React 19 | 12 |
-| 03 | [mobile-app](examples/03-mobile-app/) | B2C 移动 App | Firestore + Flutter 3.24 | 12 |
+| 01 | [wms-warehouse](examples/01-wms-warehouse/) | 医药物流 WMS | Oracle + Spring Boot + Vue 3 | 16 |
+| 02 | [saas-dashboard](examples/02-saas-dashboard/) | B2B SaaS 后台 | PostgreSQL + Express 5 + React 19 | 16 |
+| 03 | [mobile-app](examples/03-mobile-app/) | B2C 移动 App | Firestore + Flutter 3.24 | 16 |
 
 ### 示例 1:医药物流 WMS 收货管理
 
-完整迷你示例,含 BRD + 字段对齐分析 + ASCII 流程图 + 4 个项目级配置 + `config-used.md` ADR 产物。
+完整迷你示例,含 BRD + 字段对齐分析 + ASCII 流程图 + 4 个项目级配置 + `decisions.md` ADR 产物。
 
 ```bash
 cd examples/01-wms-warehouse
@@ -397,7 +401,7 @@ config/
 
 ### 实战示例
 
-看 [examples/02-saas-dashboard/config-used.md](examples/02-saas-dashboard/config-used.md):
+看 [examples/02-saas-dashboard/decisions.md](examples/02-saas-dashboard/decisions.md):
 
 ```markdown
 # 配置使用记录 / ADR
@@ -501,15 +505,23 @@ code --install-extension analysis-to-delivery-0.1.0.vsix
 
 ## GitHub Actions CI
 
-5 个 workflow 自动验证(.github/workflows/):
+13 个 workflow 自动验证(.github/workflows/):
 
 | Workflow | 触发 | 检查 |
 |---|---|---|
-| `smoke-test.yml` | push/PR | Skill 集合结构 + 元数据 |
-| `sql-dialect-check.yml` | push/PR | Oracle / PG 双方言校验 |
+| `smoke-test.yml` | push/PR | Skill 集合结构 + 元数据(14 节自检) |
+| `sql-dialect-check.yml` | push/PR | Oracle / PG / MySQL 方言校验 |
 | `doc-validate.yml` | push/PR | Markdown 格式 / 表格 / 代码块 |
 | `field-alignment-check.yml` | push/PR | 字段对齐 / 多租户 / 整数 |
-| `full-qa-audit.yml` | push to main / release | 4 项聚合,失败阻断 merge |
+| `full-qa-audit.yml` | push to main / release | 6 大类聚合,失败阻断 merge |
+| `discipline-lint.yml` | PR | 7 个 discipline 强制加载 + requires 一致性 |
+| `bridge-completeness-check.yml` | PR | 7 个 bridge 含降级方案 + 安装提示 + 纪律摘要 |
+| `task-confirm-check.yml` | PR | 5 项 check + 双模式 + pytest 22 case |
+| `flow-to-mermaid-ascii-strict.yml` | PR | ASCII → Mermaid strict(回流闭环 + 禁 classDef) |
+| `analysis-state.yml` | PR | state 持久化脚本可运行 |
+| `description-lint.yml` | PR | SKILL.md description 80-150 字符 |
+| `antipattern-section-check.yml` | PR | 9 个 user-invoked 反模式清单 ≥ 3 条 |
+| `filename-naming-check.yml` | PR | `config-used.md` → `decisions.md` 改名一致性 |
 
 详见 [.github/workflows/](.github/workflows/) 和 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
@@ -525,7 +537,7 @@ analysis-to-delivery/
 ├── CHANGELOG.md                # 版本历史
 ├── CONTRIBUTING.md             # 贡献者指南
 ├── LICENSE                     # MIT
-├── skills/                     # 26 个独立 skill(v1.4 拆分)
+├── skills/                     # 26 个独立 skill
 │   ├── ask-delivery/           # Router 1
 │   ├── using-superpowers/      # Router 2
 │   ├── user-invoked/           # 9 个动作
@@ -557,40 +569,66 @@ analysis-to-delivery/
 │       ├── doc-numbering/
 │       └── context-pointer/
 ├── config/                     # 领域配置(skill 级 fallback)
-│   ├── compliance/
-│   ├── tech-stack/
-│   ├── domain-knowledge/
-│   └── doc-naming/
-├── examples/                   # 3 个完整示例(v2.0)
+│   ├── compliance/             # gsp / none / template
+│   ├── tech-stack/             # java-spring / frontend-vue / template
+│   ├── domain-knowledge/       # template
+│   └── doc-naming/             # template
+├── examples/                   # 3 个完整示例,各 16 文件
 │   ├── 01-wms-warehouse/       # 医药物流 WMS(Oracle)
 │   ├── 02-saas-dashboard/      # SaaS 订单(Node + React + PG)
 │   └── 03-mobile-app/          # 移动 App(Flutter + Firebase)
-├── templates/                  # 文档模板(12 个)
-├── scripts/                    # 自动化脚本(v2.0+ 共 10 个)
-│   ├── smoke-test.sh
-│   ├── doc-validate.py
-│   ├── sql-dialect-check.py
-│   ├── full-qa-audit.py
+├── templates/                  # 文档模板(36 个)
+│   ├── *.md                    # 16 个阶段模板
+│   ├── project-config/         # 4 个 *-path.md 模板
+│   └── cookiecutter-analysis/  # 16 个项目骨架模板 + cookiecutter.json
+├── scripts/                    # 26 个自动化脚本
+│   ├── smoke-test.sh           # 14 节自检
+│   ├── _gate_common.py         # 共享门控库(argparse / 退出码 / CheckResult)
+│   ├── setup-check.py          # 阶段门控 1→2
+│   ├── task-confirm-check.py   # 阶段门控 2→3(5 check + --strict/--loose)
+│   ├── brd-check.py            # 阶段门控 3→4
+│   ├── compliance-check.py     # 阶段门控 4→5
+│   ├── testcase-coverage-check.py  # 阶段门控 5→6
+│   ├── prd-check.py            # 阶段门控 6→7
+│   ├── dev-design-backtest.py  # 阶段门控 7→8(4 大类回测)
+│   ├── doc-validate.py         # 静态审计
 │   ├── field-alignment-check.py
-│   ├── parallel-delegate.sh
-│   ├── postprocess_prd_html.py
-│   ├── init-project-config.sh
-│   ├── cookiecutter-gen.sh
-│   ├── flow-to-mermaid.py      # v3.0:ASCII → Mermaid
-│   ├── flow-to-drawio.py       # v3.0:ASCII → Drawio XML
-│   └── flow-export.sh          # v3.0:Mermaid → SVG/PNG
+│   ├── sql-dialect-check.py
+│   ├── full-qa-audit.py        # 6 大类聚合(P0 阻断)
+│   ├── discipline-lint.py      # 元数据校验
+│   ├── description-lint.py
+│   ├── antipattern-section-check.py
+│   ├── bridge-completeness-check.py
+│   ├── filename-naming-check.py
+│   ├── flow-to-mermaid.py      # ASCII → Mermaid(--ascii-strict)
+│   ├── flow-to-drawio.py       # ASCII → Drawio XML
+│   ├── flow-export.sh          # Mermaid → SVG/PNG(包装 mmdc)
+│   ├── analysis-state.py       # 9 阶段状态持久化(init/record-gate/signoff/status/metrics)
+│   ├── parallel-delegate.sh    # 基于 Claude CLI 并行任务
+│   ├── postprocess_prd_html.py # PRD HTML 后处理
+│   ├── init-project-config.sh  # 生成 4 个 *-path.md
+│   └── cookiecutter-gen.sh     # 生成项目骨架
+├── tests/                      # 14 个 pytest 测试(每个 gate 脚本一份)
 ├── .github/
-│   ├── workflows/              # 5 个 CI(v2.0)
+│   ├── workflows/              # 13 个 CI workflow
 │   │   ├── smoke-test.yml
 │   │   ├── sql-dialect-check.yml
 │   │   ├── doc-validate.yml
 │   │   ├── field-alignment-check.yml
-│   │   └── full-qa-audit.yml
+│   │   ├── full-qa-audit.yml
+│   │   ├── discipline-lint.yml
+│   │   ├── bridge-completeness-check.yml
+│   │   ├── task-confirm-check.yml
+│   │   ├── flow-to-mermaid-ascii-strict.yml
+│   │   ├── analysis-state.yml
+│   │   ├── description-lint.yml
+│   │   ├── antipattern-section-check.yml
+│   │   └── filename-naming-check.yml
 │   ├── ISSUE_TEMPLATE/
 │   │   ├── bug_report.md
 │   │   └── feature_request.md
 │   └── PULL_REQUEST_TEMPLATE.md
-└── vscode-extension/           # VSCode 扩展(v3.0)
+└── vscode-extension/           # VSCode 扩展
     ├── package.json
     ├── src/extension.ts
     └── README.md
@@ -598,20 +636,56 @@ analysis-to-delivery/
 
 ## 脚本能力表
 
-| 脚本 | 阶段 | 能力 | 依赖 |
+### 阶段门控(7 个)
+
+| 脚本 | 阶段过渡 | 能力 | 依赖 |
 |---|---|---|---|
-| `scripts/smoke-test.sh` | 安装后 / CI | 文件完整性、链接、版本一致性、脚本 help 自检 | Bash + Python |
-| `scripts/doc-validate.py` | 全阶段 | frontmatter、H1、章节、链接、代码块、占位符 | Python 标准库 |
-| `scripts/field-alignment-check.py` | 阶段 3/6/7/8 | Markdown 表格 + SQL DDL 字段对齐 | Python 标准库 |
-| `scripts/sql-dialect-check.py` | 阶段 7/8 | Oracle / PostgreSQL / MySQL 方言混用检查 | Python 标准库 |
-| `scripts/full-qa-audit.py` | 阶段 8 | 聚合文档校验、SQL、字段、编号、核心文档检查 | Python 标准库 |
-| `scripts/parallel-delegate.sh` | 阶段 7 / 实施扩展 | 基于 Claude CLI 的任务文件并行委派 | Bash + `claude` |
-| `scripts/postprocess_prd_html.py` | 阶段 6 | PRD HTML 封面、目录、章节容器 | Python 标准库 |
-| `scripts/init-project-config.sh` | 项目启动 | 生成 4 个项目级配置文件 | Bash |
-| `scripts/cookiecutter-gen.sh` | 项目启动 | 生成编号文档骨架 | cookiecutter |
-| `scripts/flow-to-mermaid.py` | v3.0 | ASCII 流程图 → Mermaid 源码 | Python 标准库 |
-| `scripts/flow-to-drawio.py` | v3.0 | ASCII 流程图 → Drawio XML(可在线编辑) | Python 标准库 |
-| `scripts/flow-export.sh` | v3.0 | Mermaid → SVG/PNG(批量 / 单文件) | mermaid-cli |
+| `scripts/setup-check.py` | 1→2 | 4 个 `*-path.md` 非空 + knowledge 至少 1 个真实路径 | Python 标准库 |
+| `scripts/task-confirm-check.py` | 2→3 | 5 项 check(状态 ✅ / 12 词 TBD / 5 章节 / 第八节空 / 🔴❓=0)+ `--strict`/`--loose` | Python 标准库 |
+| `scripts/brd-check.py` | 3→4 | BRD 9 章节齐 + 字段映射表 + ASCII 流程图 | Python 标准库 |
+| `scripts/compliance-check.py` | 4→5 | 合规条款 1:1 全覆盖,严重条款必须 ✅ | Python 标准库 |
+| `scripts/testcase-coverage-check.py` | 5→6 | 5 大类齐 + TC 编号规范 + 合规条款关联 | Python 标准库 |
+| `scripts/prd-check.py` | 6→7 | PRD 8 章节齐 + §七 白名单签字 + 字段映射 | Python 标准库 |
+| `scripts/dev-design-backtest.py` | 7→8 | 4 大类设计回测(数据模型 / 业务规则 / 状态机 / 字段对齐) | Python 标准库 |
+
+### 静态审计(5 个)
+
+| 脚本 | 能力 | 依赖 |
+|---|---|---|
+| `scripts/doc-validate.py` | Markdown frontmatter / H1 / 章节 / 链接 / 占位符,P0/P1/P2 分级,`--template-mode` | Python 标准库 |
+| `scripts/field-alignment-check.py` | Markdown 表格 + SQL DDL 字段对齐(missing / type_mismatch / nullable_mismatch) | Python 标准库 |
+| `scripts/sql-dialect-check.py` | Oracle / PostgreSQL / MySQL 方言混用,`Target_DB` 注释校验 | Python 标准库 |
+| `scripts/full-qa-audit.py` | 6 大类聚合(P0 阻断 merge / release) | Python 标准库 |
+| `scripts/discipline-lint.py` | SKILL.md `requires:` 与 discipline 路径一致 + 无 typo | Python 标准库 |
+
+### 元数据校验(4 个)
+
+| 脚本 | 能力 | 依赖 |
+|---|---|---|
+| `scripts/description-lint.py` | SKILL.md description 80-150 字符 + 不空泛 | Python 标准库 |
+| `scripts/antipattern-section-check.py` | 9 个 user-invoked SKILL.md 含 `## 反模式` ≥ 3 条 | Python 标准库 |
+| `scripts/bridge-completeness-check.py` | 7 个 bridge 含降级方案 + 安装提示 + 纪律摘要 | Python 标准库 |
+| `scripts/filename-naming-check.py` | `config-used.md` → `decisions.md` 改名一致性 | Python 标准库 |
+
+### 流程图工具链(3 个)
+
+| 脚本 | 能力 | 依赖 |
+|---|---|---|
+| `scripts/flow-to-mermaid.py` | ASCII → Mermaid 源码,状态机自动检测 ▼,`--ascii-strict` 校验回流闭环 + 禁 `classDef` | Python 标准库 |
+| `scripts/flow-to-drawio.py` | ASCII → Drawio XML(可在线编辑),白底蓝边 #3b82f6 | Python 标准库 |
+| `scripts/flow-export.sh` | Mermaid → SVG/PNG(单文件 / `--batch` / `--all`),包装 `mmdc` | mermaid-cli |
+
+### 流程状态 + 基础设施(7 个)
+
+| 脚本 | 能力 | 依赖 |
+|---|---|---|
+| `scripts/analysis-state.py` | `.analysis-delivery-state.json` 持久化;5 子命令 `init` / `record-gate` / `signoff` / `status` / `metrics`;签字白名单 4 句 | Python 标准库 |
+| `scripts/smoke-test.sh` | 14 节自检(目录 / 工具 / 文档 / 模板 / 脚本 / skills / config / examples / metadata / 编号 / 链接 / 语义 / CI / 工具链) | Bash + Python |
+| `scripts/init-project-config.sh` | 一键生成项目根 4 个 `*-path.md`;支持 `--force` | Bash |
+| `scripts/parallel-delegate.sh` | 基于 Claude CLI 并行执行任务文件 | Bash + `claude` |
+| `scripts/cookiecutter-gen.sh` | 生成 `templates/cookiecutter-analysis/` 项目骨架 | cookiecutter |
+| `scripts/postprocess_prd_html.py` | PRD HTML 后处理(封面 / 目录 / 章节卡片 / 响应式) | Python 标准库 |
+| `scripts/_gate_common.py` | 共享库(argparse / 退出码 / JSON / CheckResult / GateReport) | Python 标准库 |
 
 ## 工作流总览
 

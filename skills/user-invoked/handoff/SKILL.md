@@ -3,6 +3,7 @@ name: handoff
 description: 代码交接文档 — 整理已完成文档、待办事项、已知风险、后续工作建议。Use when ending design phase and handing over to implementation.
 disable-model-invocation: true
 version: 3.0.1
+requires: [stage-gate, doc-numbering]
 
 ---
 
@@ -95,3 +96,12 @@ version: 3.0.1
 
 - [ ] HANDOVER.md 含 4 节(已完成/待办/风险/后续)
 - [ ] 接收方(编码 skill / 开发团队)已确认收到
+
+## 反模式
+
+- ❌ HANDOVER 写"已交付" — 必须含 4 节(已完成/待办/风险/后续),缺一不可
+- ❌ 待办事项不给责任方 — 每条 TODO 必须有责任人 + 预期完成时间
+- ❌ 已知风险无缓解建议 — 每条风险必须配缓解 + 触发条件
+- ❌ 后续工作无优先级 — 必须分 P0/P1/P2,接收方才知道先做什么
+- ❌ 不写验收清单(已交付 vs 验收) — 必须含"接收方验收 Checklist" 段
+- ❌ HANDOVER 占编号(写 10-HANDOVER) — HANDOVER 不受编号约束,严禁占位

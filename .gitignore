@@ -67,3 +67,6 @@ vscode-extension/*.vsix
 # Flow 渲染产物
 *.svg
 !vscode-extension/resources/*.svg
+
+# analysis-to-delivery 项目级状态文件(plan §P1-3)
+.analysis-delivery-state.json

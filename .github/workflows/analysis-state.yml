@@ -1,0 +1,64 @@
+name: analysis-state
+
+# v3.1.0-dev: 校验 5 子命令 + 白名单话术(plan §P1-3)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/analysis-state.py'
+      - 'tests/test_analysis_state.py'
+      - 'skills/orchestration/analysis-delivery-workflow/**'
+      - '.github/workflows/analysis-state.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Self-test (5 子命令, 7 case)
+        run: python3 scripts/analysis-state.py --self-test
+
+      - name: Run pytest
+        run: |
+          pip install pytest
+          pytest tests/test_analysis_state.py -v
+
+      - name: End-to-end demo on tmp
+        run: |
+          set -e
+          TMP="$(mktemp -d)"
+          cd "$TMP"
+          python3 /root/analysis-to-delivery/scripts/analysis-state.py init --project demo
+          python3 /root/analysis-to-delivery/scripts/analysis-state.py record-gate --stage 2 --script task-confirm-check --result pass
+          python3 /root/analysis-to-delivery/scripts/analysis-state.py signoff --stage 1 --text "我已全部确认,可以进入下一步"
+          echo "--- status ---"
+          python3 /root/analysis-to-delivery/scripts/analysis-state.py status
+          echo "--- metrics ---"
+          python3 /root/analysis-to-delivery/scripts/analysis-state.py metrics
+          echo "✅ end-to-end demo OK"
+
+      - name: Non-whitelist signoff rejected
+        run: |
+          set -e
+          TMP="$(mktemp -d)"
+          cd "$TMP"
+          python3 /root/analysis-to-delivery/scripts/analysis-state.py init --project demo
+          if python3 /root/analysis-to-delivery/scripts/analysis-state.py signoff --stage 2 --text "OK"; then
+            echo "❌ 非白名单签字应 exit 1"
+            exit 1
+          fi
+          echo "✅ 非白名单签字正确 exit 1"
+
+      - name: JSON output sanity
+        run: |
+          set -e
+          TMP="$(mktemp -d)"
+          cd "$TMP"
+          python3 /root/analysis-to-delivery/scripts/analysis-state.py init --project demo
+          python3 /root/analysis-to-delivery/scripts/analysis-state.py metrics --json > /tmp/m.json
+          python3 -c "import json; d=json.load(open('/tmp/m.json')); assert 'total_gates_run' in d; print('JSON OK, keys=', list(d.keys()))"

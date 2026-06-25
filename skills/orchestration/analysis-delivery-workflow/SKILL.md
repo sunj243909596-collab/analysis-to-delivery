@@ -80,6 +80,37 @@ brainstorming → design-an-interface → domain-modeling → writing-plans → 
 
 详见 `scripts/task-confirm-check.py` 自动化校验。
 
+## 状态文件(plan §P1-3,v3.1.0-dev)
+
+每个项目根维护 `.analysis-delivery-state.json`(加入 `.gitignore`),5 个子命令:
+
+```bash
+# 初始化(项目级)
+python3 scripts/analysis-state.py init --project <name> [--project-root .] [--force]
+
+# 记录 gate 脚本结果(pass/fail 会自动 +1 拦截次数)
+python3 scripts/analysis-state.py record-gate --stage N --script <gate> --result pass|fail
+
+# 记录阶段签字(只接受 4 句白名单之一,其他一律 reject)
+python3 scripts/analysis-state.py signoff --stage N --text "我已全部确认,可以进入下一步"
+
+# 查看当前状态(9 阶段进度 + last_gate + errors)
+python3 scripts/analysis-state.py status
+
+# 5 项度量指标(total_gates / total_signoffs / 拦截次数 / 重试次数 / 阶段用时)
+python3 scripts/analysis-state.py metrics [--json]
+```
+
+**白名单话术(只 4 句)**:
+- "我已全部确认,可以进入下一步"
+- "确认通过"
+- "全部完成,继续"
+- "approved, proceed to next stage"
+
+❌ "OK / 好 / 继续 / 确认" 一律视为非签字。
+
+**中断恢复**:状态文件在 `.gitignore`,存在本地;下次开会话时跑 `status` 即可看到当前阶段、已签字阶段、错误计数。
+
 ## 调用的 discipline
 
 - `disciplines/stage-gate` — 3 层门控

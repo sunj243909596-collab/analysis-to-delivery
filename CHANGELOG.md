@@ -7,6 +7,76 @@
 
 ## [Unreleased]
 
+## [v3.1.0] - 2026-07-02
+
+> **P0-P3 共 12 项修复**:门控脚本补齐 + discipline lint + bridge 降级 + flow strict + 状态持久化 + 数字统一 + README 降级 + 快速通道 + 3 example 升级 + description 精简 + 反模式 + 改名 decisions。
+
+### P0 架构必修(2 项)
+
+- 🆕 **6 个门控脚本 + 6 个 workflow**(plan §1)
+  - `scripts/setup-check.py`(1→2)/`brd-check.py`(3→4)/`compliance-check.py`(4→5)/`testcase-coverage-check.py`(5→6)/`prd-check.py`(6→7)/`dev-design-backtest.py`(7→8)
+  - 每个脚本统一接口:`--strict` / `--loose` / `--self-test` / `--json`,通过共享 `_gate_common.py`
+  - 6 个对应 `.github/workflows/<name>-check.yml` + 6 个 `tests/test_<name>_check.py`
+- 🆕 **discipline 强制加载机制**(plan §2)
+  - 9 个 user-invoked SKILL.md frontmatter 增 `requires: [...]`
+  - `scripts/discipline-lint.py` 校验 4 条(frontmatter 存在 / Contract 一致 / discipline 路径存在 / 无 typo)
+  - `.github/workflows/discipline-lint.yml` PR 触发
+
+### P1 关键工程问题(4 项)
+
+- 🆕 **bridge skill 实质化**(plan §3)
+  - 7 个 `skills/orchestration/development/*/SKILL.md` 补 `## 降级方案(superpowers 未装时)` 章节
+  - `scripts/bridge-completeness-check.py` 校验含降级章节 + 安装提示 + 纪律摘要
+- 🆕 **`flow-to-mermaid.py --ascii-strict`**(plan §4)
+  - 检测输入 ASCII 是否缺回流闭环
+  - 检测输出 mermaid 是否含 `classDef`(违反简洁性)
+- 🆕 **`.analysis-delivery-state.json` 状态持久化**(plan §5)
+  - `scripts/analysis-state.py` 5 子命令:`init` / `record-gate` / `signoff` / `status` / `metrics`
+  - 仓库根 + `.gitignore`,提供 9 阶段流程的"中断/恢复"
+- 🛠️ **数字打架修复**(plan §6)
+  - 3 个 example config-used.md 升 v3.0.1
+  - README install --version → v3.1.0
+  - 后续随 P3-1 改造 description 后复核"26 个 skill"数字
+
+### P2 质量问题(3 项)
+
+- 🛠️ **README 跨行业/跨技术栈话术降级**(plan §7)
+  - "Java/Go/Python 全支持" → "框架层通用;具体行业/领域需用户补 config"
+  - 新增"已覆盖 vs 未覆盖"对照表
+- 🆕 **缺失能力补齐:快速通道 / 逆向使用 / 度量**(plan §8)
+  - SKILL.md / README.md 各增 3 章节
+  - `analysis-state.py` 扩 `metrics` 子命令
+- 🆕 **3 个 example 升级到 v3.0.1**(plan §9)
+  - 01-wms-warehouse / 02-saas-dashboard / 03-mobile-app 各补 04-合规评审 / 05-PRD / 07-测试用例 三文档
+  - config-used.md 标题升 v3.0.1 + 新增 `## v3.1.0 升级说明` 节
+
+### P3 易用性(3 项)
+
+- 🆕 **description 字段精简到 80-150 字符**(plan §10)
+  - 26 个 SKILL.md 全部压到合理范围
+  - `scripts/description-lint.py` 校验长度 + 不空泛 + 必存在
+- 🆕 **9 个 user-invoked SKILL.md 补反模式清单**(plan §11)
+  - 每个 SKILL.md 增 `## 反模式` 章节,3-7 条 `❌` 开头
+  - `scripts/antipattern-section-check.py` 校验存在性 + 条数 ≥ 3
+- 🆕 **`config-used.md` → `decisions.md` 改名**(plan §12)
+  - 名称更准确反映 ADR 性质(非配置文件)
+  - `templates/decisions.md` 新 ADR 模板
+  - `templates/CONFIG_USED.md` 改 deprecation stub
+  - `scripts/filename-naming-check.py` 校验
+
+### 工程改进
+
+- 🆕 共享 `scripts/_gate_common.py`(统一 argparse / 退出码 / JSON 序列化 / CheckResult / GateReport)
+- 🆕 26 个 SKILL.md `requires:` 前置纪律声明
+- 🛠️ smoke-test.sh 列表同步(12 个脚本 + 12 个 workflow + 实际 help 检查)
+- 🛠️ .gitignore 增 `.analysis-delivery-state.json`
+
+### 已知遗留 / 留给后续版本
+
+- 阶段 7-8 `/dev-design` 6 大文档(FSD/数据模型/开发设计/回测/复盘/交接)留待后续
+- 阶段 9 `/qa-audit` 全量审计报告留待后续
+- 2 个 example 流程图(WMS 状态流转 / SaaS 订单流转)在 `--ascii-strict` 下报"缺回流闭环",默认 mode 不影响
+
 ## [v3.0.1] - 2026-06-24
 
 > **grill-task 门控加固**:从需求澄清到 BRD 的硬门控,避免 LLM 在用户未完成确认时自动推进。

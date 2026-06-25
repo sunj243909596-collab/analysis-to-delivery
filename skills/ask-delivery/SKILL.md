@@ -1,6 +1,6 @@
 ---
 name: ask-delivery
-description: 分析到交付的入口 — 根据你的目标路由到正确的 skill。Use when unsure which skill to use.
+description: 分析到交付的入口 — 根据你的目标(配置/澄清/BRD/PRD/合规/开发/审计/交接)路由到正确的 skill。Use when unsure which skill to use.
 disable-model-invocation: true
 version: 3.0.1
 

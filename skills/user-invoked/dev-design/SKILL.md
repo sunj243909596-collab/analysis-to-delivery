@@ -3,6 +3,7 @@ name: dev-design
 description: 开发设计 — 含 FSD + 数据模型 + 开发设计说明书 + 设计回测 + 任务复盘,合并原 9 阶段中的 7/8/8.4/8.5 子流程。Use when PRD is signed and you need technical design output.
 disable-model-invocation: true
 version: 3.0.1
+requires: [no-field-guessing, no-self-invent, sql-dialect-discipline, stage-gate, doc-numbering]
 
 ---
 
@@ -136,3 +137,13 @@ version: 3.0.1
 - [ ] `field-alignment-check.py` 通过
 - [ ] `sql-dialect-check.py` 通过
 - [ ] 用户签字进入 `/qa-audit`
+
+## 反模式
+
+- ❌ 只写后端,缺前端/联调/Mock — 6 文档必齐(AGENTS/FSD/数据模型/开发设计/设计回测/任务复盘)
+- ❌ 降级为伪代码/TODO — FSD 必须含字段映射表、状态机、接口契约
+- ❌ 跳过设计回测(4 大类必跑) — ❌ 必须回 §2-§4 修复后才能签字
+- ❌ 自创字段名(无知识库依据) — 严格走 `field-alignment-check.py` 校验,严禁瞎编
+- ❌ SQL 方言混用(Oracle `NVL` + PG `COALESCE`) — `sql-dialect-check.py` 必过
+- ❌ 整数除法不写 `1.0/3` — Oracle 1/3=0,必须标 `1.0/3`
+- ❌ 主键用自增 ID — 必须每表配 SEQUENCE,严禁 `IDENTITY`/`SERIAL`(WMOS 原生约束)

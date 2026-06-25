@@ -1,5 +1,7 @@
 # Example 2: SaaS 后台 — 客户订单管理
 
+> 适用技术栈:Node + Express + React + PostgreSQL + TypeScript
+> 合规体系:通用 SaaS(无强行业合规约束)
 > 蒸馏示例:SaaS 后台(Node + React + PostgreSQL)的"客户订单管理"模块。
 > 演示 analysis-to-delivery skill 在 SaaS / Web 全栈场景的用法。
 
@@ -31,11 +33,14 @@
 | `01-业务需求文档 BRD.md` | `/to-brd` | 2 |
 | `业务流程图-订单创建.txt` | `/to-brd` §3 | 2 |
 | `业务流程图-订单状态流转.txt` | `/to-brd` §3 | 2 |
+| `04-合规评审.md` | `/compliance-review` | 4 |
+| `07-测试用例设计.md` | `/test-case-design` | 5 |
+| `05-产品需求文档 PRD.md` | `/to-prd` | 6 |
 | `knowledge-path.md` | `/setup-analysis-delivery` | 0 |
 | `tech-stack-path.md` | `/setup-analysis-delivery` | 0 |
 | `compliance-path.md` | `/setup-analysis-delivery` | 0 |
 | `doc-naming.md` | `/setup-analysis-delivery` | 0 |
-| `config-used.md` | 配置使用记录 / ADR | 1 |
+| `decisions.md` | ADR / 决策记录(v3.1.0 起改名) | 1 |
 
 ## 与 WMS 示例的差异
 

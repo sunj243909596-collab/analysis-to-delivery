@@ -3,6 +3,7 @@ name: to-brd
 description: 生成业务需求文档(BRD)— 含业务流程图、角色职责、功能模块、字段映射。Use when business requirements need to be documented formally.
 disable-model-invocation: true
 version: 3.0.1
+requires: [ascii-flowchart, no-field-guessing, doc-numbering, stage-gate]
 
 ---
 
@@ -83,3 +84,12 @@ version: 3.0.1
 - [ ] ASCII 流程图 + 状态流转图
 - [ ] 字段映射表通过 `field-alignment-check.py`
 - [ ] 用户签字进入阶段 4
+
+## 反模式
+
+- ❌ 用 Mermaid 写流程图 — 必须 ASCII(参考 disciplines/ascii-flowchart);可视化交付经 `flow-to-mermaid.py --ascii-strict`
+- ❌ 泳道图回流箭头散乱 — 必须汇聚到同一目标节点(回流闭环强制)
+- ❌ 字段映射表缺知识库来源 — 每条字段必须标"WMOS 知识库/XX 章"或"项目侧 schema"
+- ❌ 9 章节缺一 — `brd-check.py --strict` 必须 exit 0
+- ❌ 写完不跑 `field-alignment-check.py` — 应在签字前自动跑一遍,errors=0 才签字
+- ❌ 流程图用真实人名/客户名 — 用角色占位(仓管员/客户/系统)

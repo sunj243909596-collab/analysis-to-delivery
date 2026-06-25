@@ -1,8 +1,9 @@
 ---
 name: grill-task
-description: 需求澄清 + 字段对齐分析 — 反复提问拉齐用户意图,生成 TASK_CONFIRM 和字段对齐分析。Use when starting a new feature, clarifying requirements, or aligning field names with existing tables.
+description: 需求澄清 + 字段对齐分析 — 反复提问拉齐意图,生成 TASK_CONFIRM 和字段对齐分析。Use when starting a new feature or aligning field names with existing tables.
 disable-model-invocation: true
 version: 3.0.1
+requires: [context-pointer, no-field-guessing, no-self-invent, stage-gate]
 
 ---
 
@@ -83,3 +84,12 @@ version: 3.0.1
 - [ ] REVIEW_字段对齐分析 对齐结论表中 ❓=0 且 🔴=0（⚠️ 可保留，状态字段可为 ✅ 或 ⚠️）
 - [ ] `python3 scripts/task-confirm-check.py --strict TASK_CONFIRM_*.md REVIEW_需求确认书.md REVIEW_字段对齐分析.md` exit 0
 - [ ] 用户白名单话术签字（详见 `templates/TASK_CONFIRM.md` L48-55）
+
+## 反模式
+
+- ❌ TASK_CONFIRM 留 TBD 直接进 BRD — TBD 必须先闭环（确认/补资料/豁免）才能签字
+- ❌ 把 `field-alignment-check.py` 当 2→3 门控 — 应是 `task-confirm-check.py`(同时校验 3 份产物)
+- ❌ 接受 "OK/好/继续" 作为签字 — 必须 4 句白名单之一(我已全部确认,可以进入下一步 / 确认通过 / 全部完成,继续 / approved, proceed to next stage)
+- ❌ 中间态(🟡)混入二态 — ⬜/✅ 二态,无 🟡;若需"进行中"用 ⬜(未完成)表达
+- ❌ 一轮提问就停下 — 必须反复澄清到 5 节全填,无 TBD 才出"需求确认书"
+- ❌ 字段对齐直接写"✅ 正确" — 必须给证据:字段路径 + 知识库章节 + 引用 URL

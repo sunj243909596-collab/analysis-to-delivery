@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ASCII flow → Mermaid 转换器(v3.0 工具链)
+"""ASCII flow → Mermaid 转换器(v3.0 工具链 + v3.1.0-dev ascii-strict)
 
 将 examples/*/业务流程图-*.txt 中的 ASCII 流程图转换为 Mermaid 源码,
 供 mermaid-cli(mmdc)渲染为 SVG/PNG。
@@ -8,6 +8,8 @@
     python3 scripts/flow-to-mermaid.py <input.txt> [output.mmd]
     python3 scripts/flow-to-mermaid.py examples/02-saas-dashboard/业务流程图-订单状态流转.txt
     python3 scripts/flow-to-mermaid.py --batch examples/
+    python3 scripts/flow-to-mermaid.py --batch --ascii-strict examples/   # 新增 strict 模式
+    python3 scripts/flow-to-mermaid.py --self-test
 
 支持图类型(自动检测):
 - 状态机(垂直 ▼ 箭头 / 水平 ─► 箭头)
@@ -19,9 +21,15 @@
 限制:
 - 复杂泳道图(swimlane)需手动整理
 - 边检测为启发式,失败时输出节点 + 边注释模板
+
+--ascii-strict 模式(v3.1.0-dev,plan §P1-2):
+- ASCII 输入必须含"回流闭环":同一 box 标签至少出现 2 次(证据:已有回流目标节点)
+  (与 ascii-flowchart L48-60 "回流路径必须汇聚到同一目标节点" 对齐)
+- 输出 Mermaid 必须**不含** `classDef` 关键字(违反简洁性纪律)
 """
 
 import argparse
+import json
 import re
 import sys
 from pathlib import Path
@@ -239,13 +247,160 @@ def convert(src: Path) -> str:
     return "\n".join(out)
 
 
+# ===== v3.1.0-dev: --ascii-strict 校验 =====
+
+def check_ascii_has_backflow(text: str) -> Tuple[bool, str]:
+    """ASCII 必须含"回流闭环":同一 box 标签出现 ≥2 次(作为回流目标节点证据)。
+
+    与 ascii-flowchart §回流闭环(强制)对齐:回流路径必须汇聚到同一目标节点。
+    启发式:若某标签只出现 1 次,图中不存在"可被回流指向的目标"。
+
+    Returns: (passed, message)
+    """
+    _, positions = collect_boxes(text)
+    if not positions:
+        return True, "no boxes to check"
+
+    lines = text.split("\n")
+    labels: List[str] = []
+    for top, bot in positions:
+        content: List[str] = []
+        for k in range(top + 1, bot):
+            if "│" in lines[k]:
+                parts = lines[k].split("│")
+                inner = "│".join(parts[1:-1]) if len(parts) >= 3 else ""
+                cleaned = clean_label(inner)
+                if cleaned:
+                    content.append(cleaned)
+        label = clean_label(" ".join(content))
+        labels.append(label)
+
+    counts: Dict[str, int] = {}
+    for lb in labels:
+        if lb:
+            counts[lb] = counts.get(lb, 0) + 1
+
+    repeated = {lb: c for lb, c in counts.items() if c >= 2}
+    if not repeated:
+        return False, (
+            "ASCII 缺回流闭环:所有 box 标签只出现 1 次,"
+            "未找到可作为回流汇聚目标节点的复用 box "
+            "(与 ascii-flowchart §回流闭环(强制) 不符)"
+        )
+    sample = ", ".join(f"`{lb}`×{c}" for lb, c in list(repeated.items())[:3])
+    return True, f"回流闭环 OK:{sample}"
+
+
+def check_mermaid_no_classdef(mmd: str) -> Tuple[bool, str]:
+    """输出 Mermaid 不应含 classDef(违反简洁性纪律)。
+
+    Returns: (passed, message)
+    """
+    if "classDef" in mmd:
+        return False, "输出 Mermaid 含 `classDef`(违反 ascii-flowchart 简洁性)"
+    return True, "无 classDef"
+
+
+def self_test() -> int:
+    """内置自检(plan §P1-2)。"""
+    import tempfile
+
+    # Case 1: 无回流闭环的 ASCII → strict 应 fail(ASCII check)
+    no_loop = (
+        "┌──────┐\n"
+        "│ 状态A │\n"
+        "└──────┘\n"
+        "   │\n"
+        "   ▼\n"
+        "┌──────┐\n"
+        "│ 状态B │\n"
+        "└──────┘\n"
+    )
+    ok, msg = check_ascii_has_backflow(no_loop)
+    if ok:
+        print("❌ self_test fail:no-loop 应被报")
+        return 1
+    print(f"  ✓ case1 no-loop rejected: {msg}")
+
+    # Case 2: 有回流闭环的 ASCII(状态A 出现 2 次)→ strict 应 pass
+    with_loop = (
+        "┌──────┐\n"
+        "│ 状态A │\n"
+        "└──────┘\n"
+        "   │\n"
+        "   ▼\n"
+        "┌──────┐\n"
+        "│ 状态B │\n"
+        "└──────┘\n"
+        "   │\n"
+        "   ▼\n"
+        "┌──────┐\n"
+        "│ 状态A │\n"
+        "└──────┘\n"
+    )
+    ok, msg = check_ascii_has_backflow(with_loop)
+    if not ok:
+        print(f"❌ self_test fail:with-loop 应 pass,got: {msg}")
+        return 1
+    print(f"  ✓ case2 with-loop accepted: {msg}")
+
+    # Case 3: Mermaid 含 classDef → strict 应 fail
+    bad_mmd = "graph LR\n    classDef foo fill:red\n    A-->B\n"
+    ok, msg = check_mermaid_no_classdef(bad_mmd)
+    if ok:
+        print("❌ self_test fail:classDef 应被报")
+        return 1
+    print(f"  ✓ case3 classDef rejected: {msg}")
+
+    # Case 4: 干净 Mermaid → strict 应 pass
+    good_mmd = "graph LR\n    A[\"状态A\"]\n    A-->B\n"
+    ok, msg = check_mermaid_no_classdef(good_mmd)
+    if not ok:
+        print(f"❌ self_test fail:clean mermaid 应 pass,got: {msg}")
+        return 1
+    print(f"  ✓ case4 clean mermaid accepted: {msg}")
+
+    # Case 5: 端到端 --ascii-strict on no-loop file → exit 1
+    with tempfile.TemporaryDirectory() as tmp:
+        tmpdir = Path(tmp)
+        src = tmpdir / "业务流程图-test.txt"
+        src.write_text(no_loop, encoding="utf-8")
+        import subprocess
+        r = subprocess.run(
+            ["python3", __file__, "--ascii-strict", str(src)],
+            capture_output=True, text=True,
+        )
+        if r.returncode != 1:
+            print(f"❌ self_test fail:end-to-end no-loop 应 exit 1,got {r.returncode}\n{r.stdout}")
+            return 1
+        print("  ✓ case5 end-to-end no-loop exit 1")
+
+    # Case 6: 端到端 --ascii-strict on with-loop file → exit 0
+    with tempfile.TemporaryDirectory() as tmp:
+        tmpdir = Path(tmp)
+        src = tmpdir / "业务流程图-test.txt"
+        src.write_text(with_loop, encoding="utf-8")
+        import subprocess
+        r = subprocess.run(
+            ["python3", __file__, "--ascii-strict", str(src)],
+            capture_output=True, text=True,
+        )
+        if r.returncode != 0:
+            print(f"❌ self_test fail:end-to-end with-loop 应 exit 0,got {r.returncode}\n{r.stdout}")
+            return 1
+        print("  ✓ case6 end-to-end with-loop exit 0")
+
+    print("✅ flow-to-mermaid.py self-test 通过 (4 check × 2 case = 8)")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="将 ASCII 流程图(.txt)转换为 Mermaid 源码(.mmd)"
     )
     parser.add_argument(
         "input",
-        nargs="+",
+        nargs="*",
         help="输入 .txt 文件,或包含 .txt 的目录(配合 --batch)",
     )
     parser.add_argument(
@@ -257,8 +412,29 @@ def main() -> int:
         "--output", "-o",
         help="输出目录(默认与输入同目录,.mmd 后缀)",
     )
+    parser.add_argument(
+        "--ascii-strict",
+        action="store_true",
+        help="严格模式(plan §P1-2):ASCII 必须含回流闭环(label 复用 ≥2),Mermaid 必须无 classDef",
+    )
+    parser.add_argument(
+        "--self-test",
+        action="store_true",
+        help="运行内置自检(无需输入文件)",
+    )
+    parser.add_argument(
+        "--json",
+        action="store_true",
+        help="以 JSON 输出 strict 检查结果",
+    )
 
     args = parser.parse_args()
+
+    if args.self_test:
+        return self_test()
+
+    if not args.input:
+        parser.error("至少需要一个 input 文件,或使用 --self-test")
 
     inputs: List[Path] = []
     if args.batch:
@@ -277,6 +453,9 @@ def main() -> int:
 
     total_nodes = 0
     total_edges = 0
+    strict_results: List[dict] = []  # 仅 --ascii-strict 模式填充
+    fail_count = 0
+
     for src in inputs:
         if not src.exists():
             print(f"⚠️  跳过(不存在):{src}", file=sys.stderr)
@@ -286,6 +465,7 @@ def main() -> int:
         out_dir.mkdir(parents=True, exist_ok=True)
         out_path = out_dir / (src.stem + ".mmd")
 
+        text = src.read_text(encoding="utf-8")
         mmd = convert(src)
         if not mmd:
             print(f"⚠️  跳过(未找到 box):{src}", file=sys.stderr)
@@ -294,15 +474,54 @@ def main() -> int:
         out_path.write_text(mmd, encoding="utf-8")
 
         # 统计
-        n_lines = mmd.count("\n    ") + mmd.count("\ngraph")
         n_nodes = mmd.count('["')
         n_edges = mmd.count("-->|") + mmd.count("--> ")
         total_nodes += n_nodes
         total_edges += n_edges
 
-        print(f"✅ {src.name} → {out_path.name}({n_nodes} 节点, {n_edges} 边)")
+        # --json 模式:常规打印走 stderr,避免污染 stdout
+        per_file_print = (
+            print if not (args.ascii_strict and args.json)
+            else lambda *a, **kw: print(*a, file=sys.stderr, **kw)
+        )
+        per_file_print(f"✅ {src.name} → {out_path.name}({n_nodes} 节点, {n_edges} 边)")
 
-    print(f"\n📊 共 {len(inputs)} 个文件,{total_nodes} 节点,{total_edges} 边")
+        # strict 检查
+        if args.ascii_strict:
+            ascii_ok, ascii_msg = check_ascii_has_backflow(text)
+            mermaid_ok, mermaid_msg = check_mermaid_no_classdef(mmd)
+            file_pass = ascii_ok and mermaid_ok
+            if not file_pass:
+                fail_count += 1
+            strict_results.append({
+                "file": str(src),
+                "ascii_has_backflow": ascii_ok,
+                "ascii_msg": ascii_msg,
+                "mermaid_no_classdef": mermaid_ok,
+                "mermaid_msg": mermaid_msg,
+                "passed": file_pass,
+            })
+
+    if args.ascii_strict and args.json:
+        # JSON 模式:仅输出 JSON 到 stdout,summary 走 stderr
+        print(json.dumps({"strict_results": strict_results, "fail_count": fail_count},
+                         ensure_ascii=False, indent=2))
+        print(f"\n📊 共 {len(inputs)} 个文件,{total_nodes} 节点,{total_edges} 边", file=sys.stderr)
+    else:
+        print(f"\n📊 共 {len(inputs)} 个文件,{total_nodes} 节点,{total_edges} 边")
+        if args.ascii_strict:
+            print(f"\n🔍 ASCII 严格模式结果:")
+            for r in strict_results:
+                mark = "✅" if r["passed"] else "❌"
+                print(f"  {mark} {r['file']}")
+                if not r["ascii_has_backflow"]:
+                    print(f"      ASCII: {r['ascii_msg']}")
+                if not r["mermaid_no_classdef"]:
+                    print(f"      Mermaid: {r['mermaid_msg']}")
+            print(f"\nstrict fail: {fail_count} / {len(strict_results)}")
+
+    if args.ascii_strict:
+        return 1 if fail_count > 0 else 0
     return 0
 
 

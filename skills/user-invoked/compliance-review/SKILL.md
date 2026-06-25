@@ -3,6 +3,7 @@ name: compliance-review
 description: 合规性评审 — 按 compliance-path.md 引用的合规规则,逐条评估设计。Use when dealing with GSP / HIPAA / SOX / GDPR / 等强合规场景。
 disable-model-invocation: true
 version: 3.0.1
+requires: [context-pointer, stage-gate]
 
 ---
 
@@ -69,3 +70,12 @@ version: 3.0.1
 - [ ] 每条都有 ✅/⚠️/🔄 判定
 - [ ] 整体结论签字(用户 + 合规方)
 - [ ] 缺陷等级为"严重"的条款全部 ✅
+
+## 反模式
+
+- ❌ 留 {待评估}/{TBD}/{N/A} — `compliance-check.py` 视为未判定,直接 fail;必须给 ✅/⚠️/🔄
+- ❌ 严重条款状态为 ⚠️ — 必须修复或豁免到 ✅/🔄 后才能签字
+- ❌ 跳过 evidence(证据位置)列 — 每条必须标具体位置(FSD §X / PRD §Y / 设计回测报告)
+- ❌ 不分缺陷等级(严重/主要/一般) — 必须分级,否则整改建议无法排序
+- ❌ 条款数量 ≠ `compliance-path.md` 引用的合规清单 — 必须 1:1 全覆盖
+- ❌ 仅做技术合规(代码层面)忽略业务流程合规 — 两者必须都覆盖

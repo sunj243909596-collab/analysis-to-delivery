@@ -1,10 +1,11 @@
-# 本示例配置使用记录 / ADR（v1.1：项目级配置演示）
+# Decisions（ADR / 决策记录）— 医药物流 WMS 收货管理（v3.1.0）
 
-> v1.1 起，**每个项目根目录**放自己的 4 个 `*-path.md` 文件，Claude 优先读项目级的。
+> v3.1.0 起，本文件从 `config-used.md` 改名为 `decisions.md`（更准确反映 ADR 性质）。
+> 每个项目根目录放自己的 4 个 `*-path.md` 文件，Claude 优先读项目级的。
 > 本目录（`examples/01-wms-warehouse/`）模拟一个完整迷你项目的根，演示项目级配置长什么样。
-> 本文件是配置使用记录 / ADR,不是配置文件,不参与配置加载。
+> 本文件是 ADR / 决策记录，不是配置文件，不参与配置加载。
 
-## 项目级 config 文件（v1.1 推荐方式）
+## 项目级 config 文件（v3.1.0 推荐方式）
 
 本示例的"项目根"下放了 4 个 `*-path.md`，都是真实的项目级配置：
 
@@ -95,6 +96,50 @@ Claude **必须主动询问**用户：
 | 适用场景 | 真实项目交付 | 临时试用 / 不知道写什么时参考 |
 
 > 简言之：**项目级是"真"，skill 级是"参考"**。
+
+## v3.1.0 升级说明
+
+本示例从 v3.0.1 升级到 v3.1.0，新增/升级了以下产物：
+
+### 新增产物
+
+| 文件 | 对应 skill | 阶段 | 说明 |
+|---|---|---|---|
+| [`04-合规评审.md`](./04-合规评审.md) | `/compliance-review` | 4 | GSP 9 条款合规性分析（严重/主要/一般） |
+| [`05-产品需求文档 PRD.md`](./05-产品需求文档 PRD.md) | `/to-prd` | 6 | 8 节齐全 + §七 验收标准白名单签字 |
+| [`07-测试用例设计.md`](./07-测试用例设计.md) | `/test-case-design` | 5 | 5 大类用例各 ≥1 条 + GSP 合规校验覆盖 |
+
+### 配套验证脚本
+
+```bash
+# 阶段 3→4 门控
+python3 scripts/brd-check.py --strict examples/01-wms-warehouse/
+
+# 阶段 4→5 门控
+python3 scripts/compliance-check.py --strict examples/01-wms-warehouse/
+
+# 阶段 5→6 门控
+python3 scripts/testcase-coverage-check.py --strict examples/01-wms-warehouse/
+
+# 阶段 6→7 门控
+python3 scripts/prd-check.py --strict examples/01-wms-warehouse/
+```
+
+### 与 v3.0.1 的差异
+
+| 维度 | v3.0.1 | v3.1.0 |
+|---|---|---|
+| 覆盖阶段 | 1-3 | 1-9（含 4-7） |
+| 文档数 | 7 | 10（+3） |
+| 合规评审 | ❌ 无 | ✅ GSP 9 条款全过 |
+| PRD | ❌ 无 | ✅ 8 节齐 + §七 签字 |
+| 测试用例 | ❌ 无 | ✅ 5 大类 26 条 |
+| 自动化门控 | 2 个（setup + task-confirm） | 6 个（+brd/compliance/testcase/prd） |
+
+### 已知未补全
+
+- 阶段 7-8（`/dev-design` 6 大文档：FSD/数据模型/开发设计/回测/复盘/交接）— 留待后续升级
+- 阶段 9（`/qa-audit` 全量 QA 审计）— 留待后续升级
 
 ---
 

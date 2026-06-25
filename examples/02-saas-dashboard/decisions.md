@@ -1,9 +1,10 @@
-# 配置使用说明(SaaS 后台 — 客户订单管理)
+# Decisions（ADR / 决策记录）— SaaS 后台 客户订单管理(v3.1.0)
 
 > 项目:SaaS 后台 — 客户订单管理
-> 文件身份:配置使用记录 / ADR,由 `/setup-analysis-delivery` 阶段 1 可选生成
+> 版本:v3.1.0(2026-07,阶段 4-7 文档补齐;v3.1.0 起从 `config-used.md` 改名为 decisions.md)
+> 文件身份:ADR / 决策记录,由 `/setup-analysis-delivery` 阶段 1 可选生成
 > 注意:本文件不参与配置加载,配置加载只读取 4 个 `*-path.md`
-> 用途:汇总本项目引用的全部配置路径,便于审计与回溯
+> 用途:汇总本项目引用的全部配置路径 + 关键技术决策,便于审计与回溯
 
 ## 一、配置清单
 
@@ -14,7 +15,7 @@
 | 技术栈 | `tech-stack-path.md`(本目录)| Node 22 + Express 5 + React 19 + PG 16 |
 | 合规 | `compliance-path.md`(本目录)| 软合规清单 |
 | 文档命名 | `doc-naming.md`(本目录)| 01-09 编号 |
-| 配置使用记录 / ADR | `config-used.md`(本文件)| 不参与配置加载 |
+| 配置使用记录 / ADR | `decisions.md`(本文件)| 不参与配置加载 |
 
 ## 二、与全局默认的差异
 
@@ -150,21 +151,21 @@
 ├── knowledge-path.md ← 引用 PG 16 + Node + React 文档
 ├── tech-stack-path.md ← 引用 PG 16 + Node + React
 ├── doc-naming.md ← 引用全局 01-09 规则
-└── config-used.md ←【ADR 记录,不参与配置加载】
+└── decisions.md ←【ADR 记录,不参与配置加载】
 ```
 
 ## 五、回溯与审计
 
 | 场景 | 查阅路径 |
 |---|---|
-| 为什么用 PostgreSQL? | `tech-stack-path.md` §2.3 + `config-used.md` §3.1 |
-| 为什么多租户行级? | `tech-stack-path.md` §七 ADR-003 + `config-used.md` §3.3 |
+| 为什么用 PostgreSQL? | `tech-stack-path.md` §2.3 + `decisions.md` §3.1 |
+| 为什么多租户行级? | `tech-stack-path.md` §七 ADR-003 + `decisions.md` §3.3 |
 | 合规要求? | `compliance-path.md` §一-五 |
 | 状态机定义? | `01-业务需求文档 BRD.md` §3.2 + `业务流程图-订单状态流转.txt` |
 | 字段映射? | `REVIEW_字段对齐分析.md` |
 | 文档编号规则? | `doc-naming.md` §一 |
-| 状态码为什么字符串? | `config-used.md` §3.6 + `tech-stack-path.md` ADR-004 |
-| 支付通道? | `tech-stack-path.md` §2.2 + `config-used.md` §3.5 |
+| 状态码为什么字符串? | `decisions.md` §3.6 + `tech-stack-path.md` ADR-004 |
+| 支付通道? | `tech-stack-path.md` §2.2 + `decisions.md` §3.5 |
 
 ## 六、与 WMS 示例的配置差异(对比)
 
@@ -192,7 +193,7 @@
 
 2. **中变更**(技术选型调整)
    - 评估影响范围
-   - 更新 `*-path.md`,并在 `config-used.md` 追加 ADR
+   - 更新 `*-path.md`,并在 `decisions.md` 追加 ADR
    - 提交 Git,需团队 review
 
 3. **大变更**(合规、数据库切换)
@@ -206,3 +207,48 @@
 | 日期 | 变更 | 原因 |
 |---|---|---|
 | 2026-06-22 | 初版配置 | 项目立项,确定 SaaS 技术栈 |
+| 2026-07-02 | v3.1.0 升级:新增 04/05/07 三文档 + GDPR/PIPL 合规清单 | 跟随 skill v3.1.0 阶段 4-7 补齐;实际业务涉及欧盟客户,需补 GDPR |
+
+## v3.1.0 升级说明
+
+本示例从 v3.0.1 升级到 v3.1.0,新增/升级了以下产物：
+
+### 新增产物
+
+| 文件 | 对应 skill | 阶段 | 说明 |
+|---|---|---|---|
+| [`04-合规评审.md`](./04-合规评审.md) | `/compliance-review` | 4 | GDPR/PIPL 10 条款合规性分析（严重 3 + 主要 5 + 一般 2）|
+| [`05-产品需求文档 PRD.md`](./05-产品需求文档 PRD.md) | `/to-prd` | 6 | 8 节齐全 + §七 验收标准白名单签字 |
+| [`07-测试用例设计.md`](./07-测试用例设计.md) | `/test-case-design` | 5 | 5 大类用例 31 条 + GDPR/PIPL 合规校验 + 多租户隔离 |
+
+### 配套验证脚本
+
+```bash
+# 阶段 3→4 门控
+python3 scripts/brd-check.py --strict examples/02-saas-dashboard/
+
+# 阶段 4→5 门控
+python3 scripts/compliance-check.py --strict examples/02-saas-dashboard/
+
+# 阶段 5→6 门控
+python3 scripts/testcase-coverage-check.py --strict examples/02-saas-dashboard/
+
+# 阶段 6→7 门控
+python3 scripts/prd-check.py --strict examples/02-saas-dashboard/
+```
+
+### 与 v3.0.1 的差异
+
+| 维度 | v3.0.1 | v3.1.0 |
+|---|---|---|
+| 覆盖阶段 | 1-3 | 1-9（含 4-7） |
+| 文档数 | 7 | 10（+3） |
+| 合规评审 | ❌ 无 | ✅ GDPR/PIPL 10 条款全过 |
+| PRD | ❌ 无 | ✅ 8 节齐 + §七 签字 |
+| 测试用例 | ❌ 无 | ✅ 5 大类 31 条 |
+| 自动化门控 | 2 个（setup + task-confirm） | 6 个（+brd/compliance/testcase/prd） |
+
+### 已知未补全
+
+- 阶段 7-8（`/dev-design` 6 大文档：FSD/数据模型/开发设计/回测/复盘/交接）— 留待后续升级
+- 阶段 9（`/qa-audit` 全量 QA 审计）— 留待后续升级

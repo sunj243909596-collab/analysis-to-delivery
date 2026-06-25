@@ -1,0 +1,58 @@
+name: antipattern-section-check
+
+# 校验 9 个 user-invoked SKILL.md 都含 `## 反模式` 二级标题 + ≥3 条 ❌ 列表项。
+
+on:
+  pull_request:
+    paths:
+      - 'skills/user-invoked/**'
+      - 'scripts/antipattern-section-check.py'
+      - '.github/workflows/antipattern-section-check.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Self-test
+        run: python3 scripts/antipattern-section-check.py --self-test
+
+      - name: Run pytest
+        run: |
+          pip install pytest
+          pytest tests/test_antipattern_section.py -v
+
+      - name: Lint real skills/user-invoked/
+        run: python3 scripts/antipattern-section-check.py --strict skills/user-invoked/
+
+      - name: Break-on-modify smoke
+        run: |
+          set -e
+          F="skills/user-invoked/grill-task/SKILL.md"
+          BACKUP="$(mktemp)"
+          cp "$F" "$BACKUP"
+          # 故意删掉 ## 反模式 段
+          python3 -c "
+          import re
+          text = open('$F', encoding='utf-8').read()
+          text = re.sub(r'^##\s+反模式\s*\n.*?(?=^##\s+|\Z)', '', text, flags=re.MULTILINE | re.DOTALL)
+          open('$F', 'w', encoding='utf-8').write(text)
+          "
+          # 跑应 exit 1
+          if python3 scripts/antipattern-section-check.py --strict skills/user-invoked/; then
+            echo "❌ 应 exit 1 但通过"
+            cp "$BACKUP" "$F"
+            exit 1
+          fi
+          echo "✅ 故意改坏后正确 exit 1"
+          cp "$BACKUP" "$F"
+
+      - name: JSON output sanity
+        run: |
+          python3 scripts/antipattern-section-check.py --strict --json skills/user-invoked/ > /tmp/anti.json
+          python3 -c "import json,sys; d=json.load(open('/tmp/anti.json')); assert 'checks' in d; assert isinstance(d['checks'], list); print('JSON shape OK,', len(d['checks']), 'checks')"

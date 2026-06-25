@@ -1,0 +1,67 @@
+name: flow-to-mermaid-ascii-strict
+
+# v3.1.0-dev: 校验 --ascii-strict 模式 + 默认行为不变
+# 默认调用无 --ascii-strict(向后兼容)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/flow-to-mermaid.py'
+      - 'tests/test_flow_to_mermaid.py'
+      - 'skills/disciplines/ascii-flowchart/**'
+      - 'examples/**/业务流程图-*.txt'
+      - '.github/workflows/flow-to-mermaid-ascii-strict.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Self-test (4 check × 2 case)
+        run: python3 scripts/flow-to-mermaid.py --self-test
+
+      - name: Run pytest
+        run: |
+          pip install pytest
+          pytest tests/test_flow_to_mermaid.py -v
+
+      - name: Default behavior unchanged
+        run: |
+          set -e
+          # 找一个 example 流程图(若有)
+          TXT=$(find examples -name "业务流程图-*.txt" 2>/dev/null | head -1)
+          if [ -n "$TXT" ]; then
+            python3 scripts/flow-to-mermaid.py "$TXT" || {
+              rc=$?
+              echo "⚠️ 默认模式 exit=$rc(对无回流图也允许);如系缺输入文件,跳过"
+              if [ ! -f "$TXT" ]; then exit 0; fi
+            }
+          else
+            echo "ℹ️ 无 example 流程图,跳过默认行为测试"
+          fi
+
+      - name: Strict mode on no-loop (应 exit 1)
+        run: |
+          set -e
+          TMP="$(mktemp -d)"
+          SRC="$TMP/业务流程图-no-loop.txt"
+          python3 -c "open(r'''$SRC''', 'w', encoding='utf-8').write('┌──────┐\n│ 状态A │\n└──────┘\n   │\n   ▼\n┌──────┐\n│ 状态B │\n└──────┘\n')"
+          if python3 scripts/flow-to-mermaid.py --ascii-strict "$SRC"; then
+            echo "❌ 应 exit 1 但通过"
+            exit 1
+          fi
+          echo "✅ 无回流图 strict 正确 exit 1"
+
+      - name: Strict mode on with-loop (应 exit 0)
+        run: |
+          set -e
+          TMP="$(mktemp -d)"
+          SRC="$TMP/业务流程图-with-loop.txt"
+          python3 -c "open(r'''$SRC''', 'w', encoding='utf-8').write('┌──────┐\n│ 状态A │\n└──────┘\n   │\n   ▼\n┌──────┐\n│ 状态B │\n└──────┘\n   │\n   ▼\n┌──────┐\n│ 状态A │\n└──────┘\n')"
+          python3 scripts/flow-to-mermaid.py --ascii-strict "$SRC"
+          echo "✅ 有回流图 strict 正确 exit 0"

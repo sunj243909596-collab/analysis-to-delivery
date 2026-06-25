@@ -49,7 +49,7 @@
 | `tech-stack-path.md` | 阶段 1 配置 | 阶段 1 |
 | `compliance-path.md` | 阶段 1 配置 | 阶段 1 |
 | `doc-naming.md` | 阶段 1 配置(本文件)| 阶段 1 |
-| `config-used.md` | 配置使用记录 / ADR | 阶段 1 |
+| `decisions.md` | 配置使用记录 / ADR | 阶段 1 |
 | `README.md` | 项目说明 | 顶层 |
 
 ## 三、目录结构
@@ -67,7 +67,7 @@ examples/02-saas-dashboard/
 ├── tech-stack-path.md                 # 阶段 1
 ├── compliance-path.md                 # 阶段 1
 ├── doc-naming.md                      # 阶段 1(本文件)
-├── config-used.md                     # 阶段 1 ADR 记录
+├── decisions.md                     # 阶段 1 ADR 记录
 ├── 03-数据模型设计.md                 # 阶段 7(待生成)
 ├── 05-产品需求文档 PRD.md             # 阶段 6(待生成)
 ├── 06-开发设计说明书.md               # 阶段 7(待生成)

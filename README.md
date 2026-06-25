@@ -3,7 +3,7 @@
 > 通用需求分析到开发实施工作流 — **26 个独立可组合 skill**、3 个完整行业示例、5 个 CI workflow。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-3.0.1-blue.svg)](plan.md)
+[![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)](plan.md)
 [![Skills](https://img.shields.io/badge/skills-26-green.svg)](skills/)
 [![Examples](https://img.shields.io/badge/examples-3-orange.svg)](examples/)
 [![CI](https://img.shields.io/badge/CI-5%20workflows-purple.svg)](.github/workflows/)
@@ -36,14 +36,14 @@
 - ✅ **VSCode 扩展**(v3.0):4 个命令直接桥接到 skill 脚本
 - ✅ **可组合**:不强制流程,自由调任意 skill
 - ✅ **可插拔配置**:`config/` 目录放行业/技术栈/领域知识库,按需加载
-- ✅ **跨行业**:医药/金融/SaaS/移动 App 通用
-- ✅ **跨技术栈**:Java/Go/Python/Node/Rust/.NET 全支持
+- ✅ **框架层通用**:流程骨架/门控/纪律与具体语言无关(见[覆盖范围](#覆盖范围已覆盖-vs-未覆盖))
 - ✅ **社区治理**:CONTRIBUTING.md + Issue/PR 模板 + Conventional Commits
 
 ## 目录
 
 - [它是什么](#它是什么)
 - [核心特性](#核心特性)
+- [覆盖范围(已覆盖 vs 未覆盖)](#覆盖范围已覆盖-vs-未覆盖)
 - [安装](#安装)
 - [快速开始](#快速开始)
 - [26 个 skill 速查](#26-个-skill-速查)
@@ -61,6 +61,24 @@
 - [安全](#安全)
 - [协议](#协议)
 
+## 覆盖范围(已覆盖 vs 未覆盖)
+
+> **诚实声明**:本仓库**框架层通用**(流程骨架/门控/纪律与具体语言无关),
+> 但**默认示例与 config 只覆盖 3 个领域**(医药 WMS / SaaS 后台 / 移动 App)。
+> 其他行业/技术栈需用户在项目级补 `knowledge-path.md` / `tech-stack-path.md` / `compliance/`。
+
+| 维度 | 已覆盖(开箱即用) | 未覆盖(需用户补 config) |
+|---|---|---|
+| **流程骨架** | 9 阶段工作流、3 层门控、白名单签字纪律、纪律清单(7 个) | — |
+| **领域** | 医药物流 WMS / SaaS 后台 / 移动 App(3 个 example) | 金融 / 教育 / 医疗 HIS / 制造 MES / 物流 TMS… |
+| **技术栈** | Spring Boot + Vue 3 / Node + React / Flutter + Firebase | Go / Rust / .NET / K8s 原生 / 函数计算… |
+| **数据库** | Oracle 11g/19c / PostgreSQL / MySQL(注:Oracle 是默认示例) | DB2 / SQL Server / TiDB / 大数据 Hive / ClickHouse… |
+| **合规体系** | 中国 GSP(药品经营质量管理规范) | GAMP 5 / ISO 13485 / HIPAA / GDPR / 等保 2.0… |
+| **门控脚本** | 12 个(setup / brd / compliance / prd / dev-design-backtest…)| — |
+| **VSCode 集成** | 4 个命令(mmdc / drawio / flow-export / 新建文件) | IntelliJ / Vim / Emacs 插件 |
+
+**如何补 config**:在项目根放 3 个 `*-path.md` + 1 个 `compliance/`,详见 `/setup-analysis-delivery` skill。
+
 ## 安装
 
 ### 一键安装(推荐)
@@ -72,8 +90,8 @@ curl -fsSL https://raw.githubusercontent.com/BlueprintOS/analysis-to-delivery/ma
 ### 手动安装
 
 ```bash
-# 稳定版(推荐生产用,锁定到 v3.0.0)
-git clone --branch 3.0.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git \
+# 稳定版(推荐生产用,锁定到 v3.1.0)
+git clone --branch 3.1.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git \
   ~/.claude/skills/analysis-to-delivery
 
 # main 分支(尝鲜用,跟随最新提交)
@@ -97,7 +115,7 @@ bash install.sh --dry-run
 bash install.sh --target /path/to/install
 
 # 指定版本
-bash install.sh --version v3.0.0
+bash install.sh --version v3.1.0
 
 # 卸载
 bash install.sh --uninstall
@@ -110,6 +128,44 @@ bash install.sh --uninstall
 - 回退 `~/.hermes/skills/`(Hermes 用户)
 
 可用 `--target` 强制指定。
+
+## 快速通道
+
+跳过 router,直接按目标选:
+
+| 目标 | 命令 |
+|---|---|
+| 配置项目 | `/setup-analysis-delivery` |
+| 跑 5 项门控全套 | `bash scripts/smoke-test.sh` |
+| 看项目走到哪个阶段 | `python3 scripts/analysis-state.py status` |
+| ASCII → Mermaid | `python3 scripts/flow-to-mermaid.py file.txt` |
+| 校验所有 skill 是否合规 | `python3 scripts/discipline-lint.py skills/` |
+
+## 逆向使用
+
+不是"需求 → 设计",而是**已有产物需要后向追溯**:
+
+| 已有产物 | 逆向动作 |
+|---|---|
+| `01-BRD.md` 已写,字段不确定 | `python3 scripts/field-alignment-check.py <project>` |
+| `05-PRD.md` 与 BRD 冲突 | 回到 `/grill-task` 重对齐 |
+| `06-开发设计.md` 与代码不一致 | 直接 `/qa-audit` 找偏差 |
+| `09-QA审计报告.md` P0 列表 | 逐项修复后重跑 `full-qa-audit.py` |
+| 状态文件 `.analysis-delivery-state.json` 在 | `python3 scripts/analysis-state.py status` 看中断阶段 |
+
+## 度量
+
+`python3 scripts/analysis-state.py metrics [--json]` 输出 5 项:
+
+| # | 指标 | 含义 |
+|---|---|---|
+| 1 | 总 gate 调用次数 | 整套流程自动化门控累计调用 |
+| 2 | 总签字次数 | 用户白名单话术累计签字 |
+| 3 | gate 拦截次数 | 各 gate 脚本失败次数(按脚本名) |
+| 4 | 各阶段重试次数 | 哪些阶段反复回去修 |
+| 5 | 阶段用时(分钟) | 已签字阶段耗时(开始 → 签字) |
+
+**用途**:找流程瓶颈 / 门控过严过松。详见 `disciplines/stage-gate` §度量章节。
 
 ## 快速开始
 
@@ -655,5 +711,5 @@ MIT — 详见 [LICENSE](LICENSE)
 ---
 
 **维护者**:Jason SUN (`sunj243909596@gmail.com`)
-**当前版本**:3.0.1(2026-06-24)
+**当前版本**:3.1.0(2026-07,plan §P0~P3 12 项修复完成)
 **GitHub**:https://github.com/BlueprintOS/analysis-to-delivery

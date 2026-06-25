@@ -3,6 +3,7 @@ name: test-case-design
 description: 测试用例设计 — 覆盖正常路径/边界条件/异常路径/合规校验/性能安全。Use when defining acceptance criteria before development.
 disable-model-invocation: true
 version: 3.0.1
+requires: [stage-gate, doc-numbering]
 
 ---
 
@@ -77,3 +78,12 @@ version: 3.0.1
 - [ ] 业务规则正向 + 反向 + 边界 三类齐
 - [ ] 合规校验用例关联到合规评审条款
 - [ ] 用户签字进入 `/to-prd`
+
+## 反模式
+
+- ❌ 5 大类缺一(正常路径/边界条件/异常路径/合规校验/性能安全) — `testcase-coverage-check.py --strict` 直接 fail
+- ❌ TC 编号不规范(TC-001 写成 Test001) — 必须 `TC-N-xxx` / `TC-B-xxx` / `TC-E-xxx` / `TC-C-xxx` / `TC-P-xxx` 前缀
+- ❌ 合规校验用例未关联到合规条款 — 每条 TC-C-* 必须标 `GSP-XXX` / `GDPR-Art-X` 等条款号
+- ❌ 只写正常路径不写异常 — 主流程:异常用例比例 ≥ 1:1,异常路径 ≥ 90% 覆盖
+- ❌ 性能测试写"应该很快" — 必须量化(P95 < Xs / 并发 Y 单/秒)
+- ❌ 用例步骤空泛("操作直到成功") — 必须分 1/2/3/4 步,每步可复现

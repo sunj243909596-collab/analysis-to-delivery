@@ -2,9 +2,9 @@
 name: analysis-to-delivery
 description: 通用需求分析到开发设计工作流 — 26 个独立 skill 自由组合(2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline)。跨行业、跨技术栈。Use when starting any new feature requiring structured analysis-to-delivery workflow.
 category: software-development
-version: 3.0.1
+version: 3.1.0
 created: 2026-06-22
-updated: "2026-06-24: v3.0.1 增加 grill-task 门控加固(task-confirm-check.py + 5 check + --strict/--loose 双模式)"
+updated: "2026-07-02: v3.1.0 P0-P3 共 12 项修复(6 门控脚本 + discipline lint + bridge 降级 + flow strict + state 持久化 + 数字统一 + README 降级 + 快速通道 + 3 example 升级 + description 精简 + 反模式 + 改名 decisions)"
 ---
 
 # Analysis to Delivery
@@ -24,6 +24,44 @@ updated: "2026-06-24: v3.0.1 增加 grill-task 门控加固(task-confirm-check.p
 - **不知道用哪个?** → `/ask-delivery` (router)
 - **走完整 9 阶段** → `/analysis-delivery-workflow`
 - **进入开发实施** → `/using-superpowers` (router)
+
+## 快速通道
+
+跳过 router,直接按你的目标选:
+
+| 你想要 | 直接调 |
+|---|---|
+| 配置项目(知识库/技术栈/合规/命名) | `/setup-analysis-delivery` |
+| 跑 5 项门控全套 | `bash scripts/smoke-test.sh` |
+| 看项目走到哪个阶段 | `python3 scripts/analysis-state.py status` |
+| 把 ASCII 流程图转成 Mermaid | `python3 scripts/flow-to-mermaid.py file.txt` |
+| 校验所有 skill 是否合规 | `python3 scripts/discipline-lint.py skills/` |
+
+## 逆向使用
+
+不是从需求 → 设计,而是**已有产物需要后向追溯 / 修复**:
+
+| 已有产物 | 逆向动作 |
+|---|---|
+| 有 `01-BRD.md`,但不确定字段是否对 | `python3 scripts/field-alignment-check.py <project>` |
+| 有 `05-PRD.md`,但发现 PRD 与 BRD 冲突 | 回到 `/grill-task` 重对齐 |
+| 有 `06-开发设计.md`,但代码已写完 | 直接进 `/qa-audit` 找设计偏差 |
+| 有 `09-QA审计报告.md` P0 列表 | 逐项修复后重跑 `python3 scripts/full-qa-audit.py` |
+| 状态文件还在(`.analysis-delivery-state.json`) | `python3 scripts/analysis-state.py status` 看中断在哪个阶段 |
+
+## 度量
+
+`scripts/analysis-state.py metrics [--json]` 输出 5 项指标(项目级,持久化到 `.analysis-delivery-state.json`):
+
+| # | 指标 | 含义 |
+|---|---|---|
+| 1 | 总 gate 调用次数 | 整套流程跑了多少次自动化门控 |
+| 2 | 总签字次数 | 用户白名单话术累计签字次数 |
+| 3 | gate 拦截次数 | 每个 gate 脚本失败的次数(按脚本名分) |
+| 4 | 各阶段重试次数 | 哪些阶段需要反复回去修 |
+| 5 | 阶段用时(分钟) | 已签字阶段的耗时(开始 → 签字) |
+
+**用途**:发现流程瓶颈(哪阶段重试最多)、门控过严/过松(gate 拦截频率)。
 
 ## 结构
 

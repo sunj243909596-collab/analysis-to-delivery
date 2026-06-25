@@ -227,7 +227,7 @@ check_exec "init-project-config.sh"
 check_exec "parallel-delegate.sh"
 check_exec "smoke-test.sh"
 check_exec "cookiecutter-gen.sh"
-for f in field-alignment-check.py full-qa-audit.py sql-dialect-check.py postprocess_prd_html.py doc-validate.py; do
+for f in field-alignment-check.py full-qa-audit.py sql-dialect-check.py postprocess_prd_html.py doc-validate.py discipline-lint.py bridge-completeness-check.py flow-to-mermaid.py analysis-state.py description-lint.py antipattern-section-check.py filename-naming-check.py; do
   check_file "scripts/$f" false
 done
 
@@ -361,7 +361,7 @@ if [ -z "$placeholder_hits" ]; then
 else
   warn "scripts/ 仍包含旧占位标记"
 fi
-for helper in doc-validate.py field-alignment-check.py full-qa-audit.py sql-dialect-check.py postprocess_prd_html.py; do
+for helper in doc-validate.py field-alignment-check.py full-qa-audit.py sql-dialect-check.py postprocess_prd_html.py discipline-lint.py bridge-completeness-check.py flow-to-mermaid.py analysis-state.py description-lint.py antipattern-section-check.py filename-naming-check.py; do
   if python3 "$SKILL_DIR/scripts/$helper" --help >/dev/null 2>&1; then
     ok "scripts/$helper --help 可运行"
   else
@@ -397,7 +397,7 @@ done
 # 13.2 GitHub Actions workflows 完整性(5 个)
 check_dir ".github"
 check_dir ".github/workflows"
-for wf in smoke-test.yml sql-dialect-check.yml doc-validate.yml field-alignment-check.yml full-qa-audit.yml; do
+for wf in smoke-test.yml sql-dialect-check.yml doc-validate.yml field-alignment-check.yml full-qa-audit.yml discipline-lint.yml bridge-completeness-check.yml task-confirm-check.yml flow-to-mermaid-ascii-strict.yml analysis-state.yml description-lint.yml antipattern-section-check.yml filename-naming-check.yml; do
   check_file ".github/workflows/$wf"
 done
 wf_total=$(find "$SKILL_DIR/.github/workflows" -name "*.yml" 2>/dev/null | wc -l)

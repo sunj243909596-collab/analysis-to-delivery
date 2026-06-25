@@ -1,7 +1,8 @@
 # Plan — Analysis to Delivery
 
-> **当前版本**:v3.0.1(2026-06-24)— grill-task 门控加固
-> 前置版本:v3.0.0(2026-06-22)— 工具链 + VSCode 扩展
+> **当前版本**:v3.1.0(2026-07-02)— P0-P3 共 12 项修复(详见 [CHANGELOG.md](./CHANGELOG.md) 与本文件下方 `### v3.1.0` 节)
+> 前置版本:v3.0.1(2026-06-24)— grill-task 门控加固
+> 更早:v3.0.0(2026-06-22)— 工具链 + VSCode 扩展
 > 路线图详见下方各版本节。最新进度看 [README.md](README.md)，详细规格看 [SPEC.md](SPEC.md)。
 
 ## 愿景
@@ -21,14 +22,14 @@
 |---|---|
 | **大道至简** | 主文档只讲"怎么做"，领域细节全部放 config |
 | **可插拔** | 用户只加载自己用得到的配置 |
-| **跨行业** | 医药/金融/SaaS/移动 App 都用同一套骨架 |
-| **跨技术栈** | Java/Go/Python/Node 全支持 |
+| **跨行业** | 框架层通用;具体行业示例默认 3 个(医药 WMS/SaaS/移动 App),其他需用户补 config |
+| **跨技术栈** | 流程骨架与语言无关;具体技术栈示例默认 3 套(Spring+Vue/Node+React/Flutter+Firebase),其他需用户补 config |
 | **可审计** | 所有产物可追溯：每段文档对应哪个阶段、哪条配置 |
 | **不重复造轮子** | 借用社区成熟工具（pandoc、drawio、Python），不重新发明 |
 
 ## 版本路线图
 
-### v1.0（MVP，当前）— 最小可用
+### v1.0（MVP，2026-Q2 已发布）— 最小可用
 **目标**：跑通"通用工作流 + 1 个领域示例"，让用户能装能用。
 
 **范围**：
@@ -119,6 +120,16 @@
 - 可选：集成 docx 模板（python-docx-template）支持更精细排版
 - 可选：VSCode 扩展（右键项目 → 应用 skill）
 
+### v3.1.0（2026-07-02,当前）— P0-P3 共 12 项修复
+- 🆕 **6 个门控脚本** 覆盖 1→2 / 3→4 / 4→5 / 5→6 / 6→7 / 7→8 六个过渡点(plan §1)
+- 🆕 **discipline 强制加载** frontmatter `requires:` + lint(plan §2)
+- 🆕 **7 个 bridge 降级方案** + **flow-to-mermaid --ascii-strict**(plan §3-4)
+- 🆕 **state 持久化** `.analysis-delivery-state.json`(plan §5)
+- 🆕 **3 example 升级到 v3.0.1** 新增 04/05/07 文档(plan §9)
+- 🆕 **快速通道/逆向使用/度量** 三大能力(plan §8)
+- 🆕 **description 精简** + **反模式清单** + **config-used → decisions 改名**(plan §10-12)
+- 详细 changelog 见 [CHANGELOG.md](./CHANGELOG.md) `[v3.1.0]` 节
+
 ## 已识别的限制（MVP 阶段需告知用户）
 
 | 限制 | 影响 | 缓解 |
@@ -162,7 +173,7 @@
 
 ## 进度看板
 
-### v1.0 MVP — 全部完成 ✅
+### v1.0 MVP（2026-Q2）— 全部完成 ✅
 | Phase | 状态 | Commit | 备注 |
 |---|---|---|---|
 | 建目录骨架 | ✅ 已完成 | 129dea6 | 2026-06-22 |
@@ -233,6 +244,22 @@
 | VSCode 扩展 scaffold | ✅ 已完成 | `vscode-extension/`(4 命令 + 配置)|
 | docx 模板 | ⬜ 推迟 | python-docx-template,v4.0 候选(非阻塞,用户问起再启动)|
 
+### v3.1.0 — 全部完成 ✅(2026-07-02 发版)
+| Phase | 状态 | 备注 |
+|---|---|---|
+| P0-1 6 个门控脚本 + 6 workflow + 6 pytest | ✅ 已完成 | `scripts/{setup-check,brd-check,compliance-check,testcase-coverage-check,prd-check,dev-design-backtest}.py` |
+| P0-2 discipline lint(frontmatter `requires:`) | ✅ 已完成 | 9 个 user-invoked SKILL.md + `scripts/discipline-lint.py` |
+| P1-1 7 个 bridge 降级方案 | ✅ 已完成 | `skills/orchestration/development/*/SKILL.md` |
+| P1-2 `flow-to-mermaid.py --ascii-strict` | ✅ 已完成 | 检测无回流 + `classDef` |
+| P1-3 `analysis-state.py` 5 子命令 | ✅ 已完成 | init/record-gate/signoff/status/metrics |
+| P1-4 数字打架修复 | ✅ 已完成 | 版本号 + 26 skill 数字复核 |
+| P2-1 README 跨行业话术降级 | ✅ 已完成 | "已覆盖 vs 未覆盖"对照表 |
+| P2-2 快速通道/逆向使用/度量 | ✅ 已完成 | SKILL.md + README.md 各增 3 章节 |
+| P2-3 3 example 升级到 v3.0.1 | ✅ 已完成 | 04/05/07 三文档 × 3 example |
+| P3-1 description 精简到 80-150 字符 | ✅ 已完成 | 26 个 SKILL.md 全过 `description-lint.py` |
+| P3-2 9 个 SKILL.md 补反模式清单 | ✅ 已完成 | `scripts/antipattern-section-check.py` 校验 ≥3 条 |
+| P3-3 config-used.md → decisions.md 改名 | ✅ 已完成 | 3 example + templates + `filename-naming-check.py` |
+
 ### 待发布的 Git tag(发布流程,非开发任务)
 
 | Tag | 触发条件 | 命令 |
@@ -241,6 +268,7 @@
 | `[1.4.0]` | v1.4.0-dev 稳定后切 | `git tag -a 1.4.0 -m "v1.4.0: 拆分为 26 个独立 skill"` |
 | `[2.0.0]` | v2.0 多示例 + CI 验证后切 | `git tag -a 2.0.0 -m "v2.0.0: 多领域示例 + GitHub Actions"` |
 | `[3.0.0]` | v3.0 工具链验证后切 | `git tag -a 3.0.0 -m "v3.0.0: drawio/mermaid CLI + VSCode 扩展"` |
+| `[3.1.0]` | v3.1.0 P0-P3 12 项修复合并后切 | `git tag -a 3.1.0 -m "v3.1.0: P0-P3 共 12 项修复(6 门控 + discipline lint + bridge + flow strict + state + 3 example + description + 反模式 + decisions)"` |
 
 > 当前 main 已具备以上所有能力,但未打 tag — 是否切 tag 由维护者按发版节奏决定。
 

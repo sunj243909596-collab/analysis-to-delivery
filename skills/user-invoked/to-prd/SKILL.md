@@ -3,6 +3,7 @@ name: to-prd
 description: 生成产品需求文档(PRD) — 含用户故事、功能需求、非功能需求、验收标准。Use when formalizing product requirements for handoff to design and dev.
 disable-model-invocation: true
 version: 3.0.1
+requires: [no-field-guessing, doc-numbering, stage-gate]
 
 ---
 
@@ -83,3 +84,13 @@ version: 3.0.1
 - [ ] 字段映射表通过 `field-alignment-check.py`
 - [ ] 三格式产物存在(可选 HTML/DOCX)
 - [ ] 用户签字进入 `/dev-design`
+
+## 反模式
+
+- ❌ PRD 8 章节缺一 — `prd-check.py --strict` 直接 fail(一~八必须齐)
+- ❌ §七 验收标准未被白名单签字 — 必须 4 句之一(我已全部确认,可以进入下一步 / 确认通过,进入 dev-design / 全部完成,继续 / approved, proceed to next stage)
+- ❌ §二 用户故事只列 P0 — P0/P1/P2 三档必须都有,否则后续排期无法决策
+- ❌ §五 数据需求不引用 03-数据模型设计 — 必须明确"参考 03-数据模型设计.md §X"
+- ❌ §六 合规要求不引用 04-合规评审 — 必须明确"参考 04-合规评审.md §X"
+- ❌ §三 功能需求跳过异常处理 — 3.1.X 异常处理表格必填(异常/提示/处理 三列)
+- ❌ §八 风险与依赖无缓解措施 — 每条风险必须配缓解 + 责任方

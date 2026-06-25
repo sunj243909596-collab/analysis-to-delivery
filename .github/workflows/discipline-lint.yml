@@ -1,0 +1,56 @@
+name: discipline-lint
+
+# 校验 9 个 user-invoked SKILL.md 的 frontmatter requires: 字段
+# 与 ## Contract 块 - Required disciplines: 行一致
+# 且被引用的 discipline 路径真实存在于 skills/disciplines/
+
+on:
+  pull_request:
+    paths:
+      - 'skills/user-invoked/**'
+      - 'skills/disciplines/**'
+      - 'scripts/discipline-lint.py'
+      - '.github/workflows/discipline-lint.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Self-test
+        run: python3 scripts/discipline-lint.py --self-test
+
+      - name: Run pytest
+        run: |
+          pip install pytest
+          pytest tests/test_discipline_lint.py -v
+
+      - name: Lint real skills/
+        run: python3 scripts/discipline-lint.py --strict skills/
+
+      - name: Break-on-modify smoke
+        run: |
+          set -e
+          F="skills/user-invoked/grill-task/SKILL.md"
+          BACKUP="$(mktemp)"
+          cp "$F" "$BACKUP"
+          # 故意改坏 requires 数组
+          sed -i 's/^requires:.*/requires: [typo-discipline]/' "$F"
+          # 跑应 exit 1
+          if python3 scripts/discipline-lint.py --strict skills/; then
+            echo "❌ 应 exit 1 但通过"
+            cp "$BACKUP" "$F"
+            exit 1
+          fi
+          echo "✅ 故意改坏后正确 exit 1"
+          cp "$BACKUP" "$F"
+
+      - name: JSON output sanity
+        run: |
+          python3 scripts/discipline-lint.py --strict --json skills/ > /tmp/lint.json
+          python3 -c "import json,sys; d=json.load(open('/tmp/lint.json')); assert 'checks' in d; assert isinstance(d['checks'], list); print('JSON shape OK,', len(d['checks']), 'checks')"

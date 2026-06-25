@@ -3,6 +3,7 @@ name: setup-analysis-delivery
 description: 首次为新项目接 analysis-to-delivery 工作流 — 生成 4 个项目级 *-path.md 配置文件。Use when starting a new project or adding this skill to an existing project.
 disable-model-invocation: true
 version: 3.0.1
+requires: [context-pointer]
 
 ---
 
@@ -68,3 +69,12 @@ version: 3.0.1
 - [ ] 用户已填写真实内容(knowledge-path 必须至少 1 个真实路径)
 - [ ] 如生成 `config-used.md`,已明确标注为配置使用记录 / ADR,而非配置输入
 - [ ] 已提交到 git(可选,但建议)
+
+## 反模式
+
+- ❌ 4 个 `*-path.md` 留 TBD / placeholder — 必须填真实路径,`setup-check.py --strict` 必过
+- ❌ knowledge-path 写"待补充" — 必须至少 1 个真实可访问路径,否则字段对齐时无据可查
+- ❌ compliance-path 不标 `mode` — 必须 `mode=gsp` / `mode=hipaa` / `mode=none` 选一
+- ❌ tech-stack-path 不标 Target_DB — 必须标 `oracle` / `postgresql` / `mysql` / `firestore` 等,否则 SQL 方言检查失据
+- ❌ `config-used.md` 写成配置文件 — 实际是 ADR / 配置使用记录,不参与加载,严禁误用
+- ❌ 把项目级 `*-path.md` 复制到 skill 内 — skill 级是 fallback,项目级才是真实配置,优先级不同

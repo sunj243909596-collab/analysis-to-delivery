@@ -144,6 +144,8 @@ bash install.sh --uninstall
 | 看项目走到哪个阶段 | `python3 scripts/analysis-state.py status` |
 | ASCII → Mermaid | `python3 scripts/flow-to-mermaid.py file.txt` |
 | 校验所有 skill 是否合规 | `python3 scripts/discipline-lint.py skills/` |
+| 校验 Required rules / paths 声明 | `python3 scripts/rules-path-lint.py <repo>` |
+| 校验目标边界与分期 | `python3 scripts/goal-boundary-check.py <project_dir>` |
 
 ## 逆向使用
 
@@ -598,11 +600,13 @@ analysis-to-delivery/
 │   ├── field-alignment-check.py
 │   ├── sql-dialect-check.py
 │   ├── full-qa-audit.py        # 6 大类聚合(P0 阻断)
-│   ├── discipline-lint.py      # 元数据校验
+│   ├── discipline-lint.py      # 元数据校验(legacy 兼容壳)
 │   ├── description-lint.py
 │   ├── antipattern-section-check.py
 │   ├── bridge-completeness-check.py
 │   ├── filename-naming-check.py
+│   ├── rules-path-lint.py      # Required rules / paths 声明一致性
+│   ├── goal-boundary-check.py  # 目标边界与分期(TASK_CONFIRM / PRD / TC / HANDOVER)
 │   ├── flow-to-mermaid.py      # ASCII → Mermaid(--ascii-strict)
 │   ├── flow-to-drawio.py       # ASCII → Drawio XML
 │   ├── flow-export.sh          # Mermaid → SVG/PNG(包装 mmdc)
@@ -659,7 +663,9 @@ analysis-to-delivery/
 | `scripts/field-alignment-check.py` | Markdown 表格 + SQL DDL 字段对齐(missing / type_mismatch / nullable_mismatch) | Python 标准库 |
 | `scripts/sql-dialect-check.py` | Oracle / PostgreSQL / MySQL 方言混用,`Target_DB` 注释校验 | Python 标准库 |
 | `scripts/full-qa-audit.py` | 6 大类聚合(P0 阻断 merge / release) | Python 标准库 |
-| `scripts/discipline-lint.py` | SKILL.md `requires:` 与 discipline 路径一致 + 无 typo | Python 标准库 |
+| `scripts/discipline-lint.py` | SKILL.md `requires:` 与 discipline 路径一致 + 无 typo(legacy 兼容壳) | Python 标准库 |
+| `scripts/rules-path-lint.py` | `Required rules / paths` 声明一致性(未知 / 重复 / 缺失 / legacy 别名) | Python 标准库 |
+| `scripts/goal-boundary-check.py` | 目标边界与分期: TASK_CONFIRM §二 / §三 + PRD §七 + TC §三 + HANDOVER §二 | Python 标准库 |
 
 ### 元数据校验(4 个)
 

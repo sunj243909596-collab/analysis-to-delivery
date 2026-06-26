@@ -13,7 +13,7 @@ version: 3.0.1
 - Inputs: project goal, domain, tech stack, optional existing `*-path.md`
 - Outputs: 9-stage delivery chain ending in `HANDOVER.md`
 - Gates: stage-gate signoff between every stage; `task-confirm-check.py --strict` for 2->3; QA P0=0 for 8->9
-- Required rules: `stage-gate`, `doc-numbering`, `context-pointer`
+- Required rules: `stage-gate`, `doc-numbering`, `context-pointer`, `goal-boundary`
 - Required paths: `knowledge-path`, `tech-stack-path`, `compliance-path`, `doc-naming-path`
 - Next: `/setup-analysis-delivery` then sequential workflow; after stage 9 optionally `/using-superpowers`
 

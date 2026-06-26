@@ -39,6 +39,7 @@ KNOWN_RULES: set[str] = {
     "sql-dialect",          # canonical
     "doc-numbering",
     "context-pointer",
+    "goal-boundary",        # Task 9
 }
 
 # 已废弃 / 仅作兼容壳存在的旧名,任何 SKILL.md 都不应再声明

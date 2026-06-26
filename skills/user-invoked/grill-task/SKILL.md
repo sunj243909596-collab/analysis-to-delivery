@@ -14,7 +14,7 @@ requires: [context-pointer, no-field-guessing, no-self-invent, stage-gate]
 - Inputs: `TASK_CONFIRM_*.md`, `knowledge-path.md`, user requirement notes
 - Outputs: `REVIEW_需求确认书.md`, `REVIEW_字段对齐分析.md`
 - Gates: `python3 scripts/task-confirm-check.py --strict TASK_CONFIRM_*.md REVIEW_需求确认书.md REVIEW_字段对齐分析.md`; user whitelist signoff
-- Required rules: `stage-gate`, `no-field-guessing`, `context-pointer`
+- Required rules: `stage-gate`, `no-field-guessing`, `context-pointer`, `goal-boundary`
 - Required paths: `knowledge-path`, `doc-naming-path`
 - Next: `/to-brd`
 

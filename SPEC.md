@@ -560,6 +560,33 @@ paths = project-owned context pointers
 
 兼容壳不得携带与 canonical 不同的规则文本。如发现分歧,以 canonical 为准。
 
+## 14. Goal-Boundary Control（v3.2.0-dev）
+
+> 配合 `rules/goal-boundary.md` 与 `scripts/goal-boundary-check.py`。
+
+### 14.1 为什么需要
+
+- 用户在第 2/3 阶段最常踩的坑是「本次到底要交付什么？做到什么程度？」模糊。
+- 不显式区分「最终目标 / 本次边界 / 明确不解决」,后续 PRD / TC / HANDOVER 全部会跟着模糊。
+
+### 14.2 校验对象
+
+| 文档 | 校验点 | 严重度 |
+|---|---|---|
+| `TASK_CONFIRM_*.md` §二 | 含「做到什么程度」「不解决哪些」「是否分阶段」3 个必填问题 | error |
+| `TASK_CONFIRM_*.md` §三 | 若分阶段是,至少 1 行 MVP / Phase 1,每行有 goal + acceptance | error |
+| `05-PRD.md` §七 | 每条 AC 关联到阶段 | error |
+| `07-测试用例设计.md` §三 | 每条 TC 关联到阶段 + 至少 1 个 AC | error / warning |
+| `HANDOVER.md` §二 | 已达成 / 延后 / 剩余差距 三表填写 | warning |
+
+### 14.3 与 PRD §九 / 模板的对应
+
+- `templates/TASK_CONFIRM.md` §二 阶段目标
+- `templates/REVIEW_需求确认书.md` §八 / §九 目标边界 + 阶段目标
+- `templates/PRD.md` §九.1 完成边界 / §九.2 阶段映射
+- `templates/TEST_CASE_DESIGN.md` §五 阶段覆盖检查
+- `templates/HANDOVER.md` §二 阶段达成与剩余目标
+
 ---
 
 **最后更新**：2026-06-26

@@ -14,7 +14,7 @@ requires: [stage-gate, doc-numbering]
 - Inputs: QA audit with P0=0, completed design documents, known risks and TODOs
 - Outputs: `HANDOVER.md`
 - Gates: handover includes completed docs, TODOs, risks, follow-up recommendation; receiver acknowledged
-- Required rules: `stage-gate`, `doc-numbering`, `context-pointer`
+- Required rules: `stage-gate`, `doc-numbering`, `context-pointer`, `goal-boundary`
 - Required paths: `knowledge-path`, `tech-stack-path`, `compliance-path`, `doc-naming-path`
 - Next: `/using-superpowers` or implementation team handoff
 

@@ -14,7 +14,7 @@ requires: [no-field-guessing, no-self-invent, sql-dialect-discipline, stage-gate
 - Inputs: signed `05-产品需求文档 PRD.md`, `knowledge-path.md`, `tech-stack-path.md`, `doc-naming.md`
 - Outputs: `AGENTS.md`, `02-功能规格说明书 FSD.md`, `03-数据模型设计.md`, `06-开发设计说明书.md`, `08-设计回测报告.md`, optional `RETRO_任务复盘汇总.md`
 - Gates: field alignment passes; SQL dialect checks pass; design backtest passes; user signoff
-- Required rules: `stage-gate`, `no-field-guessing`, `no-self-invent`, `sql-dialect`, `doc-numbering`, `context-pointer`
+- Required rules: `stage-gate`, `no-field-guessing`, `no-self-invent`, `sql-dialect`, `doc-numbering`, `context-pointer`, `goal-boundary`
 - Required paths: `knowledge-path`, `tech-stack-path`, `doc-naming-path`
 - Next: `/qa-audit`
 

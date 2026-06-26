@@ -14,7 +14,7 @@ requires: [stage-gate, sql-dialect-discipline, doc-numbering]
 - Inputs: completed numbered documents `01-09`, project config files, knowledge/compliance/tech-stack pointers
 - Outputs: `09-QA审计报告.md`
 - Gates: `python3 scripts/full-qa-audit.py <project>` returns P0=0; remediation loop complete; user signoff
-- Required rules: `stage-gate`, `no-field-guessing`, `no-self-invent`, `sql-dialect`, `doc-numbering`
+- Required rules: `stage-gate`, `no-field-guessing`, `no-self-invent`, `sql-dialect`, `doc-numbering`, `goal-boundary`
 - Required paths: `knowledge-path`, `tech-stack-path`, `compliance-path`, `doc-naming-path`
 - Next: `/handoff`
 

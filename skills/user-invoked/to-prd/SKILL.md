@@ -14,7 +14,7 @@ requires: [no-field-guessing, doc-numbering, stage-gate]
 - Inputs: signed BRD, compliance review, test cases, field alignment review
 - Outputs: `05-产品需求文档 PRD.md`, optional `05-PRD.html`, optional `05-PRD.docx`, optional Figma design document
 - Gates: PRD required sections complete; acceptance criteria signed; field mapping validates against knowledge source
-- Required rules: `stage-gate`, `no-field-guessing`, `doc-numbering`
+- Required rules: `stage-gate`, `no-field-guessing`, `doc-numbering`, `goal-boundary`
 - Required paths: `knowledge-path`, `doc-naming-path`
 - Next: `/dev-design`
 

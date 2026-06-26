@@ -16,6 +16,7 @@
 - 🆕 **per-stage `Required rules` / `Required paths` 声明**:每个 user-invoked / orchestration SKILL.md 在 `## Contract` 块中显式声明需要的 rules 与 paths(替代旧的 `Required disciplines`)。
 - 🆕 **`scripts/rules-path-lint.py`**:机器校验声明一致性 —— 禁止未知 rule / path / 重复 declaration / legacy `sql-dialect-discipline` 别名 / 缺失 `rules/*.md` 与 `paths/*.md` 文件。
 - 🆕 **thin root SKILL.md**:根 `SKILL.md` 缩减到 35 行(原 119 行),仅作 router / 架构图 / 加载规则。详细说明迁移到 `SPEC.md §13`。
+- 🆕 **`rules/goal-boundary.md` + `scripts/goal-boundary-check.py`**:目标边界与分期硬门控 —— `TASK_CONFIRM` §二 / §三 + `PRD` §七 AC 阶段映射 + `TC` §三 阶段 + AC 关联 + `HANDOVER` §二 阶段达成 / 延后 / 差距。`P0/P1/P2` 优先级不当作阶段(防误判)。`tests/test_goal_boundary_check.py` 13 个 case。
 - ♻️ **`scripts/discipline-lint.py` 降级为 legacy 兼容壳**:不再校验 `requires:` frontmatter 与 `- Required disciplines:` 行(已废弃),仅校验 `skills/disciplines/*/SKILL.md` 兼容壳仍指向对应 canonical `rules/*.md`。
 - ♻️ **`scripts/setup-check.py` / `init-project-config.sh`**:支持 canonical `paths/*.md`,legacy 项目根 `*.md` 接受并产生 warning。
 - ♻️ **`templates/project-config/*`** 改为兼容 wrapper(指向 `paths/*.md`),新项目走 `init-project-config.sh` 默认(写到 `paths/`),旧项目用 `--legacy` 兼容。

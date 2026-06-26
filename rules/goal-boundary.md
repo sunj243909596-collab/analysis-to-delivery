@@ -1,37 +1,66 @@
-# Goal Boundary Rule
+# Goal Boundary Rule — 目标边界与分期
 
-## Purpose
+> 规范来源:本规则在 v3.2.0-dev 由 `docs/plans/2026-06-25-rules-path-refactor.md` Task 9 引入,作为 `goal-boundary` 跨阶段硬门控。
 
-Define what counts as complete for a requirement before analysis, design, implementation, QA, and handoff proceed.
+## 目的
 
-## Required Decisions
+在进入分析、设计、实施、QA、交接等下游阶段之前,**显式定义**一个需求「做到什么程度才算完成」。没有清晰的「最终目标 / 本次边界 / 明确不解决」三件套,后续 PRD / TC / HANDOVER 全部会跟着模糊。
 
-Every requirement must state:
+## 必填决策
 
-- Final business goal.
-- Current delivery completion definition.
-- Measurable success indicators.
-- Explicit non-goals.
-- Whether staged delivery is allowed.
-- Phase goals when staged delivery is allowed.
+每个需求必须声明以下 6 项:
 
-## Phase Rules
+| # | 项 | 含义 |
+|---|---|---|
+| 1 | 最终业务目标 | 项目最终要达成的业务结果(不限于本次) |
+| 2 | 本次交付完成定义 | 本次做到什么程度就算完成(可量化) |
+| 3 | 可量化成功指标 | 验收时怎么判定成功(如 P95 < 3s、错误率 < 0.1%) |
+| 4 | 明确不解决的问题 | 本次**不做**的事,显式列出来防止 scope creep |
+| 5 | 是否允许分阶段交付 | 是 / 否;若是,继续填第 6 项 |
+| 6 | 阶段目标 | 分阶段时,每阶段的目标 / 包含范围 / 排除范围 / 交付物 / 验收 / 是否阻塞上线 |
 
-If staged delivery is allowed, each phase must define:
+## 阶段规则
 
-| Field | Required Meaning |
+若允许分阶段交付,每个阶段必须定义以下 7 个字段:
+
+| 字段 | 必填含义 |
 |---|---|
-| Phase | MVP, Phase 1, Phase 2, Later, or a project-owned name |
-| Goal | The outcome this phase must achieve |
-| Included scope | Capabilities included in this phase |
-| Excluded scope | Capabilities intentionally deferred or rejected |
-| Deliverables | Documents, code, configuration, data, migration, or tests expected |
-| Acceptance criteria | Observable conditions that prove this phase is complete |
-| Release blocker | Whether this phase blocks launch or can be deferred |
+| 阶段 | MVP / Phase 1 / Phase 2 / Later,或项目自定义名 |
+| 目标 | 本阶段必须达成的结果 |
+| 包含范围 | 本阶段包含的能力 |
+| 不包含范围 | 本阶段故意延后或拒绝的能力 |
+| 交付物 | 预期产出的文档 / 代码 / 配置 / 数据 / 迁移 / 测试 |
+| 验收条件 | 能证明本阶段完成的可观测条件 |
+| 是否阻塞上线 | 本阶段是否阻塞 launch(可延后) |
 
-## Hard Gates
+## 硬门控
 
-- Do not enter BRD if the current delivery completion definition is missing.
-- Do not enter PRD if acceptance criteria are not mapped to a phase.
-- Do not enter dev-design if Phase 1 or MVP acceptance criteria are untestable.
-- Do not mark handoff complete without listing achieved phases, deferred phases, and remaining goal gaps.
+- `TASK_CONFIRM_*.md` §二 缺「本次交付做到什么程度才算完成」或「明确不解决哪些问题」→ **不得进入 BRD**。
+- `TASK_CONFIRM_*.md` §三 分阶段是但无 MVP / Phase 1 行 → **不得进入 BRD**。
+- `05-PRD.md` §七 验收编号未关联到阶段 → **不得进入 dev-design**。
+- `07-测试用例设计.md` §三 用例未关联到阶段或未关联到 AC-* → **不得进入 QA**。
+- `HANDOVER.md` §二 已达成 / 延后 / 剩余差距未填 → **不得签字交接**。
+
+## 配套工具
+
+- `scripts/goal-boundary-check.py <project_dir>` — 自动校验上述硬门控
+- `--self-test` — 跑内置 6 个回归 case
+- `--loose` — 仅 warning,不阻断(用于已有项目渐进迁移)
+- 模板: `templates/TASK_CONFIRM.md` §二 / `templates/REVIEW_需求确认书.md` §八 / `templates/PRD.md` §九 / `templates/TEST_CASE_DESIGN.md` §五 / `templates/HANDOVER.md` §二
+
+## 反例
+
+```markdown
+❌ 错误:本次交付目标模糊
+"本次把核心流程做完" — 什么叫「核心」?什么叫「做完」?
+
+❌ 错误:不写不解决什么
+"报表导出"没列进 non-goals,结果 PRD 把报表功能当 P0 写,工期翻倍
+
+✅ 正确:本次目标 + 不解决 + 验收 三件套齐
+- 最终业务目标:提升收货效率
+- 本次交付:关键场景全自动化(MVP)
+- 不解决:报表导出 / 批量导入(放 Phase 2)
+- 验收:P95 < 3s,主流程 e2e 通过
+- 分阶段:是(MVP / Phase 1 / Phase 2 / Later)
+```

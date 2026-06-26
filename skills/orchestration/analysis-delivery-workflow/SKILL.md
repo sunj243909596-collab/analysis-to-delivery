@@ -112,9 +112,11 @@ python3 scripts/analysis-state.py metrics [--json]
 
 **中断恢复**:状态文件在 `.gitignore`,存在本地;下次开会话时跑 `status` 即可看到当前阶段、已签字阶段、错误计数。
 
-## 调用的 discipline
+## 调用的 rule
 
-See the `Required rules` and `Required paths` lines in the contract above.
+- `rules/stage-gate` — 3 层门控
+- `rules/no-field-guessing` — 字段名
+- `rules/doc-numbering` — 文档编号
 
 ## 结束条件
 

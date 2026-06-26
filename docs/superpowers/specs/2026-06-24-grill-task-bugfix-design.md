@@ -3,7 +3,7 @@
 > 日期: 2026-06-24
 > 作者: Claude (brainstorming session)
 > 状态: 待用户审阅
-> 关联版本: analysis-to-delivery v3.0.0-dev
+> 关联版本: analysis-to-delivery v4.0.0
 > 相关 issue: grill-task 在 LLM 解读下可被"部分确认"放行进 BRD,导致未对齐需求进入设计阶段
 
 ---

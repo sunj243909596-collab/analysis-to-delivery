@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-discipline-lint.py — **legacy 兼容壳** discipline 校验（v3.2.0-dev）
+discipline-lint.py — **legacy 兼容壳** discipline 校验（v4.0.0）
 
-> ⚠️ v3.2.0-dev 起,`discipline-lint.py` 不再是阶段依赖声明的真理来源。
+> ⚠️ v4.0.0 起,`discipline-lint.py` 不再是阶段依赖声明的真理来源。
 > 新的真理来源是 `scripts/rules-path-lint.py`,它检查每个 SKILL.md 的
 > `- Required rules:` 和 `- Required paths:` 声明。
 >

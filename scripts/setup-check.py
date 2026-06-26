@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-setup-check.py — 阶段 1→2 配置就绪门控（v3.2.0-dev / rules-and-paths refactor）
+setup-check.py — 阶段 1→2 配置就绪门控（v4.0.0 / rules-and-paths refactor）
 
 校验项目根（或指定目录）下项目级配置存在且非空：
 

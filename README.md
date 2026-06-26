@@ -3,7 +3,7 @@
 > 通用需求分析到开发实施工作流 — **26 个独立可组合 skill**、3 个完整行业示例、13 个 CI workflow、26 个自动化脚本、15 个 pytest 测试。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)](plan.md)
+[![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)](plan.md)
 [![Skills](https://img.shields.io/badge/skills-26-green.svg)](skills/)
 [![Examples](https://img.shields.io/badge/examples-3-orange.svg)](examples/)
 [![CI](https://img.shields.io/badge/CI-13%20workflows-purple.svg)](.github/workflows/)
@@ -94,8 +94,8 @@ curl -fsSL https://raw.githubusercontent.com/BlueprintOS/analysis-to-delivery/ma
 ### 手动安装
 
 ```bash
-# 稳定版(推荐生产用,锁定到 v3.1.0)
-git clone --branch 3.1.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git \
+# 稳定版(推荐生产用,锁定到 v4.0.0)
+git clone --branch 4.0.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git \
   ~/.codex/skills/analysis-to-delivery
 
 # main 分支(尝鲜用,跟随最新提交)
@@ -127,7 +127,7 @@ bash install.sh --agent opencode
 bash install.sh --target /path/to/install
 
 # 指定版本
-bash install.sh --version v3.1.0
+bash install.sh --version v4.0.0
 
 # 卸载(会清理已知 agent skills 目录中的本 skill)
 bash install.sh --uninstall
@@ -518,7 +518,7 @@ npm run compile
 # F5 启动 Extension Development Host
 # 或打包 .vsix:
 npm run package
-code --install-extension analysis-to-delivery-0.1.0.vsix
+code --install-extension analysis-to-delivery-4.0.0.vsix
 ```
 
 **配置**(`settings.json`):
@@ -595,7 +595,7 @@ analysis-to-delivery/
 │       ├── sql-dialect-discipline/ → rules/sql-dialect.md
 │       ├── doc-numbering/        →  rules/doc-numbering.md
 │       └── context-pointer/      →  rules/context-pointer.md
-├── rules/                      # 8 个跨阶段规则(canonical,v3.2.0-dev)
+├── rules/                      # 8 个跨阶段规则(canonical,v4.0.0)
 ├── paths/                      # 4 个项目级配置入口(canonical)
 ├── docs/adapters/              # Codex / OpenCode 等 agent 接入说明
 ├── templates/project-config/   # 兼容壳(指向 paths/*)
@@ -820,5 +820,5 @@ MIT — 详见 [LICENSE](LICENSE)
 ---
 
 **维护者**:Jason SUN (`sunj243909596@gmail.com`)
-**当前版本**:3.1.0(2026-07,plan §P0~P3 12 项修复完成)
+**当前版本**:4.0.0(2026-07,plan §P0~P3 12 项修复完成)
 **GitHub**:https://github.com/BlueprintOS/analysis-to-delivery

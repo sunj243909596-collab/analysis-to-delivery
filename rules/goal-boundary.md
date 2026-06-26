@@ -1,6 +1,6 @@
 # Goal Boundary Rule — 目标边界与分期
 
-> 规范来源:本规则在 v3.2.0-dev 由 `docs/plans/2026-06-25-rules-path-refactor.md` Task 9 引入,作为 `goal-boundary` 跨阶段硬门控。
+> 规范来源:本规则在 v4.0.0 由 `docs/plans/2026-06-25-rules-path-refactor.md` Task 9 引入,作为 `goal-boundary` 跨阶段硬门控。
 
 ## 目的
 

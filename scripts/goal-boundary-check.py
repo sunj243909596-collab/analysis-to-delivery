@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-goal-boundary-check.py — goal-boundary 目标边界与分期校验（v3.2.0-dev）
+goal-boundary-check.py — goal-boundary 目标边界与分期校验（v4.0.0）
 
 > 配合 `rules/goal-boundary.md` 使用。
 

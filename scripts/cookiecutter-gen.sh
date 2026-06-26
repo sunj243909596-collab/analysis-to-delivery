@@ -38,7 +38,7 @@ usage() {
   --name <name>       项目中文名（默认 "My Project"）
   --slug <slug>       项目目录名（默认从 name 生成）
   --code <code>       项目代号（默认 "MP"）
-  --version <ver>     起始版本（默认 "0.1.0"）
+  --version <ver>     起始版本（默认 "4.0.0"）
   --owner <owner>     项目负责人（默认 "Project Lead"）
   --date <date>       启动日期（默认今天，格式 YYYY-MM-DD）
   --list              只列出 cookiecutter.json 中的变量

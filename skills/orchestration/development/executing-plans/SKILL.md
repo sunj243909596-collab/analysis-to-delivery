@@ -1,7 +1,7 @@
 ---
 name: executing-plans
 description: 逐步按计划执行 + 复盘 — 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/executing-plans/。
-version: 3.0.1
+version: 4.0.0
 
 ---
 

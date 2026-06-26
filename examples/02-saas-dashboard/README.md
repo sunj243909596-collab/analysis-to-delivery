@@ -40,7 +40,7 @@
 | `tech-stack-path.md` | `/setup-analysis-delivery` | 0 |
 | `compliance-path.md` | `/setup-analysis-delivery` | 0 |
 | `doc-naming.md` | `/setup-analysis-delivery` | 0 |
-| `decisions.md` | ADR / 决策记录(v3.1.0 起改名) | 1 |
+| `decisions.md` | ADR / 决策记录(v4.0.0 起改名) | 1 |
 
 ## 与 WMS 示例的差异
 

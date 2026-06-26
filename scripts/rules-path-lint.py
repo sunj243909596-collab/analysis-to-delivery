@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-rules-path-lint.py — 校验 rules / paths 声明一致性（v3.2.0-dev）
+rules-path-lint.py — 校验 rules / paths 声明一致性（v4.0.0）
 
 检查项：
 1. 所有 rules/*.md 文件存在(目录里不能多也不能少)

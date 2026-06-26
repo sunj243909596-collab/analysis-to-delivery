@@ -47,7 +47,7 @@ err()   { echo -e "${RED}❌${NC} $1"; }
 # ---------- 帮助 ----------
 usage() {
   cat <<EOF
-项目级 config 一键初始化（v3.2.0-dev / rules-and-paths refactor）
+项目级 config 一键初始化（v4.0.0 / rules-and-paths refactor）
 
 默认写到 canonical 位置 <项目根>/paths/*.md。
 用 --legacy 写到兼容位置 <项目根>/*.md（旧项目）。

@@ -4,14 +4,14 @@ description: 项目级 ADR / 决策记录模板。汇总本项目引用的全部
 type: deliverable
 stage: 1
 replaces: config-used.md
-version: 3.1.0
+version: 4.0.0
 ---
 
 # Decisions（ADR / 决策记录）：{项目名}
 
 > 文件身份：**ADR / 决策记录**，不参与配置加载
 > 加载阶段：阶段 1 项目配置 / 持续维护
-> 替代：`config-used.md`（v3.1.0 起改名为 decisions.md，旧名保留为别名）
+> 替代：`config-used.md`（v4.0.0 起改名为 decisions.md，旧名保留为别名）
 > 注意：配置加载只读 4 个 `*-path.md`，本文件是"配置的使用记录 + 决策日志"
 
 ## 一、配置加载清单
@@ -44,7 +44,7 @@ version: 3.1.0
 | 版本 | 日期 | 变更 |
 |---|---|---|
 | v1.0 | YYYY-MM-DD | 项目立项，初版配置 |
-| v3.1.0 | YYYY-MM-DD | 改名 `config-used.md` → `decisions.md`(更准确反映 ADR 性质) |
+| v4.0.0 | YYYY-MM-DD | 改名 `config-used.md` → `decisions.md`(更准确反映 ADR 性质) |
 
 ## 五、后续维护规则
 
@@ -54,4 +54,4 @@ version: 3.1.0
 
 ---
 
-> 改名历史：v3.1.0 起 `config-used.md` 改名 `decisions.md`，原因：原名容易被误以为是配置文件（实际是 ADR），改名后更准确反映文件性质。旧文件名保留作为别名（向后兼容）。
+> 改名历史：v4.0.0 起 `config-used.md` 改名 `decisions.md`，原因：原名容易被误以为是配置文件（实际是 ADR），改名后更准确反映文件性质。旧文件名保留作为别名（向后兼容）。

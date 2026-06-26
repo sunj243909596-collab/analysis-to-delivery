@@ -2,7 +2,7 @@
 name: to-brd
 description: 生成业务需求文档(BRD)— 含业务流程图、角色职责、功能模块、字段映射表。业务需求需正式文档化交付给团队评审时调用本 skill,把 TASK_CONFIRM 翻译为 9 节齐备的 BRD。
 disable-model-invocation: true
-version: 3.0.1
+version: 4.0.0
 requires: [ascii-flowchart, no-field-guessing, doc-numbering, stage-gate]
 
 ---

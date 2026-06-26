@@ -17,7 +17,7 @@
 
 | 文件 | 对应阶段 | 说明 |
 |---|---|---|
-| `decisions.md` | 阶段 1 | ADR / 决策记录(v3.1.0 起从 `config-used.md` 改名),不参与配置加载 |
+| `decisions.md` | 阶段 1 | ADR / 决策记录(v4.0.0 起从 `config-used.md` 改名),不参与配置加载 |
 | `TASK_CONFIRM_收货管理.md` | 阶段 2 | 需求确认表（用户填写） |
 | `REVIEW_需求确认书.md` | 阶段 2 | 需求确认书（Claude 出） |
 | `REVIEW_字段对齐分析.md` | 阶段 2 | 字段对齐分析（涉及 WMOS 原生表） |

@@ -7,7 +7,7 @@
 
 ## [Unreleased]
 
-### Rules and Paths Refactor(v3.2.0-dev)
+### Rules and Paths Refactor(v4.0.0)
 
 > 实现细节见 [`docs/plans/2026-06-25-rules-path-refactor.md`](docs/plans/2026-06-25-rules-path-refactor.md)。
 
@@ -30,7 +30,7 @@
 - ♻️ **`scripts/setup-check.py` / `init-project-config.sh`**:支持 canonical `paths/*.md`,legacy 项目根 `*.md` 接受并产生 warning。
 - ♻️ **`templates/project-config/*`** 改为兼容 wrapper(指向 `paths/*.md`),新项目走 `init-project-config.sh` 默认(写到 `paths/`),旧项目用 `--legacy` 兼容。
 
-## [v3.1.0] - 2026-07-02
+## [v4.0.0] - 2026-07-02
 
 > **P0-P3 共 12 项修复**:门控脚本补齐 + discipline lint + bridge 降级 + flow strict + 状态持久化 + 数字统一 + README 降级 + 快速通道 + 3 example 升级 + description 精简 + 反模式 + 改名 decisions。
 
@@ -57,8 +57,8 @@
   - `scripts/analysis-state.py` 5 子命令:`init` / `record-gate` / `signoff` / `status` / `metrics`
   - 仓库根 + `.gitignore`,提供 9 阶段流程的"中断/恢复"
 - 🛠️ **数字打架修复**(plan §6)
-  - 3 个 example config-used.md 升 v3.0.1
-  - README install --version → v3.1.0
+  - 3 个 example config-used.md 升 v4.0.0
+  - README install --version → v4.0.0
   - 后续随 P3-1 改造 description 后复核"26 个 skill"数字
 
 ### P2 质量问题(3 项)
@@ -69,9 +69,9 @@
 - 🆕 **缺失能力补齐:快速通道 / 逆向使用 / 度量**(plan §8)
   - SKILL.md / README.md 各增 3 章节
   - `analysis-state.py` 扩 `metrics` 子命令
-- 🆕 **3 个 example 升级到 v3.0.1**(plan §9)
+- 🆕 **3 个 example 升级到 v4.0.0**(plan §9)
   - 01-wms-warehouse / 02-saas-dashboard / 03-mobile-app 各补 04-合规评审 / 05-PRD / 07-测试用例 三文档
-  - config-used.md 标题升 v3.0.1 + 新增 `## v3.1.0 升级说明` 节
+  - config-used.md 标题升 v4.0.0 + 新增 `## v4.0.0 升级说明` 节
 
 ### P3 易用性(3 项)
 
@@ -100,7 +100,7 @@
 - 阶段 9 `/qa-audit` 全量审计报告留待后续
 - 2 个 example 流程图(WMS 状态流转 / SaaS 订单流转)在 `--ascii-strict` 下报"缺回流闭环",默认 mode 不影响
 
-## [v3.0.1] - 2026-06-24
+## [v4.0.0] - 2026-06-24
 
 > **grill-task 门控加固**:从需求澄清到 BRD 的硬门控,避免 LLM 在用户未完成确认时自动推进。
 
@@ -134,7 +134,7 @@
 
 ### 示例同步
 
-- `examples/01-wms-warehouse/`:TASK_CONFIRM 重写为 v3.0.1 5 章节格式;REVIEW 文档加 4 态状态字段 + 对齐结论表 + 第七/八节
+- `examples/01-wms-warehouse/`:TASK_CONFIRM 重写为 v4.0.0 5 章节格式;REVIEW 文档加 4 态状态字段 + 对齐结论表 + 第七/八节
 - `examples/02-saas-dashboard/`:同上
 - `examples/03-mobile-app/`:同上
 - 3 套示例在 `--strict` 与 `--loose` 模式下均 5/5 check 通过
@@ -190,7 +190,7 @@
     - 启发式垂直边检测(▼ 箭头)
     - 支持 `--batch` 批量转换
     - 适用场景:团队偏好 drawio 在线编辑 / 需要更精细布局控制时
-  - **`vscode-extension/`** — VSCode 扩展 scaffold(v0.1.0)
+  - **`vscode-extension/`** — VSCode 扩展 scaffold(v4.0.0)
     - 4 个命令:`applySkill` / `runSmokeTest` / `renderFlowChart` / `openDocumentation`
     - 配置项:`skillsPath` / `mermaidCli` / `defaultFormat` / `disabled`
     - 上下文菜单集成(.txt 业务流程图自动出现)

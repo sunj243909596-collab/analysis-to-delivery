@@ -1,6 +1,6 @@
 """pytest 单元测试 for scripts/discipline-lint.py(legacy 兼容壳)
 
-v3.2.0-dev 起,discipline-lint.py 仅校验:
+v4.0.0 起,discipline-lint.py 仅校验:
 1. 7 个 legacy discipline 兼容壳存在
 2. 兼容壳文本指向 canonical rules/*.md
 3. 兼容壳行数不应过大(避免携带独立规则文本)

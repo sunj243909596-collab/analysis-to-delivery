@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-filename-naming-check.py — 文件命名门控（v3.1.0-dev）
+filename-naming-check.py — 文件命名门控（v4.0.0）
 
 校验 examples/ 下文件命名符合规范：
 - `config-used.md` 已弃用,新项目应使用 `decisions.md`
@@ -35,7 +35,7 @@ except ImportError:
 
 # 弃用文件名白名单(仍接受,只是 warning,鼓励迁移)
 DEPRECATED_FILES = [
-    "config-used.md",  # 已在 v3.1.0 改名为 decisions.md
+    "config-used.md",  # 已在 v4.0.0 改名为 decisions.md
 ]
 
 
@@ -63,7 +63,7 @@ def check_decisions_md_recommended(path: Path) -> CheckResult:
     # 仅对 examples/ 下根目录或子目录的"配置记录"类文件
     if path.name in DEPRECATED_FILES:
         result.warnings.append(
-            f"  {path}: 建议改名为 decisions.md(向后兼容到 v3.1.0)"
+            f"  {path}: 建议改名为 decisions.md(向后兼容到 v4.0.0)"
         )
     return result
 

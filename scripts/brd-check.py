@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-brd-check.py — 阶段 3→4 BRD 章节齐全门控（v3.1.0-dev）
+brd-check.py — 阶段 3→4 BRD 章节齐全门控（v4.0.0）
 
 校验 `01-业务需求文档 BRD.md` 的 9 个必备章节齐全：
 - 一、项目概述

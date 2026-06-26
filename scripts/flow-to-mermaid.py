@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""ASCII flow → Mermaid 转换器(v3.0 工具链 + v3.1.0-dev ascii-strict)
+"""ASCII flow → Mermaid 转换器(v3.0 工具链 + v4.0.0 ascii-strict)
 
 将 examples/*/业务流程图-*.txt 中的 ASCII 流程图转换为 Mermaid 源码,
 供 mermaid-cli(mmdc)渲染为 SVG/PNG。
@@ -22,7 +22,7 @@
 - 复杂泳道图(swimlane)需手动整理
 - 边检测为启发式,失败时输出节点 + 边注释模板
 
---ascii-strict 模式(v3.1.0-dev,plan §P1-2):
+--ascii-strict 模式(v4.0.0,plan §P1-2):
 - ASCII 输入必须含"回流闭环":同一 box 标签至少出现 2 次(证据:已有回流目标节点)
   (与 ascii-flowchart L48-60 "回流路径必须汇聚到同一目标节点" 对齐)
 - 输出 Mermaid 必须**不含** `classDef` 关键字(违反简洁性纪律)
@@ -247,7 +247,7 @@ def convert(src: Path) -> str:
     return "\n".join(out)
 
 
-# ===== v3.1.0-dev: --ascii-strict 校验 =====
+# ===== v4.0.0: --ascii-strict 校验 =====
 
 def check_ascii_has_backflow(text: str) -> Tuple[bool, str]:
     """ASCII 必须含"回流闭环":同一 box 标签出现 ≥2 次(作为回流目标节点证据)。

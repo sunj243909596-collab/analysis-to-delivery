@@ -1,7 +1,7 @@
 # Plan — Analysis to Delivery
 
-> **当前版本**:v3.1.0(2026-07-02)— P0-P3 共 12 项修复(详见 [CHANGELOG.md](./CHANGELOG.md) 与本文件下方 `### v3.1.0` 节)
-> 前置版本:v3.0.1(2026-06-24)— grill-task 门控加固
+> **当前版本**:v4.0.0(2026-07-02)— P0-P3 共 12 项修复(详见 [CHANGELOG.md](./CHANGELOG.md) 与本文件下方 `### v4.0.0` 节)
+> 前置版本:v4.0.0(2026-06-24)— grill-task 门控加固
 > 更早:v3.0.0(2026-06-22)— 工具链 + VSCode 扩展
 > 路线图详见下方各版本节。最新进度看 [README.md](README.md)，详细规格看 [SPEC.md](SPEC.md)。
 
@@ -120,15 +120,15 @@
 - 可选：集成 docx 模板（python-docx-template）支持更精细排版
 - 可选：VSCode 扩展（右键项目 → 应用 skill）
 
-### v3.1.0（2026-07-02,当前）— P0-P3 共 12 项修复
+### v4.0.0（2026-07-02,当前）— P0-P3 共 12 项修复
 - 🆕 **6 个门控脚本** 覆盖 1→2 / 3→4 / 4→5 / 5→6 / 6→7 / 7→8 六个过渡点(plan §1)
 - 🆕 **discipline 强制加载** frontmatter `requires:` + lint(plan §2)
 - 🆕 **7 个 bridge 降级方案** + **flow-to-mermaid --ascii-strict**(plan §3-4)
 - 🆕 **state 持久化** `.analysis-delivery-state.json`(plan §5)
-- 🆕 **3 example 升级到 v3.0.1** 新增 04/05/07 文档(plan §9)
+- 🆕 **3 example 升级到 v4.0.0** 新增 04/05/07 文档(plan §9)
 - 🆕 **快速通道/逆向使用/度量** 三大能力(plan §8)
 - 🆕 **description 精简** + **反模式清单** + **config-used → decisions 改名**(plan §10-12)
-- 详细 changelog 见 [CHANGELOG.md](./CHANGELOG.md) `[v3.1.0]` 节
+- 详细 changelog 见 [CHANGELOG.md](./CHANGELOG.md) `[v4.0.0]` 节
 
 ## 已识别的限制（MVP 阶段需告知用户）
 
@@ -177,7 +177,7 @@
 
 ### 背景
 
-v3.1.0 已将 26 个 skill 收敛为「2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline」的清晰结构,但仍然存在两个架构层问题:
+v4.0.0 已将 26 个 skill 收敛为「2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline」的清晰结构,但仍然存在两个架构层问题:
 
 1. **上下文膨胀** — 7 个 discipline 全文 569 行,user-invoked 累计 921 行;`dev-design` 一个 skill 触发时实际加载 500+ 行纪律文本
 2. **边界不清晰** — discipline 之间职责重叠(如 `no-field-guessing` vs `no-self-invent` 的 description 触发条件模糊),模型可能重复加载
@@ -371,7 +371,7 @@ requires:
 | VSCode 扩展 scaffold | ✅ 已完成 | `vscode-extension/`(4 命令 + 配置)|
 | docx 模板 | ⬜ 推迟 | python-docx-template,v4.0 候选(非阻塞,用户问起再启动)|
 
-### v3.1.0 — 全部完成 ✅(2026-07-02 发版)
+### v4.0.0 — 全部完成 ✅(2026-07-02 发版)
 | Phase | 状态 | 备注 |
 |---|---|---|
 | P0-1 6 个门控脚本 + 6 workflow + 6 pytest | ✅ 已完成 | `scripts/{setup-check,brd-check,compliance-check,testcase-coverage-check,prd-check,dev-design-backtest}.py` |
@@ -382,7 +382,7 @@ requires:
 | P1-4 数字打架修复 | ✅ 已完成 | 版本号 + 26 skill 数字复核 |
 | P2-1 README 跨行业话术降级 | ✅ 已完成 | "已覆盖 vs 未覆盖"对照表 |
 | P2-2 快速通道/逆向使用/度量 | ✅ 已完成 | SKILL.md + README.md 各增 3 章节 |
-| P2-3 3 example 升级到 v3.0.1 | ✅ 已完成 | 04/05/07 三文档 × 3 example |
+| P2-3 3 example 升级到 v4.0.0 | ✅ 已完成 | 04/05/07 三文档 × 3 example |
 | P3-1 description 精简到 80-150 字符 | ✅ 已完成 | 26 个 SKILL.md 全过 `description-lint.py` |
 | P3-2 9 个 SKILL.md 补反模式清单 | ✅ 已完成 | `scripts/antipattern-section-check.py` 校验 ≥3 条 |
 | P3-3 config-used.md → decisions.md 改名 | ✅ 已完成 | 3 example + templates + `filename-naming-check.py` |
@@ -395,7 +395,7 @@ requires:
 | `[1.4.0]` | v1.4.0-dev 稳定后切 | `git tag -a 1.4.0 -m "v1.4.0: 拆分为 26 个独立 skill"` |
 | `[2.0.0]` | v2.0 多示例 + CI 验证后切 | `git tag -a 2.0.0 -m "v2.0.0: 多领域示例 + GitHub Actions"` |
 | `[3.0.0]` | v3.0 工具链验证后切 | `git tag -a 3.0.0 -m "v3.0.0: drawio/mermaid CLI + VSCode 扩展"` |
-| `[3.1.0]` | v3.1.0 P0-P3 12 项修复合并后切 | `git tag -a 3.1.0 -m "v3.1.0: P0-P3 共 12 项修复(6 门控 + discipline lint + bridge + flow strict + state + 3 example + description + 反模式 + decisions)"` |
+| `[4.0.0]` | v4.0.0 P0-P3 12 项修复合并后切 | `git tag -a 4.0.0 -m "v4.0.0: P0-P3 共 12 项修复(6 门控 + discipline lint + bridge + flow strict + state + 3 example + description + 反模式 + decisions)"` |
 
 > 当前 main 已具备以上所有能力,但未打 tag — 是否切 tag 由维护者按发版节奏决定。
 

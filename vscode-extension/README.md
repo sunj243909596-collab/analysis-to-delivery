@@ -31,8 +31,8 @@ npm run compile
 cd vscode-extension
 npm install
 npm run package
-# 生成 analysis-to-delivery-0.1.0.vsix
-code --install-extension analysis-to-delivery-0.1.0.vsix
+# 生成 analysis-to-delivery-4.0.0.vsix
+code --install-extension analysis-to-delivery-4.0.0.vsix
 ```
 
 ### 配置
@@ -138,7 +138,7 @@ vsce publish
 
 | 版本 | 功能 |
 |---|---|
-| 0.1.0(当前)| 4 个基础命令 + 自动激活 |
+| 4.0.0(当前)| 4 个基础命令 + 自动激活 |
 | 0.2.0(计划)| 自定义 skill 面板(Webview)|
 | 0.3.0(计划)| 集成 Claude API(直接对话)|
 | 1.0.0(计划)| 发布到 VSCode Marketplace |

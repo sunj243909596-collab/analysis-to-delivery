@@ -2,7 +2,7 @@
 
 > 生成时间：2026-06-22
 > 状态：✅ 已确认
-> 适用版本：analysis-to-delivery v3.0.0-dev
+> 适用版本：analysis-to-delivery v4.0.0
 
 ## 一、需求背景
 

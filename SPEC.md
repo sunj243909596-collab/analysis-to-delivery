@@ -342,7 +342,7 @@ Claude 进入项目
 
 ### 6.5 项目级配置（canonical paths）
 
-> v3.2.0-dev 起,新项目应在项目根目录的 `paths/` 下放 4 个 `*-path.md` 文件。Claude 优先读取项目级 `paths/*.md`,再 fallback 到 skill 级。
+> v4.0.0 起,新项目应在项目根目录的 `paths/` 下放 4 个 `*-path.md` 文件。Claude 优先读取项目级 `paths/*.md`,再 fallback 到 skill 级。
 > `config-used.md` 是配置使用记录 / ADR 产物,不是配置文件,不参与配置加载。
 
 #### 6.5.1 4 个文件一览
@@ -518,7 +518,7 @@ bash ~/.claude/skills/analysis-to-delivery/scripts/init-project-config.sh /path/
 2. 是否支持 git submodule 安装方式？（v1.0 仅 curl 一键 + git clone）
 3. 是否需要 Docker 镜像？（v1.0 不提供）
 
-## 13. Rules and Paths 加载模型（v3.2.0-dev）
+## 13. Rules and Paths 加载模型（v4.0.0）
 
 > 这是 `docs/plans/2026-06-25-rules-path-refactor.md` 的实现细节。
 
@@ -562,7 +562,7 @@ paths = project-owned context pointers
 
 兼容壳不得携带与 canonical 不同的规则文本。如发现分歧,以 canonical 为准。
 
-## 14. Goal-Boundary Control（v3.2.0-dev）
+## 14. Goal-Boundary Control（v4.0.0）
 
 > 配合 `rules/goal-boundary.md` 与 `scripts/goal-boundary-check.py`。
 

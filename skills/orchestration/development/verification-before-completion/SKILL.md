@@ -1,7 +1,7 @@
 ---
 name: verification-before-completion
 description: 完成任务前验证(铁律)— 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/verification-before-completion/。
-version: 3.0.1
+version: 4.0.0
 
 ---
 

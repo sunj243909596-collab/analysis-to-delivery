@@ -128,7 +128,7 @@ def build_drawio_xml(nodes: List[str], edges: List[Tuple[int, int, str]]) -> str
     xml_parts: List[str] = []
     xml_parts.append('<?xml version="1.0" encoding="UTF-8"?>')
     xml_parts.append(
-        '<mxfile host="analysis-to-delivery" agent="flow-to-drawio.py" version="0.1.0">'
+        '<mxfile host="analysis-to-delivery" agent="flow-to-drawio.py" version="4.0.0">'
     )
     xml_parts.append('  <diagram id="flow" name="Flow">')
     xml_parts.append('    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">')

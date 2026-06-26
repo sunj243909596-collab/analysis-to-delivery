@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-compliance-check.py — 阶段 4→5 合规评审门控（v3.1.0-dev）
+compliance-check.py — 阶段 4→5 合规评审门控（v4.0.0）
 
 校验 `04-合规评审.md` 的 6 列表格（条款编号 / 缺陷等级 / 检查要点 /
 合规设计 / 证据位置 / 状态）存在，且：

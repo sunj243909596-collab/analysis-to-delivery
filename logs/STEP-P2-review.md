@@ -7,7 +7,7 @@
 
 | Commit | 内容 |
 |--------|------|
-| `678276f` | Task 14: example 02/03 改为 v3.0.0-dev TASK_CONFIRM 5 章节格式 |
+| `678276f` | Task 14: example 02/03 改为 v4.0.0 TASK_CONFIRM 5 章节格式 |
 | `8f8e4af` | Task 15: .github/workflows/task-confirm-check.yml |
 | `95265db` | Task 16: CHANGELOG.md v3.x breaking change |
 | `a6badb4` | Task 17: README.md 引用新门控 |
@@ -72,7 +72,7 @@ templates/TASK_CONFIRM.md  → exit 1 (Check 1 拒绝 ⬜ 状态)
 - ✅ 整体 review: `822f0f6`
 
 ### P2(4 Tasks) — `678276f` ~ `a6badb4`
-- ✅ Task 14: example 02/03 改 v3.0.0-dev 格式
+- ✅ Task 14: example 02/03 改 v4.0.0 格式
 - ✅ Task 15: CI workflow
 - ✅ Task 16-17: CHANGELOG + README
 - ✅ 整体 review: 本文档

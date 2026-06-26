@@ -1133,7 +1133,7 @@ STEP-11-review.md:
 
 用途：仅校验 PRD / FSD / 数据模型 等设计文档对知识库表结构的引用一致性。
 不适用：TASK_CONFIRM / REVIEW 需求确认书 / REVIEW 字段对齐分析——这些文档的
-门控由 `scripts/task-confirm-check.py` 处理（v3.0.0-dev 引入）。
+门控由 `scripts/task-confirm-check.py` 处理（v4.0.0 引入）。
 
 用法：
     python3 field-alignment-check.py <文档> <知识库文件> [--json]

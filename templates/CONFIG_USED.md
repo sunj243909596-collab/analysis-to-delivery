@@ -1,6 +1,6 @@
 # ⚠️ DEPRECATED — 请改用 `decisions.md`
 
-> 自 v3.1.0 起,本文件(`config-used.md`)改名为 `decisions.md`。
+> 自 v4.0.0 起,本文件(`config-used.md`)改名为 `decisions.md`。
 > 原名容易让人误以为是配置文件,实际是 ADR / 决策记录。
 
 ## 迁移指引

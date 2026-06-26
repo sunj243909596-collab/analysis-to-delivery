@@ -1,7 +1,7 @@
 ---
 name: tdd
 description: 测试驱动开发(红绿循环)— 来自 superpowers 体系。本 skill 是桥接层,先写失败测试再写实现,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/tdd/。
-version: 3.0.1
+version: 4.0.0
 
 ---
 

@@ -2,7 +2,7 @@
 name: grill-task
 description: 需求澄清 + 字段对齐分析 — 反复提问拉齐用户意图,生成 TASK_CONFIRM 任务确认书与字段对齐分析报告。启动新需求、或需要与现有数据库表对齐字段名时调用本 skill。
 disable-model-invocation: true
-version: 3.0.1
+version: 4.0.0
 requires: [context-pointer, no-field-guessing, no-self-invent, stage-gate]
 
 ---

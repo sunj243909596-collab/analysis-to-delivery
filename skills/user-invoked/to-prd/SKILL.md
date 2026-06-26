@@ -2,7 +2,7 @@
 name: to-prd
 description: 生成产品需求文档(PRD)— 含用户故事、功能需求、非功能需求、验收标准。需将产品需求正式化、向设计与开发团队交接时调用本 skill,输出三格式产物(源 / HTML / DOCX)。
 disable-model-invocation: true
-version: 3.0.1
+version: 4.0.0
 requires: [no-field-guessing, doc-numbering, stage-gate]
 
 ---

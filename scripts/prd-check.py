@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-prd-check.py — 阶段 6→7 PRD 验收门控（v3.1.0-dev）
+prd-check.py — 阶段 6→7 PRD 验收门控（v4.0.0）
 
 校验 `05-产品需求文档 PRD.md` 8 节齐全 + §七 验收标准被签字：
 - 一、产品概述

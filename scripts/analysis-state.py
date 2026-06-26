@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-analysis-state.py — 9 阶段流程状态持久化(plan §P1-3, v3.1.0-dev)
+analysis-state.py — 9 阶段流程状态持久化(plan §P1-3, v4.0.0)
 
 在项目根维护 `.analysis-delivery-state.json`,提供:
 - init      初始化(已有则报错)

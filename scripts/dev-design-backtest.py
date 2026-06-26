@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-dev-design-backtest.py — 阶段 7→8 设计回测门控（v3.1.0-dev）
+dev-design-backtest.py — 阶段 7→8 设计回测门控（v4.0.0）
 
 校验 `08-设计回测报告.md` 4 大类回测无 ❌：
 - 数据模型回测

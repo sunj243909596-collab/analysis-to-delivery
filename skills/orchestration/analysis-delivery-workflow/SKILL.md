@@ -2,7 +2,7 @@
 name: analysis-delivery-workflow
 description: 严守 9 阶段流程(分析-设计)— 适合新手/复杂项目,按顺序自动调 9 个 user-invoked skill。希望按完整结构化流程、逐步推进且不需每步自行决策时调用本编排。
 disable-model-invocation: true
-version: 3.0.1
+version: 4.0.0
 
 ---
 
@@ -81,7 +81,7 @@ brainstorming → design-an-interface → domain-modeling → writing-plans → 
 
 详见 `scripts/task-confirm-check.py` 自动化校验。
 
-## 状态文件(plan §P1-3,v3.1.0-dev)
+## 状态文件(plan §P1-3,v4.0.0)
 
 每个项目根维护 `.analysis-delivery-state.json`(加入 `.gitignore`),5 个子命令:
 

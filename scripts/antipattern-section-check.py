@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-antipattern-section-check.py — 反模式章节门控（v3.1.0-dev）
+antipattern-section-check.py — 反模式章节门控（v4.0.0）
 
 校验 9 个 user-invoked SKILL.md 含 `## 反模式` 二级标题 + ≥3 条 ❌ 开头列表项。
 

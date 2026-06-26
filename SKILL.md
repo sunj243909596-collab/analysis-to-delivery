@@ -2,9 +2,9 @@
 name: analysis-to-delivery
 description: 通用需求分析到开发设计工作流 — thin Skill router,加载规则与路径按声明。Use when starting any new feature requiring structured analysis-to-delivery workflow.
 category: software-development
-version: 3.2.0-dev
+version: 4.0.0
 created: 2026-06-22
-updated: "2026-06-26: v3.2.0-dev rules-and-paths refactor — thin root router, rules/ + paths/ layers"
+updated: "2026-06-26: v4.0.0 rules-and-paths refactor — thin root router, rules/ + paths/ layers"
 ---
 
 # Analysis to Delivery

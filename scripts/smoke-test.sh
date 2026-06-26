@@ -462,7 +462,7 @@ for section in "26 个 skill" "知识库配置" "工具链" "GitHub Actions"; do
   fi
 done
 
-# 15. rules / paths 一致性(v3.2.0-dev)
+# 15. rules / paths 一致性(v4.0.0)
 section "15. rules / paths 一致性"
 check_dir "rules"
 check_dir "paths"

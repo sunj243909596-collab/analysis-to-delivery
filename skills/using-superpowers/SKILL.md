@@ -2,7 +2,7 @@
 name: using-superpowers
 description: 开发实施子流程入口 — brainstorming / writing-plans / TDD / executing / verification 等。设计完成、准备进入实施时调用。
 disable-model-invocation: true
-version: 3.0.1
+version: 4.0.0
 
 ---
 

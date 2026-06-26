@@ -1,7 +1,7 @@
 ---
 name: brainstorming
 description: 反复提问澄清需求,产出设计稿 — 来自 superpowers 体系(obra/superpowers)。本 skill 是桥接层,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/brainstorming/。
-version: 3.0.1
+version: 4.0.0
 
 ---
 

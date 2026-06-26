@@ -1,7 +1,7 @@
 ---
 name: domain-modeling
 description: 梳理领域模型 — 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/domain-modeling/。
-version: 3.0.1
+version: 4.0.0
 
 ---
 

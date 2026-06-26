@@ -1,11 +1,11 @@
-# Decisions（ADR / 决策记录）— 医药物流 WMS 收货管理（v3.1.0）
+# Decisions（ADR / 决策记录）— 医药物流 WMS 收货管理（v4.0.0）
 
-> v3.1.0 起，本文件从 `config-used.md` 改名为 `decisions.md`（更准确反映 ADR 性质）。
+> v4.0.0 起，本文件从 `config-used.md` 改名为 `decisions.md`（更准确反映 ADR 性质）。
 > 每个项目根目录放自己的 4 个 `*-path.md` 文件，Claude 优先读项目级的。
 > 本目录（`examples/01-wms-warehouse/`）模拟一个完整迷你项目的根，演示项目级配置长什么样。
 > 本文件是 ADR / 决策记录，不是配置文件，不参与配置加载。
 
-## 项目级 config 文件（v3.1.0 推荐方式）
+## 项目级 config 文件（v4.0.0 推荐方式）
 
 本示例的"项目根"下放了 4 个 `*-path.md`，都是真实的项目级配置：
 
@@ -97,9 +97,9 @@ Claude **必须主动询问**用户：
 
 > 简言之：**项目级是"真"，skill 级是"参考"**。
 
-## v3.1.0 升级说明
+## v4.0.0 升级说明
 
-本示例从 v3.0.1 升级到 v3.1.0，新增/升级了以下产物：
+本示例已统一到 v4.0.0，包含以下新增/升级产物：
 
 ### 新增产物
 
@@ -125,9 +125,9 @@ python3 scripts/testcase-coverage-check.py --strict examples/01-wms-warehouse/
 python3 scripts/prd-check.py --strict examples/01-wms-warehouse/
 ```
 
-### 与 v3.0.1 的差异
+### 当前版本说明
 
-| 维度 | v3.0.1 | v3.1.0 |
+| 维度 | 旧版 | v4.0.0 |
 |---|---|---|
 | 覆盖阶段 | 1-3 | 1-9（含 4-7） |
 | 文档数 | 7 | 10（+3） |

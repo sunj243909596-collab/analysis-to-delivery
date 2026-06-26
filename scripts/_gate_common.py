@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-analysis-to-delivery 门控脚本共享工具（v3.1.0-dev）
+analysis-to-delivery 门控脚本共享工具（v4.0.0）
 
 所有 stage-gate 门控脚本（setup-check / brd-check / compliance-check /
 testcase-coverage-check / prd-check / dev-design-backtest-check /

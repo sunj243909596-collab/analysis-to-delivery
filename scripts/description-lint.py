@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-description-lint.py — SKILL.md description 字段长度门控（v3.1.0-dev）
+description-lint.py — SKILL.md description 字段长度门控（v4.0.0）
 
 校验 `skills/` 下所有 SKILL.md 的 frontmatter `description:` 字段长度在
 [80, 150] 字符范围内（中文计 1 字符、英文/数字/标点同计）。

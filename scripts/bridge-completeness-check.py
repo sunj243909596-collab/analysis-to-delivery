@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-bridge-completeness-check.py — bridge skill 实质化校验（v3.1.0-dev）
+bridge-completeness-check.py — bridge skill 实质化校验（v4.0.0）
 
 校验 7 个 skills/orchestration/development/*/SKILL.md 是否含
 降级方案(superpowers 未装时也能用)。

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-testcase-coverage-check.py — 阶段 5→6 测试用例覆盖门控（v3.1.0-dev）
+testcase-coverage-check.py — 阶段 5→6 测试用例覆盖门控（v4.0.0）
 
 校验 `07-测试用例设计.md` 5 大类用例各至少 1 条：
 - 正常路径

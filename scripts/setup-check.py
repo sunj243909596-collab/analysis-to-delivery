@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 """
-setup-check.py — 阶段 1→2 配置就绪门控（v3.1.0-dev）
+setup-check.py — 阶段 1→2 配置就绪门控（v3.2.0-dev / rules-and-paths refactor）
 
-校验项目根（或指定目录）下 4 个 `*-path.md` 配置存在且非空：
+校验项目根（或指定目录）下项目级配置存在且非空：
+
+- 规范路径(优先)：<project>/paths/{name}.md
+- 兼容路径(回退)：<project>/{name}.md（仅遗留项目，新项目必须用规范路径）
+
+文件清单：
 - knowledge-path.md
 - compliance-path.md
 - tech-stack-path.md
-- doc-naming.md
+- doc-naming-path.md (canonical)  /  doc-naming.md (legacy)
 
 且 knowledge-path.md 必须至少含 1 个真实路径（非注释、非占位符）。
 
 参考：skills/user-invoked/setup-analysis-delivery/SKILL.md §3 / §5
+参考：paths/*.md（canonical path 配置入口）
 参考：scripts/task-confirm-check.py v1.1.0 接口
 
 用法：
@@ -40,12 +46,15 @@ except ImportError:  # 直接 python3 scripts/setup-check.py 时 path 不在
     )
 
 
-CONFIG_FILES = [
-    "knowledge-path.md",
-    "compliance-path.md",
-    "tech-stack-path.md",
-    "doc-naming.md",
+# 规范路径(canonical):必须先在 <project>/paths/ 下找
+# 兼容路径(legacy):项目根 *.md,仅作为 v1.1 既有项目的回退
+PATH_ENTRIES = [
+    ("knowledge-path.md", "knowledge-path.md"),
+    ("compliance-path.md", "compliance-path.md"),
+    ("tech-stack-path.md", "tech-stack-path.md"),
+    ("doc-naming-path.md", "doc-naming.md"),  # canonical -> legacy alias
 ]
+CANONICAL_DIR = "paths"
 
 # 严格模式的占位符/注释关键词
 PLACEHOLDER_PATTERNS = [
@@ -63,28 +72,66 @@ def _is_placeholder(line: str) -> bool:
     return False
 
 
+def _resolve_paths(project_dir: Path):
+    """对每个 entry 同时返回 (canonical_path, legacy_path, exists_canonical, exists_legacy)。"""
+    rows = []
+    for canonical_name, legacy_name in PATH_ENTRIES:
+        canonical = project_dir / CANONICAL_DIR / canonical_name
+        legacy = project_dir / legacy_name
+        rows.append(
+            (
+                canonical_name,
+                canonical,
+                legacy,
+                canonical.exists(),
+                legacy.exists(),
+            )
+        )
+    return rows
+
+
 def check_config_files_exist(project_dir: Path) -> CheckResult:
-    """Check 1: 4 个 *-path.md 全部存在。"""
+    """Check 1: 4 个 path 文件存在(canonical 优先, legacy 回退)。"""
     result = CheckResult(name="config_files_exist", passed=True)
-    for name in CONFIG_FILES:
-        p = project_dir / name
-        if not p.exists():
-            result.passed = False
-            result.errors.append(f"缺少 {name}")
-        elif p.stat().st_size == 0:
-            result.passed = False
-            result.errors.append(f"{name} 存在但为空")
+    for canonical_name, canonical, legacy, has_canon, has_legacy in _resolve_paths(project_dir):
+        if has_canon:
+            if canonical.stat().st_size == 0:
+                result.passed = False
+                result.errors.append(f"paths/{canonical_name} 存在但为空")
+            continue
+        if has_legacy:
+            if legacy.stat().st_size == 0:
+                result.passed = False
+                result.errors.append(f"{legacy.name} 存在但为空")
+                continue
+            result.warnings.append(
+                f"{legacy.name} 仅在项目根(legacy);推荐迁移到 paths/{canonical_name}"
+            )
+            continue
+        result.passed = False
+        result.errors.append(
+            f"缺少 paths/{canonical_name}(canonical),"
+            f"或 {legacy.name}(legacy 回退)"
+        )
     return result
+
+
+def _first_existing(canonical: Path, legacy: Path) -> Path | None:
+    if canonical.exists():
+        return canonical
+    if legacy.exists():
+        return legacy
+    return None
 
 
 def check_config_files_nonempty(project_dir: Path) -> CheckResult:
     """Check 2: 至少每个文件去掉占位符后还有实质内容。"""
     result = CheckResult(name="config_files_nonempty", passed=True)
-    for name in CONFIG_FILES:
-        p = project_dir / name
-        if not p.exists():
+    for canonical_name, canonical, legacy, _, _ in _resolve_paths(project_dir):
+        target = _first_existing(canonical, legacy)
+        if target is None:
             continue  # 已被 Check 1 捕获
-        text = read_text_or_empty(p)
+        text = read_text_or_empty(target)
         substantive = [
             line for line in text.splitlines()
             if not _is_placeholder(line)
@@ -92,16 +139,19 @@ def check_config_files_nonempty(project_dir: Path) -> CheckResult:
         if not substantive:
             result.passed = False
             result.errors.append(
-                f"{name} 只有占位符/注释/空行,无实质内容"
+                f"{target.name} 只有占位符/注释/空行,无实质内容"
             )
     return result
 
 
 def check_knowledge_path_has_real_path(project_dir: Path) -> CheckResult:
-    """Check 3: knowledge-path.md 必须含至少 1 个真实路径（绝对路径或 ~/ 开头）。"""
+    """Check 3: knowledge-path.md 必须含至少 1 个真实路径(绝对路径或 ~/ 开头)。"""
     result = CheckResult(name="knowledge_path_has_real_path", passed=True)
-    kp = project_dir / "knowledge-path.md"
-    if not kp.exists():
+    kp = _first_existing(
+        project_dir / CANONICAL_DIR / "knowledge-path.md",
+        project_dir / "knowledge-path.md",
+    )
+    if kp is None:
         return result  # 已被 Check 1 捕获
 
     text = read_text_or_empty(kp)
@@ -116,7 +166,7 @@ def check_knowledge_path_has_real_path(project_dir: Path) -> CheckResult:
     if not real_paths:
         result.passed = False
         result.errors.append(
-            "knowledge-path.md 必须至少含 1 个真实路径"
+            f"{kp.name} 必须至少含 1 个真实路径"
             "（如 `/root/WMOS 知识库/` 或 `~/docs/`）"
         )
     return result
@@ -147,9 +197,10 @@ def self_test() -> int:
         if not report.has_errors:
             print(f"{E_FAIL} 自检失败:空目录应被报为缺文件")
             return EXIT_FAIL
-        # 2) 4 个文件都创建但只有注释 → 应 fail
-        for name in CONFIG_FILES:
-            (tmpdir / name).write_text(
+        # 2) 只有注释 → 应 fail
+        (tmpdir / "paths").mkdir()
+        for canonical_name, _, _, _, _ in _resolve_paths(tmpdir):
+            (tmpdir / "paths" / canonical_name).write_text(
                 "<!-- 这是注释 -->\n\n# 标题\n",
                 encoding="utf-8",
             )
@@ -158,19 +209,19 @@ def self_test() -> int:
             print(f"{E_FAIL} 自检失败:只有注释应被报为无实质内容")
             return EXIT_FAIL
         # 3) 写入有效内容(含真实路径)→ 应 pass
-        (tmpdir / "knowledge-path.md").write_text(
+        (tmpdir / "paths" / "knowledge-path.md").write_text(
             "## 知识库\n\n- /root/WMOS 知识库/01-WMOS核心/\n",
             encoding="utf-8",
         )
-        (tmpdir / "compliance-path.md").write_text(
+        (tmpdir / "paths" / "compliance-path.md").write_text(
             "## 合规\n\n- config/compliance/GSP.md\n",
             encoding="utf-8",
         )
-        (tmpdir / "tech-stack-path.md").write_text(
+        (tmpdir / "paths" / "tech-stack-path.md").write_text(
             "## 技术栈\n\n- Java + Spring Boot\n",
             encoding="utf-8",
         )
-        (tmpdir / "doc-naming.md").write_text(
+        (tmpdir / "paths" / "doc-naming-path.md").write_text(
             "## 文档命名\n\n- 编号 01-09\n",
             encoding="utf-8",
         )
@@ -181,7 +232,31 @@ def self_test() -> int:
                 for e in c.errors:
                     print(f"   {c.name}: {e}")
             return EXIT_FAIL
-    print(f"{E_PASS} setup-check.py 自检通过 (3 个 check,3 个 case)")
+        # 4) legacy 文件夹应通过(仅产生 warning)
+        legacy_dir = Path(tmp) / "legacy_proj"
+        legacy_dir.mkdir()
+        for _, legacy_name, _, _, _ in [
+            (None, "knowledge-path.md", None, None, None),
+            (None, "compliance-path.md", None, None, None),
+            (None, "tech-stack-path.md", None, None, None),
+            (None, "doc-naming.md", None, None, None),
+        ]:
+            (legacy_dir / legacy_name).write_text(
+                "## x\n\n- /root/foo\n" if legacy_name == "knowledge-path.md"
+                else "## x\n\n- content\n",
+                encoding="utf-8",
+            )
+        report = run_checks(legacy_dir, "strict")
+        if report.has_errors:
+            print(f"{E_FAIL} 自检失败:legacy 项目根文件应 pass(仅 warning)")
+            for c in report.checks:
+                for e in c.errors:
+                    print(f"   {c.name}: {e}")
+            return EXIT_FAIL
+        if not any(c.warnings for c in report.checks):
+            print(f"{E_FAIL} 自检失败:legacy 项目根文件应产生 warning")
+            return EXIT_FAIL
+    print(f"{E_PASS} setup-check.py 自检通过 (3 个 check,4 个 case)")
     return EXIT_PASS
 
 
@@ -189,7 +264,7 @@ def main() -> int:
     parser = build_parser(
         script_name="setup-check.py",
         description="阶段 1→2 配置就绪门控",
-        path_help="项目根目录（含 4 个 *-path.md）",
+        path_help="项目根目录（含 paths/*.md 或兼容的 legacy *-path.md）",
     )
     args = parser.parse_args()
 

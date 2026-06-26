@@ -10,17 +10,26 @@ set -e
 # ---------- 默认配置 ----------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SKILL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-TEMPLATE_DIR="$SKILL_DIR/templates/project-config"
+# Canonical 模板：仓库根 paths/
+CANONICAL_TEMPLATE_DIR="$SKILL_DIR/paths"
+# Legacy 模板：仅供 v1.1 既有项目回退（仍可读,但新项目不应再用）
+LEGACY_TEMPLATE_DIR="$SKILL_DIR/templates/project-config"
 
-FILES=(
-  "knowledge-path.md"
-  "compliance-path.md"
-  "tech-stack-path.md"
-  "doc-naming.md"
-)
-
-TARGET=""
+# Canonical 输出位置(默认):<project>/paths/
+# Legacy 输出位置:<project>/{name}.md
+# 通过 --legacy 切换到 legacy 输出
+MODE="canonical"
 FORCE=false
+TARGET=""
+
+# ---------- canonical 模板与 legacy 模板的对应关系 ----------
+# format: <canonical_basename>|<legacy_basename>
+PATH_FILES=(
+  "knowledge-path.md|knowledge-path.md"
+  "compliance-path.md|compliance-path.md"
+  "tech-stack-path.md|tech-stack-path.md"
+  "doc-naming-path.md|doc-naming.md"
+)
 
 # ---------- 颜色 ----------
 if [ -t 1 ]; then
@@ -38,25 +47,30 @@ err()   { echo -e "${RED}❌${NC} $1"; }
 # ---------- 帮助 ----------
 usage() {
   cat <<EOF
-项目级 config 一键初始化（v1.1+）
+项目级 config 一键初始化（v3.2.0-dev / rules-and-paths refactor）
+
+默认写到 canonical 位置 <项目根>/paths/*.md。
+用 --legacy 写到兼容位置 <项目根>/*.md（旧项目）。
 
 用法：
   bash init-project-config.sh [选项] <项目根目录>
 
 选项：
-  --force          覆盖已存在的 *-path.md 文件
+  --force          覆盖已存在的文件
+  --legacy         写到兼容位置（项目根 *.md），仅用于 v1.1 既有项目
   -h, --help       显示此帮助
 
 示例：
   bash init-project-config.sh /path/to/your-project
   bash init-project-config.sh .               # 当前目录
   bash init-project-config.sh --force ./my-app
+  bash init-project-config.sh --legacy /path/to/old-project
 
-会在 <项目根目录> 下生成 4 个文件：
+默认会在 <项目根>/paths/ 下生成 4 个文件：
   knowledge-path.md
   compliance-path.md
   tech-stack-path.md
-  doc-naming.md
+  doc-naming-path.md
 
 每个文件都带示例注释，填入你项目的真实路径/规范即可。
 EOF
@@ -66,6 +80,7 @@ EOF
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --force) FORCE=true; shift ;;
+    --legacy) MODE="legacy"; shift ;;
     -h|--help) usage; exit 0 ;;
     -*) err "未知参数: $1"; usage; exit 1 ;;
     *) TARGET="$1"; shift ;;
@@ -87,6 +102,13 @@ fi
 # ---------- 规范化路径 ----------
 TARGET="$(cd "$TARGET" 2>/dev/null && pwd || echo "$TARGET")"
 
+# ---------- 选择模板目录 ----------
+if [ "$MODE" = "legacy" ]; then
+  TEMPLATE_DIR="$LEGACY_TEMPLATE_DIR"
+else
+  TEMPLATE_DIR="$CANONICAL_TEMPLATE_DIR"
+fi
+
 # ---------- 校验模板 ----------
 if [ ! -d "$TEMPLATE_DIR" ]; then
   err "找不到模板目录：$TEMPLATE_DIR"
@@ -96,6 +118,7 @@ fi
 
 info "目标项目根：$TARGET"
 info "模板目录：  $TEMPLATE_DIR"
+info "模式：      $MODE"
 echo ""
 
 # ---------- 确保目标存在 ----------
@@ -113,12 +136,23 @@ if [ ! -d "$TARGET" ]; then
   fi
 fi
 
+# ---------- 准备输出目录 ----------
+if [ "$MODE" = "canonical" ]; then
+  OUT_DIR="$TARGET/paths"
+  mkdir -p "$OUT_DIR"
+fi
+
 # ---------- 复制文件 ----------
 GENERATED=0
 SKIPPED=0
-for fname in "${FILES[@]}"; do
-  src="$TEMPLATE_DIR/$fname"
-  dst="$TARGET/$fname"
+for entry in "${PATH_FILES[@]}"; do
+  IFS='|' read -r canonical_name legacy_name <<< "$entry"
+  src="$TEMPLATE_DIR/$canonical_name"
+  if [ "$MODE" = "canonical" ]; then
+    dst="$TARGET/paths/$canonical_name"
+  else
+    dst="$TARGET/$legacy_name"
+  fi
 
   if [ ! -f "$src" ]; then
     err "模板缺失：$src"
@@ -147,11 +181,21 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "📚 下一步："
 echo ""
-echo "  1. 编辑 4 个文件，填入你项目的真实路径/规范"
-echo "     $TARGET/knowledge-path.md"
-echo "     $TARGET/compliance-path.md"
-echo "     $TARGET/tech-stack-path.md"
-echo "     $TARGET/doc-naming.md"
+if [ "$MODE" = "canonical" ]; then
+  echo "  1. 编辑 4 个文件，填入你项目的真实路径/规范"
+  echo "     $TARGET/paths/knowledge-path.md"
+  echo "     $TARGET/paths/compliance-path.md"
+  echo "     $TARGET/paths/tech-stack-path.md"
+  echo "     $TARGET/paths/doc-naming-path.md"
+else
+  echo "  1. 编辑 4 个文件，填入你项目的真实路径/规范"
+  echo "     $TARGET/knowledge-path.md"
+  echo "     $TARGET/compliance-path.md"
+  echo "     $TARGET/tech-stack-path.md"
+  echo "     $TARGET/doc-naming.md"
+  echo ""
+  warn "  提示：legacy 模式仅用于 v1.1 既有项目。新项目请改用 --canonical"
+fi
 echo ""
 echo "  2. 把它们 commit 到项目 git 仓库"
 echo ""
@@ -160,5 +204,5 @@ echo "     /analysis-to-delivery"
 echo ""
 echo "  4. 完整文档："
 echo "     cat $SKILL_DIR/SKILL.md"
-echo "     cat $SKILL_DIR/SPEC.md#65-项目级配置-v11"
+echo "     cat $SKILL_DIR/SPEC.md"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

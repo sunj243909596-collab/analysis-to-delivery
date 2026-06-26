@@ -1,10 +1,9 @@
 ---
 name: setup-analysis-delivery
-description: 首次为新项目接 analysis-to-delivery 工作流 — 生成 4 个项目级 *-path.md 配置文件。Use when starting a new project or adding this skill to an existing project.
+description: 首次为新项目接 analysis-to-delivery 工作流 — 生成 4 个项目级 paths/*.md 配置文件(legacy 项目根 *-path.md 仅兼容)。Use when starting a new project or adding this skill to an existing project.
 disable-model-invocation: true
-version: 3.0.1
+version: 3.2.0-dev
 requires: [context-pointer]
-
 ---
 
 # Setup Analysis-Delivery — 项目配置初始化
@@ -12,9 +11,10 @@ requires: [context-pointer]
 ## Contract
 
 - Inputs: project root, detected project files, optional existing project configuration
-- Outputs: `knowledge-path.md`, `compliance-path.md`, `tech-stack-path.md`, `doc-naming.md`; optional `config-used.md` ADR
-- Gates: 4 `*-path.md` files exist and are non-empty; `knowledge-path.md` contains at least one real path before downstream field work
-- Required disciplines: `context-pointer`
+- Outputs: `paths/knowledge-path.md`, `paths/compliance-path.md`, `paths/tech-stack-path.md`, `paths/doc-naming-path.md`; optional `config-used.md` ADR
+- Gates: 4 `paths/*.md` files exist and are non-empty (legacy project-root `*-path.md` files are accepted with warning); `knowledge-path.md` contains at least one real path before downstream field work
+- Required rules: `context-pointer`
+- Required paths: `knowledge-path`, `compliance-path`, `tech-stack-path`, `doc-naming-path`
 - Next: `/grill-task`
 
 ## 适用场景
@@ -37,16 +37,20 @@ requires: [context-pointer]
 - `pyproject.toml` / `requirements.txt` → Python
 - `go.mod` → Go
 
-### 3. 生成 4 个项目级配置
+### 3. 生成 4 个项目级配置(canonical)
 
-在项目根生成以下 4 个空模板(用户填写后提交到 git)。这 4 个 `*-path.md` 是唯一项目级配置加载输入:
+**默认**:在项目根的 `paths/` 目录下生成 4 个空模板(用户填写后提交到 git)。
+这 4 个文件是**唯一**项目级配置加载输入:
 
-| 文件 | 作用 | 模板 |
+| Canonical 文件 | 作用 | 模板来源 |
 |---|---|---|
-| `knowledge-path.md` | 列项目涉及的外部知识库(领域表结构、合规法规等)路径 | `templates/project-config/knowledge-path.md` |
-| `compliance-path.md` | 列项目适用的合规规则文件路径 + 启用开关 | `templates/project-config/compliance-path.md` |
-| `tech-stack-path.md` | 列后端/前端/数据库/中间件 + 团队规范路径 | `templates/project-config/tech-stack-path.md` |
-| `doc-naming.md` | 文档编号、命名前缀、存放目录 | `templates/project-config/doc-naming.md` |
+| `paths/knowledge-path.md` | 列项目涉及的外部知识库(领域表结构、合规法规等)路径 | `paths/knowledge-path.md` |
+| `paths/compliance-path.md` | 列项目适用的合规规则文件路径 + 启用开关 | `paths/compliance-path.md` |
+| `paths/tech-stack-path.md` | 列后端/前端/数据库/中间件 + 团队规范路径 | `paths/tech-stack-path.md` |
+| `paths/doc-naming-path.md` | 文档编号、命名前缀、存放目录 | `paths/doc-naming-path.md` |
+
+**Legacy 兼容**:既有 v1.1 项目可能用项目根 `*.md`(`knowledge-path.md` 等)。`setup-check.py`
+会把它们识别为 warning 并继续通过。生成时加 `--legacy` 切换到兼容输出位置(仅 v1.1 旧项目)。
 
 ### 4. 可选记录配置使用 ADR
 
@@ -57,24 +61,27 @@ requires: [context-pointer]
 ### 5. 验证
 
 - 4 个文件存在且非空(允许只有注释)
+- 跑 `python3 scripts/setup-check.py --strict <project>` 确认通过(legacy 项目根文件会产生 warning 但仍通过)
 - 跑 `python3 scripts/field-alignment-check.py --help` 确认脚本可用
 
-## 调用的 discipline
+## 调用的 rule
 
-- `disciplines/context-pointer` — 三层配置加载规则
+- `rules/context-pointer` — 三层配置加载规则
 
 ## 结束条件
 
-- [ ] 4 个 `*-path.md` 全部生成在项目根
-- [ ] 用户已填写真实内容(knowledge-path 必须至少 1 个真实路径)
+- [ ] 4 个 `paths/*.md` 全部生成在项目根(或兼容的 legacy 项目根 `*.md`)
+- [ ] 用户已填写真实内容(`paths/knowledge-path.md` 必须至少 1 个真实路径)
 - [ ] 如生成 `config-used.md`,已明确标注为配置使用记录 / ADR,而非配置输入
+- [ ] `setup-check.py --strict <project>` 通过(warning 可接受)
 - [ ] 已提交到 git(可选,但建议)
 
 ## 反模式
 
-- ❌ 4 个 `*-path.md` 留 TBD / placeholder — 必须填真实路径,`setup-check.py --strict` 必过
+- ❌ 4 个 paths/*.md 留 TBD / placeholder — 必须填真实路径,`setup-check.py --strict` 必过
 - ❌ knowledge-path 写"待补充" — 必须至少 1 个真实可访问路径,否则字段对齐时无据可查
 - ❌ compliance-path 不标 `mode` — 必须 `mode=gsp` / `mode=hipaa` / `mode=none` 选一
 - ❌ tech-stack-path 不标 Target_DB — 必须标 `oracle` / `postgresql` / `mysql` / `firestore` 等,否则 SQL 方言检查失据
 - ❌ `config-used.md` 写成配置文件 — 实际是 ADR / 配置使用记录,不参与加载,严禁误用
-- ❌ 把项目级 `*-path.md` 复制到 skill 内 — skill 级是 fallback,项目级才是真实配置,优先级不同
+- ❌ 把项目级 `paths/*.md` 复制到 skill 内 — skill 级是 fallback,项目级才是真实配置,优先级不同
+- ❌ 混用 legacy 项目根 + canonical paths/ — 选一种;legacy 项目可逐步迁移到 paths/ 并删除根目录旧文件

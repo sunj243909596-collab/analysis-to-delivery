@@ -14,7 +14,8 @@ requires: [context-pointer, no-field-guessing, no-self-invent, stage-gate]
 - Inputs: `TASK_CONFIRM_*.md`, `knowledge-path.md`, user requirement notes
 - Outputs: `REVIEW_需求确认书.md`, `REVIEW_字段对齐分析.md`
 - Gates: `python3 scripts/task-confirm-check.py --strict TASK_CONFIRM_*.md REVIEW_需求确认书.md REVIEW_字段对齐分析.md`; user whitelist signoff
-- Required disciplines: `context-pointer`, `no-field-guessing`, `no-self-invent`, `stage-gate`
+- Required rules: `stage-gate`, `no-field-guessing`, `context-pointer`
+- Required paths: `knowledge-path`, `doc-naming-path`
 - Next: `/to-brd`
 
 ## 适用场景
@@ -63,9 +64,7 @@ requires: [context-pointer, no-field-guessing, no-self-invent, stage-gate]
 
 ## 调用的 discipline
 
-- `disciplines/no-field-guessing` — 严禁猜测字段名
-- `disciplines/no-self-invent` — 严禁自创字段
-- `disciplines/context-pointer` — 三层知识库加载
+See the `Required rules` and `Required paths` lines in the contract above.
 
 ## 关键纪律（2026-06-24 更新）
 

@@ -14,7 +14,8 @@ requires: [stage-gate, doc-numbering]
 - Inputs: QA audit with P0=0, completed design documents, known risks and TODOs
 - Outputs: `HANDOVER.md`
 - Gates: handover includes completed docs, TODOs, risks, follow-up recommendation; receiver acknowledged
-- Required disciplines: `stage-gate`, `doc-numbering`
+- Required rules: `stage-gate`, `doc-numbering`, `context-pointer`
+- Required paths: `knowledge-path`, `tech-stack-path`, `compliance-path`, `doc-naming-path`
 - Next: `/using-superpowers` or implementation team handoff
 
 ## 适用场景
@@ -89,8 +90,7 @@ requires: [stage-gate, doc-numbering]
 
 ## 调用的 discipline
 
-- `disciplines/stage-gate` — 阶段 9 门控
-- `disciplines/doc-numbering` — HANDOVER 不受编号约束
+See the `Required rules` and `Required paths` lines in the contract above.
 
 ## 结束条件
 

@@ -13,7 +13,8 @@ version: 3.0.1
 - Inputs: project goal, domain, tech stack, optional existing `*-path.md`
 - Outputs: 9-stage delivery chain ending in `HANDOVER.md`
 - Gates: stage-gate signoff between every stage; `task-confirm-check.py --strict` for 2->3; QA P0=0 for 8->9
-- Required disciplines: `stage-gate`, `no-field-guessing`, `doc-numbering`
+- Required rules: `stage-gate`, `doc-numbering`, `context-pointer`
+- Required paths: `knowledge-path`, `tech-stack-path`, `compliance-path`, `doc-naming-path`
 - Next: `/setup-analysis-delivery` then sequential workflow; after stage 9 optionally `/using-superpowers`
 
 ## 适用场景
@@ -113,9 +114,7 @@ python3 scripts/analysis-state.py metrics [--json]
 
 ## 调用的 discipline
 
-- `disciplines/stage-gate` — 3 层门控
-- `disciplines/no-field-guessing` — 字段名
-- `disciplines/doc-numbering` — 文档编号
+See the `Required rules` and `Required paths` lines in the contract above.
 
 ## 结束条件
 

@@ -14,7 +14,8 @@ requires: [ascii-flowchart, no-field-guessing, doc-numbering, stage-gate]
 - Inputs: signed `TASK_CONFIRM_*.md`, `REVIEW_需求确认书.md`, `REVIEW_字段对齐分析.md`, `knowledge-path.md`
 - Outputs: `01-业务需求文档 BRD.md`, ASCII flow diagrams, optional `业务流程图.drawio`
 - Gates: BRD required sections complete; field mapping checked against knowledge source; user signoff
-- Required disciplines: `ascii-flowchart`, `no-field-guessing`, `doc-numbering`, `stage-gate`
+- Required rules: `stage-gate`, `no-field-guessing`, `ascii-flowchart`, `doc-numbering`
+- Required paths: `knowledge-path`, `doc-naming-path`
 - Next: `/compliance-review`
 
 ## 适用场景
@@ -74,9 +75,7 @@ requires: [ascii-flowchart, no-field-guessing, doc-numbering, stage-gate]
 
 ## 调用的 discipline
 
-- `disciplines/ascii-flowchart` — 流程图规范
-- `disciplines/no-field-guessing` — 字段名必须查知识库
-- `disciplines/doc-numbering` — 文档编号 01
+See the `Required rules` and `Required paths` lines in the contract above.
 
 ## 结束条件
 

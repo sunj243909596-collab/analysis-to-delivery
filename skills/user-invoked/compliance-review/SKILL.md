@@ -14,7 +14,8 @@ requires: [context-pointer, stage-gate]
 - Inputs: signed `01-业务需求文档 BRD.md`, `compliance-path.md`
 - Outputs: `04-合规评审.md`
 - Gates: all applicable compliance clauses judged; severe gaps resolved or explicitly accepted; user/compliance signoff
-- Required disciplines: `context-pointer`, `stage-gate`
+- Required rules: `stage-gate`, `context-pointer`
+- Required paths: `compliance-path`, `doc-naming-path`
 - Next: `/test-case-design`
 
 ## 适用场景
@@ -61,8 +62,7 @@ requires: [context-pointer, stage-gate]
 
 ## 调用的 discipline
 
-- `disciplines/context-pointer` — 三层合规规则加载(项目级 > skill 级 > 默认)
-- `disciplines/stage-gate` — 阶段 4 门控
+See the `Required rules` and `Required paths` lines in the contract above.
 
 ## 结束条件
 

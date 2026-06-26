@@ -14,7 +14,8 @@ requires: [stage-gate, doc-numbering]
 - Inputs: signed BRD, optional `04-合规评审.md`, business rules and acceptance criteria
 - Outputs: `07-测试用例设计.md`
 - Gates: BRD functions covered; normal/boundary/exception/compliance cases present; user signoff
-- Required disciplines: `stage-gate`, `doc-numbering`
+- Required rules: `stage-gate`, `no-field-guessing`, `doc-numbering`
+- Required paths: `knowledge-path`, `doc-naming-path`
 - Next: `/to-prd`
 
 ## 适用场景
@@ -69,7 +70,7 @@ requires: [stage-gate, doc-numbering]
 
 ## 调用的 discipline
 
-- `disciplines/stage-gate` — 阶段 5 门控
+See the `Required rules` and `Required paths` lines in the contract above.
 
 ## 结束条件
 

@@ -14,7 +14,8 @@ requires: [no-field-guessing, no-self-invent, sql-dialect-discipline, stage-gate
 - Inputs: signed `05-产品需求文档 PRD.md`, `knowledge-path.md`, `tech-stack-path.md`, `doc-naming.md`
 - Outputs: `AGENTS.md`, `02-功能规格说明书 FSD.md`, `03-数据模型设计.md`, `06-开发设计说明书.md`, `08-设计回测报告.md`, optional `RETRO_任务复盘汇总.md`
 - Gates: field alignment passes; SQL dialect checks pass; design backtest passes; user signoff
-- Required disciplines: `no-field-guessing`, `no-self-invent`, `sql-dialect-discipline`, `stage-gate`, `doc-numbering`
+- Required rules: `stage-gate`, `no-field-guessing`, `no-self-invent`, `sql-dialect`, `doc-numbering`, `context-pointer`
+- Required paths: `knowledge-path`, `tech-stack-path`, `doc-naming-path`
 - Next: `/qa-audit`
 
 ## 适用场景
@@ -114,11 +115,7 @@ requires: [no-field-guessing, no-self-invent, sql-dialect-discipline, stage-gate
 
 ## 调用的 discipline
 
-- `disciplines/no-field-guessing` — 字段名必须查知识库
-- `disciplines/no-self-invent` — 严禁自创字段/表名
-- `disciplines/sql-dialect-discipline` — SQL 方言对齐 Target_DB
-- `disciplines/stage-gate` — 3 层门控 + 设计回测 + 任务复盘方法
-- `disciplines/doc-numbering` — 文档编号 02/03/06/08
+See the `Required rules` and `Required paths` lines in the contract above.
 
 ## 输出
 

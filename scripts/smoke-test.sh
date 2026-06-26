@@ -227,7 +227,7 @@ check_exec "init-project-config.sh"
 check_exec "parallel-delegate.sh"
 check_exec "smoke-test.sh"
 check_exec "cookiecutter-gen.sh"
-for f in field-alignment-check.py full-qa-audit.py sql-dialect-check.py postprocess_prd_html.py doc-validate.py discipline-lint.py bridge-completeness-check.py flow-to-mermaid.py analysis-state.py description-lint.py antipattern-section-check.py filename-naming-check.py; do
+for f in field-alignment-check.py full-qa-audit.py sql-dialect-check.py postprocess_prd_html.py doc-validate.py discipline-lint.py bridge-completeness-check.py flow-to-mermaid.py analysis-state.py description-lint.py antipattern-section-check.py filename-naming-check.py rules-path-lint.py goal-boundary-check.py; do
   check_file "scripts/$f" false
 done
 
@@ -361,7 +361,7 @@ if [ -z "$placeholder_hits" ]; then
 else
   warn "scripts/ 仍包含旧占位标记"
 fi
-for helper in doc-validate.py field-alignment-check.py full-qa-audit.py sql-dialect-check.py postprocess_prd_html.py discipline-lint.py bridge-completeness-check.py flow-to-mermaid.py analysis-state.py description-lint.py antipattern-section-check.py filename-naming-check.py; do
+for helper in doc-validate.py field-alignment-check.py full-qa-audit.py sql-dialect-check.py postprocess_prd_html.py discipline-lint.py bridge-completeness-check.py flow-to-mermaid.py analysis-state.py description-lint.py antipattern-section-check.py filename-naming-check.py rules-path-lint.py goal-boundary-check.py; do
   if python3 "$SKILL_DIR/scripts/$helper" --help >/dev/null 2>&1; then
     ok "scripts/$helper --help 可运行"
   else
@@ -461,6 +461,16 @@ for section in "26 个 skill" "知识库配置" "工具链" "GitHub Actions"; do
     warn "README.md 缺「$section」章节"
   fi
 done
+
+# 15. rules / paths 一致性(v3.2.0-dev)
+section "15. rules / paths 一致性"
+check_dir "rules"
+check_dir "paths"
+if python3 "$SKILL_DIR/scripts/rules-path-lint.py" "$SKILL_DIR" >/dev/null 2>&1; then
+  ok "rules-path-lint.py 通过"
+else
+  err "rules-path-lint.py 失败:$(python3 "$SKILL_DIR/scripts/rules-path-lint.py" "$SKILL_DIR" 2>&1 | tail -5)"
+fi
 
 # ---------- 总结 ----------
 if [ "$JSON_MODE" = true ]; then

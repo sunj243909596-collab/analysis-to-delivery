@@ -194,6 +194,53 @@ bash install.sh --version v4.0.0
 bash install.sh --uninstall
 ```
 
+### 卸载
+
+Linux / macOS / WSL / Git Bash:
+
+```bash
+# 在仓库目录内执行
+bash install.sh --uninstall
+
+# 或手动删除指定 agent 目录
+rm -rf ~/.codex/skills/analysis-to-delivery
+rm -rf ~/.claude/skills/analysis-to-delivery
+rm -rf ~/.hermes/skills/analysis-to-delivery
+rm -rf ~/.opencode/skills/analysis-to-delivery
+```
+
+Windows PowerShell:
+
+```powershell
+# Codex
+Remove-Item -Recurse -Force "$env:USERPROFILE\.codex\skills\analysis-to-delivery"
+
+# Claude Code
+Remove-Item -Recurse -Force "$env:USERPROFILE\.claude\skills\analysis-to-delivery"
+
+# Hermes
+Remove-Item -Recurse -Force "$env:USERPROFILE\.hermes\skills\analysis-to-delivery"
+
+# OpenCode
+Remove-Item -Recurse -Force "$env:USERPROFILE\.opencode\skills\analysis-to-delivery"
+```
+
+Windows CMD:
+
+```bat
+REM Codex
+rmdir /s /q "%USERPROFILE%\.codex\skills\analysis-to-delivery"
+
+REM Claude Code
+rmdir /s /q "%USERPROFILE%\.claude\skills\analysis-to-delivery"
+
+REM Hermes
+rmdir /s /q "%USERPROFILE%\.hermes\skills\analysis-to-delivery"
+
+REM OpenCode
+rmdir /s /q "%USERPROFILE%\.opencode\skills\analysis-to-delivery"
+```
+
 ### 安装位置
 
 脚本自动检测已存在的 agent 目录:

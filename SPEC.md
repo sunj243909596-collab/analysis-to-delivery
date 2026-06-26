@@ -516,8 +516,52 @@ bash ~/.claude/skills/analysis-to-delivery/scripts/init-project-config.sh /path/
 2. 是否支持 git submodule 安装方式？（v1.0 仅 curl 一键 + git clone）
 3. 是否需要 Docker 镜像？（v1.0 不提供）
 
+## 13. Rules and Paths 加载模型（v3.2.0-dev）
+
+> 这是 `docs/plans/2026-06-25-rules-path-refactor.md` 的实现细节。
+
+### 13.1 三层职责
+
+```text
+Skill = action or workflow entrypoint
+rules = cross-stage invariant constraints
+paths = project-owned context pointers
+```
+
+| 层 | 拥有 | 不拥有 |
+|---|---|---|
+| 根 `SKILL.md` | 触发、路由、快速开始、最小架构图 | 完整规则、阶段流程、大段示例 |
+| `skills/user-invoked/*` | 一个用户可见动作及其产出 | 全局不变式或项目知识库 |
+| `skills/orchestration/*` | 有序工作流编排 | 每个子 Skill 的细节实现 |
+| `rules/*` | 跨阶段约束与硬门控 | 阶段级文档生成步骤 |
+| `paths/*` | 项目级上下文指针 | 大段知识库或源码拷贝 |
+| `templates/*` | 输出文档骨架 | 工作流控制逻辑 |
+| `scripts/*` | 确定性校验与迁移助手 | 纯人工方法论文档 |
+
+### 13.2 加载规则
+
+```text
+1. 加载被选中的 Skill（user-invoked 或 orchestration）
+2. 读取该 Skill 的 Required rules / Required paths 声明
+3. 仅按声明加载对应的 rules/*.md 与 paths/*.md
+4. 禁止一次性全量加载所有 rules/* 与 paths/*
+```
+
+### 13.3 兼容策略
+
+迁移期间，旧的位置仍然保留作为兼容壳：
+
+| 旧位置 | 新位置 | 兼容方式 |
+|---|---|---|
+| `skills/disciplines/*/SKILL.md` | `rules/*.md` | 旧 Skill 是新规则的薄包装，仅指向 canonical |
+| 项目根 `knowledge-path.md` 等 | `paths/*.md` | `setup-check.py` 优先 `paths/`,项目根文件接受并产生 warning |
+| `templates/project-config/*` | `paths/*.md` | 旧模板变为兼容 wrapper，`init-project-config.sh --legacy` 仍可用 |
+| frontmatter `requires:` | Contract 段 `Required rules:` / `Required paths:` | 两者并存；新代码以 Contract 段为准 |
+
+兼容壳不得携带与 canonical 不同的规则文本。如发现分歧,以 canonical 为准。
+
 ---
 
-**最后更新**：2026-06-22
+**最后更新**：2026-06-26
 **维护者**：Jason sun
 **协议**：MIT

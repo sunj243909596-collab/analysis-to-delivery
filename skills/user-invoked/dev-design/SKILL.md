@@ -84,7 +84,7 @@ requires: [no-field-guessing, no-self-invent, sql-dialect-discipline, stage-gate
 - `field-alignment-check.py` 报错
 - 合规相关变更
 
-**4 大类回测**(详见 `disciplines/stage-gate`):
+**4 大类回测**(详见 `rules/stage-gate.md`):
 1. 数据模型回测 — 跑历史样本验证 DDL / 索引 / 查询
 2. 业务规则回测 — 关键场景样本手工重跑
 3. 状态机回测 — 历史单据状态变化回放
@@ -110,12 +110,16 @@ requires: [no-field-guessing, no-self-invent, sql-dialect-discipline, stage-gate
 
 ### §7. 任务复盘汇总
 
-每个子任务完成后,按 `disciplines/stage-gate` 的 5 问复盘写到 commit / PR。
+每个子任务完成后,按 `rules/stage-gate.md` 的 5 问复盘写到 commit / PR。
 此处汇总关键沉淀到 `RETRO_任务复盘汇总.md`(可选)。
 
-## 调用的 discipline
+## 调用的 rule
 
-See the `Required rules` and `Required paths` lines in the contract above.
+- `rules/no-field-guessing` — 字段名必须查知识库
+- `rules/no-self-invent` — 严禁自创字段/表名
+- `rules/sql-dialect` — SQL 方言对齐 Target_DB
+- `rules/stage-gate` — 3 层门控 + 设计回测 + 任务复盘方法
+- `rules/doc-numbering` — 文档编号 02/03/06/08
 
 ## 输出
 

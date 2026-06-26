@@ -88,9 +88,10 @@ requires: [stage-gate, doc-numbering]
 
 - `HANDOVER.md`
 
-## 调用的 discipline
+## 调用的 rule
 
-See the `Required rules` and `Required paths` lines in the contract above.
+- `rules/stage-gate` — 阶段 9 门控
+- `rules/doc-numbering` — HANDOVER 不受编号约束
 
 ## 结束条件
 

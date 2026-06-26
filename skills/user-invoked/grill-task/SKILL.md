@@ -62,9 +62,11 @@ requires: [context-pointer, no-field-guessing, no-self-invent, stage-gate]
 - 用户确认通过 → 进入 `/to-brd`
 - 字段对齐有 🔴 或 ❓ → `task-confirm-check.py --strict` 必须失败,严禁进入下一步
 
-## 调用的 discipline
+## 调用的 rule
 
-See the `Required rules` and `Required paths` lines in the contract above.
+- `rules/no-field-guessing` — 严禁猜测字段名
+- `rules/no-self-invent` — 严禁自创字段
+- `rules/context-pointer` — 三层知识库加载
 
 ## 关键纪律（2026-06-24 更新）
 

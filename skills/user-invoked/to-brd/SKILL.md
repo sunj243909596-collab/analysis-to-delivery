@@ -48,7 +48,7 @@ requires: [ascii-flowchart, no-field-guessing, doc-numbering, stage-gate]
 
 ### 3. 画流程图
 
-- 状态流转图:**ASCII**(参考 `disciplines/ascii-flowchart`)
+- 状态流转图:**ASCII**(参考 `rules/ascii-flowchart.md`)
 - 业务流程图:简单用 ASCII,复杂用 drawio
 - 泳道图:ASCII(角色分工清晰)
 
@@ -73,9 +73,11 @@ requires: [ascii-flowchart, no-field-guessing, doc-numbering, stage-gate]
 - `业务流程图-收货流程.txt`(如需要,泳道图)
 - `业务流程图.drawio`(可选,用于可视化)
 
-## 调用的 discipline
+## 调用的 rule
 
-See the `Required rules` and `Required paths` lines in the contract above.
+- `rules/ascii-flowchart` — 流程图规范
+- `rules/no-field-guessing` — 字段名必须查知识库
+- `rules/doc-numbering` — 文档编号 01
 
 ## 结束条件
 
@@ -86,7 +88,7 @@ See the `Required rules` and `Required paths` lines in the contract above.
 
 ## 反模式
 
-- ❌ 用 Mermaid 写流程图 — 必须 ASCII(参考 disciplines/ascii-flowchart);可视化交付经 `flow-to-mermaid.py --ascii-strict`
+- ❌ 用 Mermaid 写流程图 — 必须 ASCII(参考 rules/ascii-flowchart.md);可视化交付经 `flow-to-mermaid.py --ascii-strict`
 - ❌ 泳道图回流箭头散乱 — 必须汇聚到同一目标节点(回流闭环强制)
 - ❌ 字段映射表缺知识库来源 — 每条字段必须标"WMOS 知识库/XX 章"或"项目侧 schema"
 - ❌ 9 章节缺一 — `brd-check.py --strict` 必须 exit 0

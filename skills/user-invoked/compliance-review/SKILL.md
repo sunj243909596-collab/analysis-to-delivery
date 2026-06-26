@@ -60,9 +60,10 @@ requires: [context-pointer, stage-gate]
 
 - `04-合规评审.md`
 
-## 调用的 discipline
+## 调用的 rule
 
-See the `Required rules` and `Required paths` lines in the contract above.
+- `rules/context-pointer` — 三层合规规则加载(项目级 > skill 级 > 默认)
+- `rules/stage-gate` — 阶段 4 门控
 
 ## 结束条件
 

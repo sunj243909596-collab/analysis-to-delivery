@@ -73,9 +73,10 @@ requires: [no-field-guessing, doc-numbering, stage-gate]
 - `05-PRD.docx`(可选)
 - `Figma设计文档_{功能名}_{端}.md`(可选,不受编号约束)
 
-## 调用的 discipline
+## 调用的 rule
 
-See the `Required rules` and `Required paths` lines in the contract above.
+- `rules/no-field-guessing` — 字段名必须查知识库
+- `rules/doc-numbering` — 文档编号 05
 
 ## 结束条件
 

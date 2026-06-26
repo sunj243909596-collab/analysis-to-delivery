@@ -68,9 +68,9 @@ requires: [stage-gate, doc-numbering]
 
 - `07-测试用例设计.md`
 
-## 调用的 discipline
+## 调用的 rule
 
-See the `Required rules` and `Required paths` lines in the contract above.
+- `rules/stage-gate` — 阶段 5 门控
 
 ## 结束条件
 

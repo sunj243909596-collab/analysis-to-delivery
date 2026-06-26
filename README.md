@@ -1,6 +1,6 @@
 # Analysis to Delivery
 
-> 通用需求分析到开发实施工作流 — **26 个独立可组合 skill**、3 个完整行业示例、13 个 CI workflow、26 个自动化脚本、14 个 pytest 测试。
+> 通用需求分析到开发实施工作流 — **26 个独立可组合 skill**、3 个完整行业示例、13 个 CI workflow、26 个自动化脚本、15 个 pytest 测试。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-3.1.0-blue.svg)](plan.md)
@@ -8,11 +8,11 @@
 [![Examples](https://img.shields.io/badge/examples-3-orange.svg)](examples/)
 [![CI](https://img.shields.io/badge/CI-13%20workflows-purple.svg)](.github/workflows/)
 [![Scripts](https://img.shields.io/badge/scripts-26-blue.svg)](scripts/)
-[![Tests](https://img.shields.io/badge/tests-14%20pytest-green.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-15%20pytest-green.svg)](tests/)
 
 ## 它是什么
 
-一个 Claude Code / Hermes 的 **skill 集合**,提供从「需求澄清」到「开发实施」的标准化工作流。
+一个面向 Claude Code / Hermes / Codex / OpenCode 等 agentic coding assistants 的 **agent-neutral skill/workflow 集合**,提供从「需求澄清」到「开发实施」的标准化工作流。
 
 - **26 个独立可组合 skill** — 拆分为 2 router + 9 动作 + 1 编排 + 7 bridge + 7 纪律,职责单一,自由组合
 - **3 个完整行业示例** — 医药 WMS / SaaS 订单 / 移动 App 积分,看完即可照搬到同类项目
@@ -23,8 +23,8 @@
 
 任何团队拿到这个 skill 之后:
 
-1. 告诉 Claude 你的**领域**(医药/金融/SaaS/移动 App...)和**技术栈**(Java/Go/Python/Node...)
-2. 用 `/ask-delivery` 选择对应 skill,或直接 `/analysis-delivery-workflow` 走完整流程
+1. 告诉你的 agent 你的**领域**(医药/金融/SaaS/移动 App...)和**技术栈**(Java/Go/Python/Node...)
+2. 用 `/ask-delivery` 选择对应 skill,或直接 `/analysis-delivery-workflow` 走完整流程(不支持 slash command 的 agent 可用自然语言触发)
 3. 产出可直接交给开发的设计文档(BRD/FSD/数据模型/PRD/开发设计/测试用例)
 
 **默认不包含**:实际业务代码。若用户明确启用"实施扩展模式",可走 `/using-superpowers` 串接 superpowers 5 步实施。
@@ -35,7 +35,7 @@
 - ✅ **3 个完整行业示例** — 医药 WMS / SaaS 订单 / 移动 App 积分,各 16 文件,看完照搬
 - ✅ **26 个自动化脚本** — 7 阶段门控 + 5 静态审计 + 4 元数据校验 + 3 流程图工具 + 5 基础设施 + 2 状态管理
 - ✅ **13 个 GitHub Actions workflow** — smoke-test / sql-dialect / doc-validate / field-alignment / full-qa-audit + 8 个 P0/P1 增量校验
-- ✅ **14 个 pytest 测试** — 每个 gate 脚本有对应测试,覆盖 CLI / 双模式 / 互斥参数 / 边界条件
+- ✅ **15 个 pytest 测试** — 每个 gate 脚本有对应测试,覆盖 CLI / 双模式 / 互斥参数 / 边界条件
 - ✅ **流程图工具链** — ASCII → Mermaid/Drawio → SVG/PNG(命令行 + VSCode 集成)
 - ✅ **VSCode 扩展** — 4 个命令直接桥接到 skill 脚本
 - ✅ **可组合** — 不强制流程,自由调任意 skill
@@ -96,17 +96,19 @@ curl -fsSL https://raw.githubusercontent.com/BlueprintOS/analysis-to-delivery/ma
 ```bash
 # 稳定版(推荐生产用,锁定到 v3.1.0)
 git clone --branch 3.1.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git \
-  ~/.claude/skills/analysis-to-delivery
+  ~/.codex/skills/analysis-to-delivery
 
 # main 分支(尝鲜用,跟随最新提交)
 git clone --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git \
-  ~/.claude/skills/analysis-to-delivery
+  ~/.codex/skills/analysis-to-delivery
 ```
+
+也可以把目标目录换成对应 agent 的 skills 目录,或用项目级 `AGENTS.md` 直接引用本仓库。
 
 ### 升级
 
 ```bash
-cd ~/.claude/skills/analysis-to-delivery && git pull origin 3.0.0
+cd <SKILL_ROOT>/analysis-to-delivery && git pull origin main
 ```
 
 ### 安装选项
@@ -115,23 +117,44 @@ cd ~/.claude/skills/analysis-to-delivery && git pull origin 3.0.0
 # Dry run(只检查不安装)
 bash install.sh --dry-run
 
+# 指定 agent 默认目录
+bash install.sh --agent claude
+bash install.sh --agent hermes
+bash install.sh --agent codex
+bash install.sh --agent opencode
+
 # 指定目标目录
 bash install.sh --target /path/to/install
 
 # 指定版本
 bash install.sh --version v3.1.0
 
-# 卸载
+# 卸载(会清理已知 agent skills 目录中的本 skill)
 bash install.sh --uninstall
 ```
 
 ### 安装位置
 
-脚本自动检测:
-- 优先 `~/.claude/skills/`(Claude Code 用户)
-- 回退 `~/.hermes/skills/`(Hermes 用户)
+脚本自动检测已存在的 agent 目录:
+- `~/.claude/skills/`(Claude Code)
+- `~/.hermes/skills/`(Hermes)
+- `~/.codex/skills/` 或 `$CODEX_HOME/skills/`(Codex)
+- `~/.opencode/skills/` 或 `$OPENCODE_HOME/skills/`(OpenCode,若本地采用该目录约定)
 
-可用 `--target` 强制指定。
+可用 `--agent` 选择默认目录,或用 `--target` 强制指定。更多说明见 `docs/adapters/`。
+
+### Agent 兼容性
+
+核心工作流是 agent-neutral 的 Markdown + CLI 脚本;不同 agent 只在入口、命令触发和子代理能力上有差异。
+
+| Agent | 推荐接入 | 说明 |
+|---|---|---|
+| Claude Code | `--agent claude` 或 `~/.claude/skills` | 原生 skill / slash command 体验最佳 |
+| Hermes | `--agent hermes` 或 `~/.hermes/skills` | 沿用 Claude 风格 skill 目录 |
+| Codex | `--agent codex` 或 `$CODEX_HOME/skills` | 通过 `SKILL.md`、`AGENTS.md` 和脚本门控接入 |
+| OpenCode | `--agent opencode` 或 `--target` | 优先用项目级 `AGENTS.md` + CLI 脚本接入 |
+
+不支持 slash command 的 agent 可直接用自然语言触发,例如:"使用 analysis-to-delivery 的 `/grill-task` 流程澄清这个需求"。
 
 ## 快速通道
 
@@ -178,14 +201,14 @@ bash install.sh --uninstall
 ### 0. 装完先跑 smoke test(v1.2+)
 
 ```bash
-bash ~/.claude/skills/analysis-to-delivery/scripts/smoke-test.sh
+bash <SKILL_ROOT>/analysis-to-delivery/scripts/smoke-test.sh
 ```
 
 确认文件完整后再用。✅ 全部通过即可放心;⚠️ 有警告可继续;❌ 有错误需先修复。
 
 当前标准:**95+ ✅ / 0 ⚠️ / 0 ❌**(v3.0 后)
 
-### 方式 1:斜杠命令(Claude Code)
+### 方式 1:斜杠命令(支持 slash command 的 agent)
 
 ```
 /analysis-to-delivery
@@ -203,7 +226,7 @@ bash ~/.claude/skills/analysis-to-delivery/scripts/smoke-test.sh
 "我要做一个 SaaS CRM 系统,用 Node + React + PostgreSQL,请用 analysis-to-delivery 帮我走完需求到设计"
 ```
 
-Claude 会自动:
+Agent 会自动:
 1. 加载项目级 `*-path.md` 配置(若有,详见[📚 知识库配置](#-知识库配置项目级))
 2. 加载 `config/compliance/none.md`(无强合规)
 3. 加载 `config/tech-stack/node-nestjs.md`(如果存在)
@@ -354,22 +377,24 @@ cat 业务流程图-积分状态流转.txt  # 双状态机
 
 Claude 启动时按这个顺序找配置,找到即用。
 
-### 项目级配置(4 个 `*-path.md`)
+### 项目级配置(4 个 `paths/*.md`)
 
-每个真实项目根目录下生成这 4 个配置文件,它们是 Claude 的配置加载输入:
+每个真实项目根目录下默认生成 `paths/` 目录,其中 4 个 canonical path 文件是项目上下文加载入口:
 
 | 文件 | 用途 | 示例内容 |
 |---|---|---|
-| `knowledge-path.md` | 列出真实知识库路径 | "WMOS 表结构在 `/root/WMOS 知识库/01-WMOS核心/`" |
-| `tech-stack-path.md` | 分端列技术栈 | "后端 Java 11 / 前端 Vue 3 / 数据库 Oracle" |
-| `compliance-path.md` | 启用合规 + 路径 | "启用 GSP,知识库在 `/root/WMOS 知识库/03-GSP法规/`" |
-| `doc-naming.md` | 文档编号规则 | "01-09 编号,文档存项目根" |
+| `paths/knowledge-path.md` | 列出真实知识库路径 | "WMOS 表结构在 `/root/WMOS 知识库/01-WMOS核心/`" |
+| `paths/tech-stack-path.md` | 分端列技术栈 | "后端 Java 11 / 前端 Vue 3 / 数据库 Oracle" |
+| `paths/compliance-path.md` | 启用合规 + 路径 | "启用 GSP,知识库在 `/root/WMOS 知识库/03-GSP法规/`" |
+| `paths/doc-naming-path.md` | 文档编号规则 | "01-09 编号,文档存项目根" |
+
+旧项目根目录下的 `knowledge-path.md` / `tech-stack-path.md` / `compliance-path.md` / `doc-naming.md` 仍作为 legacy 兼容入口识别,但新项目不要继续使用。
 
 ### 配置使用记录 / ADR 产物
 
 `config-used.md` 不是配置文件,不参与配置加载,也不由 `init-project-config.sh` 生成。它是可选的交付产物,用于记录:
 
-- 本项目实际读取了哪些 `*-path.md` / skill fallback 配置
+- 本项目实际读取了哪些 `paths/*.md` / skill fallback 配置
 - 为什么选择这些路径、技术栈、合规规则
 - 关键配置决策的 ADR(例如"为什么用行级多租户?")
 - 后续配置变更需要同步更新哪些文档
@@ -382,7 +407,7 @@ Claude 启动时按这个顺序找配置,找到即用。
 bash scripts/init-project-config.sh /path/to/your-project
 ```
 
-生成 4 个空模板,用户填好后 Claude 自动识别。
+默认生成 `paths/*.md` 4 个空模板,用户填好后 Claude 自动识别。旧项目如需继续生成项目根 `*.md`,使用 `--legacy`。
 
 ### Skill 级 fallback(`config/`)
 
@@ -499,7 +524,7 @@ code --install-extension analysis-to-delivery-0.1.0.vsix
 **配置**(`settings.json`):
 ```json
 {
-  "analysisToDelivery.skillsPath": "${userHome}/.claude/skills/analysis-to-delivery",
+  "analysisToDelivery.skillsPath": "${userHome}/.codex/skills/analysis-to-delivery",
   "analysisToDelivery.mermaidCli": "mmdc",
   "analysisToDelivery.defaultFormat": "svg"
 }
@@ -570,8 +595,9 @@ analysis-to-delivery/
 │       ├── sql-dialect-discipline/ → rules/sql-dialect.md
 │       ├── doc-numbering/        →  rules/doc-numbering.md
 │       └── context-pointer/      →  rules/context-pointer.md
-├── rules/                      # 7 个跨阶段规则(canonical,v3.2.0-dev)
+├── rules/                      # 8 个跨阶段规则(canonical,v3.2.0-dev)
 ├── paths/                      # 4 个项目级配置入口(canonical)
+├── docs/adapters/              # Codex / OpenCode 等 agent 接入说明
 ├── templates/project-config/   # 兼容壳(指向 paths/*)
 ├── config/                     # 领域配置(skill 级 fallback)
 │   ├── compliance/             # gsp / none / template
@@ -611,11 +637,11 @@ analysis-to-delivery/
 │   ├── flow-to-drawio.py       # ASCII → Drawio XML
 │   ├── flow-export.sh          # Mermaid → SVG/PNG(包装 mmdc)
 │   ├── analysis-state.py       # 9 阶段状态持久化(init/record-gate/signoff/status/metrics)
-│   ├── parallel-delegate.sh    # 基于 Claude CLI 并行任务
+│   ├── parallel-delegate.sh    # Claude adapter: 基于 Claude CLI 并行任务
 │   ├── postprocess_prd_html.py # PRD HTML 后处理
 │   ├── init-project-config.sh  # 生成 4 个 *-path.md
 │   └── cookiecutter-gen.sh     # 生成项目骨架
-├── tests/                      # 14 个 pytest 测试(每个 gate 脚本一份)
+├── tests/                      # 15 个 pytest 测试(每个 gate 脚本一份)
 ├── .github/
 │   ├── workflows/              # 13 个 CI workflow
 │   │   ├── smoke-test.yml
@@ -691,7 +717,7 @@ analysis-to-delivery/
 | `scripts/analysis-state.py` | `.analysis-delivery-state.json` 持久化;5 子命令 `init` / `record-gate` / `signoff` / `status` / `metrics`;签字白名单 4 句 | Python 标准库 |
 | `scripts/smoke-test.sh` | 14 节自检(目录 / 工具 / 文档 / 模板 / 脚本 / skills / config / examples / metadata / 编号 / 链接 / 语义 / CI / 工具链) | Bash + Python |
 | `scripts/init-project-config.sh` | 一键生成项目根 4 个 `*-path.md`;支持 `--force` | Bash |
-| `scripts/parallel-delegate.sh` | 基于 Claude CLI 并行执行任务文件 | Bash + `claude` |
+| `scripts/parallel-delegate.sh` | Claude adapter: 基于 Claude CLI 并行执行任务文件 | Bash + `claude` |
 | `scripts/cookiecutter-gen.sh` | 生成 `templates/cookiecutter-analysis/` 项目骨架 | cookiecutter |
 | `scripts/postprocess_prd_html.py` | PRD HTML 后处理(封面 / 目录 / 章节卡片 / 响应式) | Python 标准库 |
 | `scripts/_gate_common.py` | 共享库(argparse / 退出码 / JSON / CheckResult / GateReport) | Python 标准库 |

@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: 反复提问澄清需求,产出设计稿 — 来自 superpowers 体系(obra/superpowers)。本 skill 是桥接层,完整纪律见 ~/.claude/skills/brainstorming/。
+description: 反复提问澄清需求,产出设计稿 — 来自 superpowers 体系(obra/superpowers)。本 skill 是桥接层,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/brainstorming/。
 version: 3.0.1
 
 ---
@@ -16,7 +16,7 @@ version: 3.0.1
 - Next: `/design-an-interface` or `/writing-plans`
 
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
-> `~/.claude/skills/brainstorming/SKILL.md`
+> `<SUPERPOWERS_SKILL_ROOT>/brainstorming/SKILL.md`
 
 ## 何时调
 
@@ -41,7 +41,7 @@ version: 3.0.1
 
 ## 降级方案(superpowers 未装时)
 
-如果 `~/.claude/skills/brainstorming/` 不存在,按以下 4 步在本仓库独立完成脑暴:
+如果 `<SUPERPOWERS_SKILL_ROOT>/brainstorming/` 不存在,按以下 4 步在本仓库独立完成脑暴:
 
 ### 1. 5 问澄清
 

@@ -1,6 +1,6 @@
 ---
 name: executing-plans
-description: 逐步按计划执行 + 复盘 — 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 ~/.claude/skills/executing-plans/。
+description: 逐步按计划执行 + 复盘 — 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/executing-plans/。
 version: 3.0.1
 
 ---
@@ -16,7 +16,7 @@ version: 3.0.1
 - Next: next `/tdd` task or `/verification-before-completion`
 
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
-> `~/.claude/skills/executing-plans/SKILL.md`
+> `<SUPERPOWERS_SKILL_ROOT>/executing-plans/SKILL.md`
 
 ## 何时调
 
@@ -31,7 +31,7 @@ version: 3.0.1
 
 ## 降级方案(superpowers 未装时)
 
-如果 `~/.claude/skills/executing-plans/` 不存在,按以下 4 步执行 + 复盘:
+如果 `<SUPERPOWERS_SKILL_ROOT>/executing-plans/` 不存在,按以下 4 步执行 + 复盘:
 
 ### 1. 一次一个任务
 

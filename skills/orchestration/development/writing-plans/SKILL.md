@@ -1,6 +1,6 @@
 ---
 name: writing-plans
-description: 把 spec 拆成可执行计划(每个 ≤ 2h)— 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 ~/.claude/skills/writing-plans/。
+description: 把 spec 拆成可执行计划(每个 ≤ 2h)— 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/writing-plans/。
 version: 3.0.1
 
 ---
@@ -16,7 +16,7 @@ version: 3.0.1
 - Next: `/tdd`
 
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
-> `~/.claude/skills/writing-plans/SKILL.md`
+> `<SUPERPOWERS_SKILL_ROOT>/writing-plans/SKILL.md`
 
 ## 何时调
 
@@ -31,7 +31,7 @@ version: 3.0.1
 
 ## 降级方案(superpowers 未装时)
 
-如果 `~/.claude/skills/writing-plans/` 不存在,按以下 4 步产出可执行计划:
+如果 `<SUPERPOWERS_SKILL_ROOT>/writing-plans/` 不存在,按以下 4 步产出可执行计划:
 
 ### 1. 拆任务(每个 ≤ 2h)
 

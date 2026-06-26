@@ -40,9 +40,9 @@
 3. 文档写完后跑格式校验：
 
 ```bash
-python3 ~/.claude/skills/analysis-to-delivery/scripts/doc-validate.py . --level P1
+python3 <SKILL_ROOT>/analysis-to-delivery/scripts/doc-validate.py . --level P1
 ```
 
 ## 详细工作流
 
-参见 `~/.claude/skills/analysis-to-delivery/SKILL.md` 的 9 阶段工作流。
+参见 `<SKILL_ROOT>/analysis-to-delivery/SKILL.md` 的 9 阶段工作流。

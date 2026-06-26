@@ -1,7 +1,7 @@
 # 交接清单：{项目名}
 
 > 交接日期：{日期}
-> 交接方：{Hermes/Claude}
+> 交接方：{Hermes/Claude/Codex/OpenCode}
 > 接收方：{开发团队}
 
 ## 一、已完成文档

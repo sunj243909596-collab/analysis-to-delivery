@@ -1,7 +1,7 @@
 # Analysis to Delivery — VSCode 扩展
 
-> **注意**:Claude Code / Hermes 仍然是主入口。本扩展只是一个轻量包装,
-> 把命令桥接到 `~/.claude/skills/analysis-to-delivery` 下的脚本。
+> **注意**:各 agent 仍然是主入口。本扩展只是一个轻量包装,
+> 把命令桥接到 `<SKILL_ROOT>/analysis-to-delivery` 下的脚本。
 
 ## 功能
 
@@ -41,7 +41,7 @@ code --install-extension analysis-to-delivery-0.1.0.vsix
 
 ```json
 {
-  "analysisToDelivery.skillsPath": "${userHome}/.claude/skills/analysis-to-delivery",
+  "analysisToDelivery.skillsPath": "${userHome}/.codex/skills/analysis-to-delivery",
   "analysisToDelivery.mermaidCli": "mmdc",
   "analysisToDelivery.defaultFormat": "svg"
 }
@@ -67,7 +67,7 @@ code --install-extension analysis-to-delivery-0.1.0.vsix
 2. 输入 "Analysis to Delivery: Apply Skill"
 3. 选择 `to-brd`
 4. VSCode 打开 `to-brd/SKILL.md`,命令已复制到剪贴板
-5. 切换到 Claude Chat,粘贴 `/to-brd` 触发
+5. 切换到你的 agent,粘贴 `/to-brd` 或用自然语言触发
 
 ### 2. 跑 smoke test
 
@@ -86,7 +86,7 @@ code --install-extension analysis-to-delivery-0.1.0.vsix
 ```
 VSCode 扩展 (本目录)
   ↓ 调用
-~/.claude/skills/analysis-to-delivery/scripts/
+<SKILL_ROOT>/analysis-to-delivery/scripts/
   ├── smoke-test.sh       ← runSmokeTest
   ├── flow-export.sh      ← renderFlowChart
   └── flow-to-mermaid.py  ← renderFlowChart(子步骤)

@@ -66,5 +66,5 @@
 
 ## 引用
 
-- 详细规范:用户全局 `CLAUDE.md` "项目级配置"小节
+- 详细规范:用户全局 agent 指令(如 `CLAUDE.md` / `AGENTS.md`) "项目级配置"小节
 - skill 仓库:原 SKILL.md "配置加载机制"小节

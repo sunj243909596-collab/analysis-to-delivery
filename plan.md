@@ -171,6 +171,133 @@
 - v1.0 用户群体小，引入额外工具会抬高上手成本
 - v1.2 再引入也不晚，渐进式披露
 
+## 架构演进
+
+> 2026-07-02 会话沉淀。状态:**待用户拍板 P0 启动**。
+
+### 背景
+
+v3.1.0 已将 26 个 skill 收敛为「2 router + 9 动作 + 1 编排 + 7 bridge + 7 discipline」的清晰结构,但仍然存在两个架构层问题:
+
+1. **上下文膨胀** — 7 个 discipline 全文 569 行,user-invoked 累计 921 行;`dev-design` 一个 skill 触发时实际加载 500+ 行纪律文本
+2. **边界不清晰** — discipline 之间职责重叠(如 `no-field-guessing` vs `no-self-invent` 的 description 触发条件模糊),模型可能重复加载
+
+### 根因分析
+
+| 现象 | 根因 | 量化数据 |
+|---|---|---|
+| 单个 skill 上下文占用高 | discipline 是「主题切」,不区分阶段,触发即全量注入 | `dev-design` requires 5 个 discipline ≈ 500 行 |
+| discipline 重复触发 | description 模糊,模型在多个 stage 都可能拉入 | 569 行 discipline 中至少 2 对职责重叠 |
+| 路径边界不显式 | 仅靠 `context-pointer` 三层降级,目录切 ≠ 规则切 | 26 个 skill 跨阶段无物理隔离 |
+
+### 三方案对比
+
+| 维度 | A.完全 Rules + Path | **B.混合模式(推荐)** | C.不动,只内部重构 |
+|---|---|---|---|
+| 核心思路 | 抛弃 SKILLS,目录级 `.claude/rules/*.md` | SKILLS 保留,discipline 拆「微规则 + path」 | discipline 内部拆文件,SKILL.md 只留摘要 |
+| 上下文控制 | 强(目录切 = 上下文切) | 中(摘要化 + path 触发) | 弱(仍是 description 触发) |
+| 边界清晰度 | 高(物理目录隔离) | 中(显式依赖图 + path 字段) | 低(描述仍可能重叠) |
+| 可组合性 | 弱 | 强(保留自由组合) | 强 |
+| 学习曲线 | 低 | 中 | 低 |
+| 迁移成本 | 高(推翻 26 个 skill) | 中(增量改造) | 低 |
+| 适合场景 | 重写/标准化产品 | **演进中项目(本项目现状)** | 临时止血 |
+
+### 推荐方案 B 设计
+
+**核心原则:把"主题分"的 discipline 改成"路径分" + "微规则"**
+
+#### B.1 Path 概念(目录级规则)
+
+```
+stage-requirements/CLAUDE.md   →  rules: [no-field-guessing, grill-protocol, stage-gate]
+stage-design/CLAUDE.md         →  rules: [ascii-flowchart, doc-numbering, stage-gate]
+stage-dev-design/CLAUDE.md     →  rules: [sql-dialect, no-field-guessing, doc-numbering, stage-gate]
+stage-qa/CLAUDE.md             →  rules: [doc-numbering, sql-dialect, stage-gate]
+```
+
+#### B.2 Discipline 拆分为「微规则 + 指针」
+
+**改造前**:每个 discipline 一个 80 行 SKILL.md,内容混合「触发条件 + 规则全文」
+
+**改造后**:
+
+```
+disciplines/no-field-guessing/
+  SKILL.md          ← 5 行(摘要 + 触发条件 + 路径指针)
+  RULES.md          ← 实际规则全文(按需 fetch)
+  applies-to.yaml   ← 声明:在哪些 stage-path 激活
+```
+
+**SKILL.md 模板**:
+
+```markdown
+---
+name: <discipline-name>
+description: <一句话触发条件>
+applies-to: [stage-requirements, stage-dev-design, ...]   ← 新字段
+---
+
+# <Discipline-Name>
+
+详见 [RULES.md](./RULES.md)。
+
+触发:<何时调用>
+路径:<context-pointer 三层降级>
+```
+
+#### B.3 requires 改成依赖图(显式化)
+
+**改造前**(扁平列表,无法区分必选/可选/条件触发):
+
+```yaml
+requires: [no-field-guessing, no-self-invent, sql-dialect-discipline, stage-gate, doc-numbering]
+```
+
+**改造后**(分层):
+
+```yaml
+requires:
+  must: [stage-gate]                                      # 没有就走不下去
+  should: [no-field-guessing, doc-numbering]               # 强烈建议
+  may: [sql-dialect-discipline]                           # 仅在涉及 SQL 时加载
+  when:
+    involves_sql: [sql-dialect-discipline]
+    involves_field: [no-field-guessing]
+```
+
+模型按任务特征选择性加载,**避免一次性全量注入**。
+
+#### B.4 Path 触发器(全局 CLAUDE.md 增量)
+
+```markdown
+## Path-based Rule Loading
+
+| 工作目录前缀 | 自动激活 rules |
+|---|---|
+| `*/stage-requirements/*` | no-field-guessing, grill-protocol, stage-gate |
+| `*/stage-design/*` | ascii-flowchart, doc-numbering, stage-gate |
+| `*/stage-dev-design/*` | sql-dialect, no-field-guessing, doc-numbering, stage-gate |
+| `*/stage-qa/*` | doc-numbering, sql-dialect, stage-gate |
+```
+
+### 实施路线(P0-P3,渐进式,避免大爆炸重写)
+
+| 阶段 | 时间 | 动作 | 风险 | 预期收益 |
+|---|---|---|---|---|
+| **P0 止血** | 本周 | 7 个 discipline SKILL.md 全部瘦到 5-10 行摘要 + 指向 RULES.md | 低 | 上下文占用 -40% |
+| **P1 路径化** | 2 周 | 4 个核心 user-invoked 加 `applies-to.yaml` + requires 依赖图改造 | 中(改 frontmatter) | discipline 选择性加载,边界显式化 |
+| **P2 目录级 CLAUDE.md** | 1 月 | 项目根创建 `stage-*/CLAUDE.md`,模型 cd 进去自动激活 rules | 中(用户接受新目录结构) | 物理边界清晰,description 不再歧义 |
+| **P3 全量迁移** | 1 季 | 26 个 skill 全部迁移到新结构 + 反向兼容老 frontmatter | 高(改 SKILL.md 规范) | 完整 path 化,体系成熟 |
+
+### 关键判断
+
+- ✅ SKILLS 本身设计合理(主题切可组合),不必推翻
+- ✅ 真正的问题是「主题切」和「路径切」混用 → 引入显式 path 字段即可解
+- ✅ 渐进式改造(P0→P3)风险可控,不破坏现有 26 个 skill 的工作流
+- ⏸ P0 是否启动,等用户拍板
+
+---
+
 ## 进度看板
 
 ### v1.0 MVP（2026-Q2）— 全部完成 ✅

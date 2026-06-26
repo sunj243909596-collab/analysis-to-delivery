@@ -81,7 +81,7 @@
       "properties": {
         "analysisToDelivery.skillsPath": {
           "type": "string",
-          "default": "${userHome}/.claude/skills/analysis-to-delivery",
+          "default": "${userHome}/.codex/skills/analysis-to-delivery",
           "description": "Path to the installed analysis-to-delivery skill collection (where scripts/ and skills/ live)"
         },
         "analysisToDelivery.mermaidCli": {

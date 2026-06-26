@@ -1,6 +1,6 @@
 ---
 name: design-an-interface
-description: 设计接口契约 — 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 ~/.claude/skills/design-an-interface/。
+description: 设计接口契约 — 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/design-an-interface/。
 version: 3.0.1
 
 ---
@@ -16,7 +16,7 @@ version: 3.0.1
 - Next: `/domain-modeling` or `/writing-plans`
 
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
-> `~/.claude/skills/design-an-interface/SKILL.md`
+> `<SUPERPOWERS_SKILL_ROOT>/design-an-interface/SKILL.md`
 
 ## 何时调
 
@@ -31,7 +31,7 @@ version: 3.0.1
 
 ## 降级方案(superpowers 未装时)
 
-如果 `~/.claude/skills/design-an-interface/` 不存在,按以下 4 步产出接口契约:
+如果 `<SUPERPOWERS_SKILL_ROOT>/design-an-interface/` 不存在,按以下 4 步产出接口契约:
 
 ### 1. 列举调用方与实现方
 

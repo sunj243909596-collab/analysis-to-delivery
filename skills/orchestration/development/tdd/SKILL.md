@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: 测试驱动开发(红绿循环)— 来自 superpowers 体系。本 skill 是桥接层,先写失败测试再写实现,完整纪律见 ~/.claude/skills/tdd/。
+description: 测试驱动开发(红绿循环)— 来自 superpowers 体系。本 skill 是桥接层,先写失败测试再写实现,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/tdd/。
 version: 3.0.1
 
 ---
@@ -16,7 +16,7 @@ version: 3.0.1
 - Next: `/executing-plans`
 
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
-> `~/.claude/skills/tdd/SKILL.md`
+> `<SUPERPOWERS_SKILL_ROOT>/tdd/SKILL.md`
 
 ## 何时调
 
@@ -31,7 +31,7 @@ version: 3.0.1
 
 ## 降级方案(superpowers 未装时)
 
-如果 `~/.claude/skills/tdd/` 不存在,严格按以下 4 步红绿循环:
+如果 `<SUPERPOWERS_SKILL_ROOT>/tdd/` 不存在,严格按以下 4 步红绿循环:
 
 ### 1. RED — 写失败测试
 

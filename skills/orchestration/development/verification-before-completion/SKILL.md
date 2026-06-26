@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: 完成任务前验证(铁律)— 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 ~/.claude/skills/verification-before-completion/。
+description: 完成任务前验证(铁律)— 来自 superpowers 体系。本 skill 是桥接层,完整纪律见 <SUPERPOWERS_SKILL_ROOT>/verification-before-completion/。
 version: 3.0.1
 
 ---
@@ -16,7 +16,7 @@ version: 3.0.1
 - Next: commit, fix loop, or `/handoff`
 
 > **本仓库不维护此 skill 的内容**。完整纪律请读:
-> `~/.claude/skills/verification-before-completion/SKILL.md`
+> `<SUPERPOWERS_SKILL_ROOT>/verification-before-completion/SKILL.md`
 
 ## 何时调
 
@@ -42,7 +42,7 @@ version: 3.0.1
 
 ## 降级方案(superpowers 未装时)
 
-如果 `~/.claude/skills/verification-before-completion/` 不存在,严格按以下 5 步门控(铁律,不允许跳):
+如果 `<SUPERPOWERS_SKILL_ROOT>/verification-before-completion/` 不存在,严格按以下 5 步门控(铁律,不允许跳):
 
 ### 1. IDENTIFY — 什么命令能证明这个声明?
 

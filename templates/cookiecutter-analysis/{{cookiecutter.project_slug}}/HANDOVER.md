@@ -1,7 +1,7 @@
 # 交接清单：{{ cookiecutter.project_name }}
 
 > 交接日期：{{ cookiecutter.date }}
-> 交接方：{Hermes/Claude}
+> 交接方：{Hermes/Claude/Codex/OpenCode}
 > 接收方：{开发团队}
 
 ## 一、已完成文档

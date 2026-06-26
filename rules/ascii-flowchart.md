@@ -83,5 +83,5 @@ A → B
 ## 引用
 
 - 详细规范:原 `references/flow-chart-ascii.md`
-- 用户偏好:用户全局 `CLAUDE.md` "流程图禁用 Mermaid"
+- 用户偏好:用户全局 agent 指令(如 `CLAUDE.md` / `AGENTS.md`) "流程图禁用 Mermaid"
 - 如需可视化交付(罕见):经 `flow-to-mermaid.py --ascii-strict` 转换(plan §P1-2),strict 模式会校验回流闭环 + 禁止 classDef

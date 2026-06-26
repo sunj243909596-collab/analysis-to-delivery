@@ -5,6 +5,7 @@
 #   bash install.sh                   # 安装到默认目录
 #   bash install.sh --dry-run         # 只检查不安装
 #   bash install.sh --target DIR      # 安装到指定目录
+#   bash install.sh --agent codex     # 安装到指定 agent 的默认 skills 目录
 #   bash install.sh --uninstall       # 卸载
 set -e
 
@@ -15,12 +16,14 @@ VERSION="${VERSION:-main}"
 DRY_RUN=false
 TARGET=""
 UNINSTALL=false
+AGENT="${ANALYSIS_TO_DELIVERY_AGENT:-auto}"
 
 # ---------- 参数解析 ----------
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN=true; shift ;;
     --target) TARGET="$2"; shift 2 ;;
+    --agent) AGENT="$2"; shift 2 ;;
     --uninstall) UNINSTALL=true; shift ;;
     --repo) REPO="$2"; shift 2 ;;
     --version) VERSION="$2"; shift 2 ;;
@@ -47,7 +50,7 @@ err()   { echo -e "${RED}❌${NC} $1"; }
 
 # ---------- 卸载 ----------
 if [ "$UNINSTALL" = true ]; then
-  for base in "$HOME/.claude/skills" "$HOME/.hermes/skills"; do
+  for base in "$HOME/.claude/skills" "$HOME/.hermes/skills" "$HOME/.codex/skills" "$HOME/.opencode/skills"; do
     target="$base/$SKILL_NAME"
     if [ -d "$target" ]; then
       if [ "$DRY_RUN" = true ]; then
@@ -67,22 +70,41 @@ detect_target() {
     echo "$TARGET"
     return
   fi
-  if [ -d "$HOME/.claude/skills" ]; then
-    echo "$HOME/.claude/skills/$SKILL_NAME"
-  elif [ -d "$HOME/.hermes/skills" ]; then
-    echo "$HOME/.hermes/skills/$SKILL_NAME"
-  elif [ -d "$HOME/.claude" ] || [ -d "$HOME/.hermes" ]; then
-    # 有父目录但无 skills 子目录，主动建一个
-    if [ -d "$HOME/.claude" ]; then
-      echo "$HOME/.claude/skills/$SKILL_NAME"
-    else
-      echo "$HOME/.hermes/skills/$SKILL_NAME"
+
+  case "$AGENT" in
+    claude) echo "$HOME/.claude/skills/$SKILL_NAME"; return ;;
+    hermes) echo "$HOME/.hermes/skills/$SKILL_NAME"; return ;;
+    codex) echo "${CODEX_HOME:-$HOME/.codex}/skills/$SKILL_NAME"; return ;;
+    opencode) echo "${OPENCODE_HOME:-$HOME/.opencode}/skills/$SKILL_NAME"; return ;;
+    auto) ;;
+    *)
+      err "未知 agent: $AGENT"
+      err "可选: auto / claude / hermes / codex / opencode,或用 --target 指定目录"
+      exit 1
+      ;;
+  esac
+
+  for base in \
+    "$HOME/.claude/skills" \
+    "$HOME/.hermes/skills" \
+    "${CODEX_HOME:-$HOME/.codex}/skills" \
+    "${OPENCODE_HOME:-$HOME/.opencode}/skills"; do
+    if [ -d "$base" ]; then
+      echo "$base/$SKILL_NAME"
+      return
     fi
-  else
-    err "未找到 ~/.claude 或 ~/.hermes 目录"
-    err "请先安装 Claude Code 或 Hermes，或用 --target 指定目录"
-    exit 1
-  fi
+  done
+
+  for home_dir in "$HOME/.claude" "$HOME/.hermes" "${CODEX_HOME:-$HOME/.codex}" "${OPENCODE_HOME:-$HOME/.opencode}"; do
+    if [ -d "$home_dir" ]; then
+      echo "$home_dir/skills/$SKILL_NAME"
+      return
+    fi
+  done
+
+  err "未找到已知 agent 目录(~/.claude / ~/.hermes / ~/.codex / ~/.opencode)"
+  err "请先安装对应 agent,或用 --agent / --target 指定目录"
+  exit 1
 }
 
 TARGET_DIR=$(detect_target)
@@ -134,13 +156,16 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "📚 下一步："
 echo ""
-echo "  1. 在 Claude Code 中调用："
-echo "     /analysis-to-delivery"
+echo "  1. 在支持 slash command 的 agent 中调用："
+echo "     /analysis-to-delivery 或 /analysis-delivery-workflow"
 echo ""
-echo "  2. 或直接告诉 Claude："
+echo "  2. 或直接告诉你的 agent："
 echo "     \"使用 analysis-to-delivery 分析 XXX 需求\""
 echo ""
-echo "  3. 查阅文档："
+echo "  3. 查阅 adapter 文档："
+echo "     ls $TARGET_DIR/docs/adapters"
+echo ""
+echo "  4. 查阅主文档："
 echo "     cat $TARGET_DIR/README.md"
 echo "     cat $TARGET_DIR/plan.md"
 echo "     cat $TARGET_DIR/SPEC.md"

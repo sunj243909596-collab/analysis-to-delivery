@@ -60,4 +60,4 @@ if (asn.getStatus() == ASNStatus.OPEN) { ... }
 ## 引用
 
 - 来源:`references/workflow-discipline.md` 实战教训
-- 表名前缀规范:用户全局 `CLAUDE.md`
+- 表名前缀规范:用户全局 agent 指令(如 `CLAUDE.md` / `AGENTS.md`)

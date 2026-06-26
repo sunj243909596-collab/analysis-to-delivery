@@ -471,6 +471,11 @@ if python3 "$SKILL_DIR/scripts/rules-path-lint.py" "$SKILL_DIR" >/dev/null 2>&1;
 else
   err "rules-path-lint.py 失败:$(python3 "$SKILL_DIR/scripts/rules-path-lint.py" "$SKILL_DIR" 2>&1 | tail -5)"
 fi
+if python3 "$SKILL_DIR/scripts/goal-boundary-check.py" --self-test >/dev/null 2>&1; then
+  ok "goal-boundary-check.py --self-test 通过"
+else
+  err "goal-boundary-check.py --self-test 失败:$(python3 "$SKILL_DIR/scripts/goal-boundary-check.py" --self-test 2>&1 | tail -5)"
+fi
 
 # ---------- 总结 ----------
 if [ "$JSON_MODE" = true ]; then

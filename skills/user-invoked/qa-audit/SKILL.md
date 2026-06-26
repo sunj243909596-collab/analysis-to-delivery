@@ -29,7 +29,7 @@ requires: [stage-gate, sql-dialect-discipline, doc-numbering]
 ### 1. 跑全量审计
 
 ```bash
-python3 ~/.claude/skills/analysis-to-delivery/scripts/full-qa-audit.py <项目目录>
+python3 <SKILL_ROOT>/analysis-to-delivery/scripts/full-qa-audit.py <项目目录>
 ```
 
 ### 2. 审计维度(6 大类)

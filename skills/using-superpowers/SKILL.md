@@ -17,7 +17,7 @@ version: 3.0.1
 - Required paths: 无
 - 下一步: `/brainstorming`、`/design-an-interface`、`/domain-modeling`、`/writing-plans`、`/tdd`、`/executing-plans` 或 `/verification-before-completion`
 
-> 本 skill 是 **桥接层**,不复制 superpowers 官方内容,具体纪律以 `~/.claude/skills/<name>/SKILL.md` 为准。
+> 本 skill 是 **桥接层**,不复制 superpowers 官方内容,具体纪律以 `<SUPERPOWERS_SKILL_ROOT>/<name>/SKILL.md` 为准。
 > 完整 superpowers 体系文档:https://github.com/obra/superpowers
 
 ## 我该用哪个?

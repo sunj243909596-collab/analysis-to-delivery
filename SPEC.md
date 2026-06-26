@@ -340,19 +340,21 @@ Claude 进入项目
 （如 docs/requirements/ vs 直接根目录）
 ```
 
-### 6.5 项目级配置（v1.1 引入，最推荐）
+### 6.5 项目级配置（canonical paths）
 
-> 这是 v1.1 新增的能力。**每个项目根目录放 4 个 `*-path.md` 文件**，Claude 优先读项目级的，再 fallback 到 skill 级。
+> v3.2.0-dev 起,新项目应在项目根目录的 `paths/` 下放 4 个 `*-path.md` 文件。Claude 优先读取项目级 `paths/*.md`,再 fallback 到 skill 级。
 > `config-used.md` 是配置使用记录 / ADR 产物,不是配置文件,不参与配置加载。
 
 #### 6.5.1 4 个文件一览
 
 | 文件 | 项目级路径 | 模板 | 加载阶段 |
 |------|-----------|------|----------|
-| 知识库 | `./knowledge-path.md` | `templates/project-config/knowledge-path.md` | 2 / 7 |
-| 合规 | `./compliance-path.md` | `templates/project-config/compliance-path.md` | 4 |
-| 技术栈 | `./tech-stack-path.md` | `templates/project-config/tech-stack-path.md` | 1 / 7 |
-| 文档命名 | `./doc-naming.md` | `templates/project-config/doc-naming.md` | 2-9 全部 |
+| 知识库 | `paths/knowledge-path.md` | `paths/knowledge-path.md` | 2 / 7 |
+| 合规 | `paths/compliance-path.md` | `paths/compliance-path.md` | 4 |
+| 技术栈 | `paths/tech-stack-path.md` | `paths/tech-stack-path.md` | 1 / 7 |
+| 文档命名 | `paths/doc-naming-path.md` | `paths/doc-naming-path.md` | 2-9 全部 |
+
+`templates/project-config/*` 仅作为 legacy 兼容 wrapper 保留。旧项目根目录下的 `knowledge-path.md` / `compliance-path.md` / `tech-stack-path.md` / `doc-naming.md` 可被 `setup-check.py` 识别并产生迁移 warning。
 
 #### 6.5.1a 非配置产物:`config-used.md`
 
@@ -361,7 +363,7 @@ Claude 进入项目
 #### 6.5.2 加载优先级（强制）
 
 ```
-项目级 *-path.md（Level 1，最准）
+项目级 paths/*.md（Level 1，最准）
     ↓ 未提供
 skill 级 config/*.md（Level 2，示例库 + fallback）
     ↓ 仍未匹配

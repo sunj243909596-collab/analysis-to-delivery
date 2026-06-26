@@ -7,12 +7,13 @@ goal-boundary-check.py — goal-boundary 目标边界与分期校验（v3.2.0-de
 校验：
 1. TASK_CONFIRM_*.md 含目标边界小节（§二 / §三）
 2. "本次交付做到什么程度才算完成"非空
-3. "本次明确不解决哪些问题"非空
-4. "是否允许分阶段交付"是 `是` 或 `否`
-5. 若分阶段是,§三 至少 1 行(MVP / Phase 1 / Phase 2 / Later),每行有 goal + acceptance
-6. PRD §七 验收编号必须映射到一个阶段
-7. 测试用例 §三 用例必须关联到阶段 + 验收条件
-8. HANDOVER §二 已达成 / 延后 / 剩余差距必须填写
+3. "可量化成功指标是什么"非空
+4. "本次明确不解决哪些问题"非空
+5. "是否允许分阶段交付"是 `是` 或 `否`
+6. 若分阶段是,§三 至少 1 行(MVP / Phase 1 / Phase 2 / Later),每行有 goal + acceptance
+7. PRD §七 验收编号必须映射到一个阶段
+8. 测试用例 §三 用例必须关联到阶段 + 验收条件
+9. HANDOVER §二 已达成 / 延后 / 剩余差距必须填写
 
 用法：
     python3 scripts/goal-boundary-check.py <project_dir>
@@ -180,6 +181,16 @@ def check_task_confirm(project_dir: Path) -> list[Issue]:
         elif not _is_filled(answers[delivery_completion_q]):
             issues.append(Issue("error", rel,
                                 "§二『本次交付做到什么程度才算完成』未填写"))
+
+        success_metric_q = next(
+            (q for q in answers if "可量化成功指标" in q), None,
+        )
+        if success_metric_q is None:
+            issues.append(Issue("error", rel,
+                                "§二 缺『可量化成功指标是什么』问题"))
+        elif not _is_filled(answers[success_metric_q]):
+            issues.append(Issue("error", rel,
+                                "§二『可量化成功指标是什么』未填写"))
 
         non_goals_q = next(
             (q for q in answers if "明确不解决" in q), None,

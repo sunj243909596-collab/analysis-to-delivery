@@ -7,8 +7,8 @@
  * - renderFlowChart   ASCII 流程图 → Mermaid → SVG/PNG
  * - openDocumentation 打开文档
  *
- * 注意:本扩展是一个轻量包装,把命令桥接到 ~/.claude/skills/analysis-to-delivery
- * 下的脚本(smoke-test.sh / flow-export.sh)。Claude Code / Hermes 仍然是主入口,
+ * 注意:本扩展是一个轻量包装,把命令桥接到已安装的 analysis-to-delivery
+ * 脚本(smoke-test.sh / flow-export.sh)。各 agent 仍然是主入口,
  * 扩展只是提供一个 IDE 内的快捷方式。
  *
  * 详细使用见 README.md。
@@ -50,7 +50,9 @@ function resolveSkillsPath(configPath: string): string | null {
   const candidates = [
     path.join(process.env.HOME || "", ".claude/skills/analysis-to-delivery"),
     path.join(process.env.HOME || "", ".hermes/skills/analysis-to-delivery"),
-    "/usr/local/share/claude/skills/analysis-to-delivery",
+    path.join(process.env.CODEX_HOME || path.join(process.env.HOME || "", ".codex"), "skills/analysis-to-delivery"),
+    path.join(process.env.OPENCODE_HOME || path.join(process.env.HOME || "", ".opencode"), "skills/analysis-to-delivery"),
+    "/usr/local/share/analysis-to-delivery",
   ];
   for (const c of candidates) {
     if (fs.existsSync(path.join(c, "SKILL.md"))) {
@@ -85,7 +87,7 @@ async function applySkillCommand(): Promise<void> {
   if (!skillsPath) {
     void vscode.window.showErrorMessage(
       "Analysis to Delivery:未找到已安装的 skill。" +
-        `请在配置中设置 analysisToDelivery.skillsPath,或将 skill 安装到 ~/.claude/skills/analysis-to-delivery/`,
+        `请在配置中设置 analysisToDelivery.skillsPath,或运行 install.sh --agent codex/claude/hermes/opencode`,
     );
     return;
   }
@@ -116,11 +118,11 @@ async function applySkillCommand(): Promise<void> {
     return;
   }
 
-  // 打开 SKILL.md 供 Claude 读取
+  // 打开 SKILL.md 供 agent 读取
   const doc = await vscode.workspace.openTextDocument(path.join(skillDir, "SKILL.md"));
   await vscode.window.showTextDocument(doc);
 
-  // 提示用户在 Claude Chat 中触发
+  // 提示用户在当前 agent 中触发
   const choice = await vscode.window.showInformationMessage(
     `已打开 skill:${pick}\n\n复制命令到 Claude:`,
     { modal: false },
@@ -130,7 +132,7 @@ async function applySkillCommand(): Promise<void> {
 
   if (choice === "复制到剪贴板") {
     await vscode.env.clipboard.writeText(`/${pick}`);
-    void vscode.window.showInformationMessage("已复制到剪贴板。粘贴到 Claude Chat 即可触发。");
+    void vscode.window.showInformationMessage("已复制到剪贴板。粘贴到你的 agent 即可触发。");
   } else if (choice === "打开 README") {
     await vscode.env.openExternal(
       vscode.Uri.parse("https://github.com/BlueprintOS/analysis-to-delivery"),

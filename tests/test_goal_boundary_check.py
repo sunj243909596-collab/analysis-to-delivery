@@ -29,6 +29,7 @@ TASK_CONFIRM_OK = (
     "| 问题 | 你的回答 |\n|---|---|\n"
     "| 最终业务目标是什么？ | 提升收货效率 |\n"
     "| 本次交付做到什么程度才算完成？ | 关键场景全自动化 |\n"
+    "| 可量化成功指标是什么？ | P95 < 3s |\n"
     "| 本次明确不解决哪些问题？ | 报表导出 |\n"
     "| 是否允许分阶段交付？ | 是 |\n\n"
     "## 三、阶段目标\n\n"
@@ -118,6 +119,28 @@ def test_missing_non_goals_field_fails(tmp_path):
     r = _run(proj)
     assert r.returncode == 1
     assert "不解决" in r.stdout or "不解决哪些" in r.stdout
+
+
+def test_missing_success_metric_field_fails(tmp_path):
+    proj = _build_valid_project(tmp_path)
+    _write(proj / "TASK_CONFIRM_x.md", TASK_CONFIRM_OK.replace(
+        "| 可量化成功指标是什么？ | P95 < 3s |\n",
+        "",
+    ))
+    r = _run(proj)
+    assert r.returncode == 1
+    assert "可量化成功指标" in r.stdout
+
+
+def test_empty_success_metric_field_fails(tmp_path):
+    proj = _build_valid_project(tmp_path)
+    _write(proj / "TASK_CONFIRM_x.md", TASK_CONFIRM_OK.replace(
+        "| 可量化成功指标是什么？ | P95 < 3s |",
+        "| 可量化成功指标是什么？ | [待填写] |",
+    ))
+    r = _run(proj)
+    assert r.returncode == 1
+    assert "可量化成功指标" in r.stdout
 
 
 def test_staged_yes_but_no_mvp_fails(tmp_path):

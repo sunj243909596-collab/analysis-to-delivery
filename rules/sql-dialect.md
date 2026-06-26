@@ -48,7 +48,7 @@ SELECT COALESCE(status, 0) FROM ASN;
 ## 自动检查
 
 ```bash
-python3 ~/.claude/skills/analysis-to-delivery/scripts/sql-dialect-check.py <项目目录>
+python3 <SKILL_ROOT>/analysis-to-delivery/scripts/sql-dialect-check.py <项目目录>
 ```
 
 ## 反例
@@ -75,4 +75,4 @@ SELECT 1.0/3 FROM DUAL;  -- 结果是 0.333...
 
 ## 引用
 
-- 详细规范:原 `references/`,用户全局 `CLAUDE.md` "硬性规则"小节
+- 详细规范:原 `references/`,用户全局 agent 指令(如 `CLAUDE.md` / `AGENTS.md`) "硬性规则"小节

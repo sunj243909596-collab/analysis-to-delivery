@@ -85,13 +85,33 @@
 
 ## 安装
 
-### 一键安装(推荐)
+### 平台支持
+
+安装方式按运行环境选择:
+
+| 平台 | 推荐方式 | 说明 |
+|---|---|---|
+| Linux / Ubuntu / Debian / Fedora / Arch / CentOS | Bash 一键安装或 `git clone` | 需要 `bash`、`git`;一键安装还需要 `curl` |
+| macOS | Bash 一键安装或 `git clone` | 建议先确认 `git --version` 可用 |
+| Windows + WSL | 在 WSL 里运行 Linux 安装命令 | 推荐 Windows 用户使用,路径在 WSL 用户目录下 |
+| Windows + Git Bash | 在 Git Bash 里运行 Bash 安装命令 | 适合已安装 Git for Windows 的用户 |
+| Windows PowerShell / CMD | 手动 `git clone` | 不直接运行 `install.sh`;用 PowerShell 示例命令 |
+
+### Linux / macOS / WSL / Git Bash 一键安装(推荐)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/BlueprintOS/analysis-to-delivery/main/install.sh | bash
 ```
 
-### 手动安装
+指定 agent:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/BlueprintOS/analysis-to-delivery/main/install.sh | bash -s -- --agent codex
+curl -fsSL https://raw.githubusercontent.com/BlueprintOS/analysis-to-delivery/main/install.sh | bash -s -- --agent claude
+curl -fsSL https://raw.githubusercontent.com/BlueprintOS/analysis-to-delivery/main/install.sh | bash -s -- --agent opencode
+```
+
+### Linux / macOS / WSL / Git Bash 手动安装
 
 ```bash
 # 稳定版(推荐生产用,锁定到 v4.0.0)
@@ -105,10 +125,51 @@ git clone --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git \
 
 也可以把目标目录换成对应 agent 的 skills 目录,或用项目级 `AGENTS.md` 直接引用本仓库。
 
+### Windows PowerShell 手动安装
+
+PowerShell 不直接运行 `install.sh`。请用 `git clone` 安装到对应 agent 的 skills 目录:
+
+```powershell
+# Codex
+git clone --branch 4.0.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git "$env:USERPROFILE\.codex\skills\analysis-to-delivery"
+
+# Claude Code
+git clone --branch 4.0.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git "$env:USERPROFILE\.claude\skills\analysis-to-delivery"
+
+# Hermes
+git clone --branch 4.0.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git "$env:USERPROFILE\.hermes\skills\analysis-to-delivery"
+
+# OpenCode
+git clone --branch 4.0.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git "$env:USERPROFILE\.opencode\skills\analysis-to-delivery"
+```
+
+如果目标目录的父目录不存在,先创建:
+
+```powershell
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex\skills"
+```
+
+### Windows CMD 手动安装
+
+```bat
+REM Codex
+git clone --branch 4.0.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git "%USERPROFILE%\.codex\skills\analysis-to-delivery"
+
+REM Claude Code
+git clone --branch 4.0.0 --depth 1 https://github.com/BlueprintOS/analysis-to-delivery.git "%USERPROFILE%\.claude\skills\analysis-to-delivery"
+```
+
 ### 升级
 
 ```bash
 cd <SKILL_ROOT>/analysis-to-delivery && git pull origin main
+```
+
+PowerShell 升级:
+
+```powershell
+cd "$env:USERPROFILE\.codex\skills\analysis-to-delivery"
+git pull origin main
 ```
 
 ### 安装选项

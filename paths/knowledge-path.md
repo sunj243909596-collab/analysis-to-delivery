@@ -1,19 +1,22 @@
-# Knowledge Path
+# Knowledge Path — 领域知识库路径
 
-## Purpose
+## 目的
 
-Point to project-owned knowledge sources used during analysis and design.
+指向项目自有的领域知识源,作为分析与设计阶段查字段、查表结构、查业务术语的入口。
+**本文件是唯一加载入口**;具体的领域知识必须放在 `Path` 列指向的外部文件 / 目录中。
 
-## Required Entries
+## 必填条目
 
-| Source | Path | When To Read | Owner |
+| 知识源 | 路径 | 何时读取 | 责任人 |
 |---|---|---|---|
-| Business glossary | `docs/knowledge/business-glossary.md` | Before naming fields, statuses, or user-facing concepts | Product owner |
-| Data dictionary | `docs/knowledge/data-dictionary.md` | Before creating or modifying tables, fields, DTOs, or APIs | Tech lead |
-| Existing process docs | `docs/knowledge/processes/` | Before writing BRD, PRD, FSD, or workflow diagrams | Business analyst |
+| 业务术语表 | `docs/knowledge/business-glossary.md` | 命名字段 / 状态码 / 用户可见概念前 | 产品负责人 |
+| 数据字典 | `docs/knowledge/data-dictionary.md` | 新增 / 修改表、字段、DTO、API 前 | 技术负责人 |
+| 既有流程文档 | `docs/knowledge/processes/` | 写 BRD / PRD / FSD / 业务流程图前 | 业务分析师 |
 
-## Rules
+## 规则
 
-- Read only entries required by the current stage.
-- Do not copy large knowledge bodies into this file.
-- If a required source is missing, stop before inventing names or rules.
+1. **只按当前阶段需要的条目加载**,不一次性全量加载
+2. 严禁把大段知识体复制进本文件;只列**指针**
+3. `setup-check.py` 校验本文件至少含 1 个真实路径(绝对路径或 `~/` 开头)
+4. 缺知识源时**停止**;严禁在没依据时编造字段名、表名、状态码
+5. 字段映射 / 状态码以本文件指向的真实文档为唯一真相源

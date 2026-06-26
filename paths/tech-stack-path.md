@@ -1,20 +1,22 @@
-# Tech Stack Path
+# Tech Stack Path — 技术栈路径
 
-## Purpose
+## 目的
 
-Point to project-owned technology constraints for implementation-facing design.
+指向项目自有的技术约束,作为面向实现的设计输入(API / SQL / 前端 / 集成)。
 
-## Required Entries
+## 必填条目
 
-| Area | Path | When To Read | Owner |
+| 范围 | 路径 | 何时读取 | 责任人 |
 |---|---|---|---|
-| Backend | `docs/tech/backend.md` | Before API, service, transaction, or persistence design | Backend lead |
-| Frontend | `docs/tech/frontend.md` | Before page, component, state, or interaction design | Frontend lead |
-| Database | `docs/tech/database.md` | Before SQL, schema, index, sequence, or migration design | DBA or backend lead |
-| Integration | `docs/tech/integration.md` | Before external API, message, job, or callback design | Architect |
+| 后端 | `docs/tech/backend.md` | API / Service / 事务 / 持久化设计前 | 后端负责人 |
+| 前端 | `docs/tech/frontend.md` | 页面 / 组件 / 状态 / 交互设计前 | 前端负责人 |
+| 数据库 | `docs/tech/database.md` | SQL / schema / 索引 / 序列 / 迁移设计前 | DBA 或后端负责人 |
+| 集成 | `docs/tech/integration.md` | 外部 API / 消息 / 定时任务 / 回调设计前 | 架构师 |
 
-## Rules
+## 规则
 
-- Load only the area needed by the current stage.
-- Prefer project paths over built-in examples.
-- Treat missing database dialect as a blocking issue for SQL design.
+1. **只按当前阶段需要的技术范围加载**(不一次性全量)
+2. 项目路径**优先于**内置示例(内置仅作格式参考)
+3. `Target_DB` 缺失视为 SQL 设计的**阻断问题**(`sql-dialect-check.py` 会 fail)
+4. 新增技术范围时:补一行 + 写明 `Path` 指向的文档(分层架构 / 命名规范 / 审计字段 / 关键约束)
+5. 后端 / 前端 / 数据库 / 集成 4 个范围至少填 1 个;其余按需

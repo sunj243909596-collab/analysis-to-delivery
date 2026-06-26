@@ -1,6 +1,6 @@
 ---
 name: qa-audit
-description: QA 审计 — 跑全量文档质量检查,按 P0/P1/P2 分级输出审计报告。Use when design is done and before code handoff.
+description: QA 审计 — 跑全量文档质量检查,按 P0/P1/P2 严重度分级输出审计报告。设计完成、代码交接前调用本 skill,作为进入实施的最后一道硬门控,确保 P0=0 才放行。
 disable-model-invocation: true
 version: 3.0.1
 requires: [stage-gate, sql-dialect-discipline, doc-numbering]
@@ -11,12 +11,12 @@ requires: [stage-gate, sql-dialect-discipline, doc-numbering]
 
 ## Contract
 
-- Inputs: completed numbered documents `01-09`, project config files, knowledge/compliance/tech-stack pointers
-- Outputs: `09-QA审计报告.md`
-- Gates: `python3 scripts/full-qa-audit.py <project>` returns P0=0; remediation loop complete; user signoff
+- 输入: 已完成的 01-09 编号文档,项目配置文件,知识库 / 合规 / 技术栈指针
+- 输出: `09-QA审计报告.md`
+- 门控: `python3 scripts/full-qa-audit.py <project>` 返回 P0=0;整改循环闭环;用户签字
 - Required rules: `stage-gate`, `no-field-guessing`, `no-self-invent`, `sql-dialect`, `doc-numbering`, `goal-boundary`
 - Required paths: `knowledge-path`, `tech-stack-path`, `compliance-path`, `doc-naming-path`
-- Next: `/handoff`
+- 下一步: `/handoff`
 
 ## 适用场景
 

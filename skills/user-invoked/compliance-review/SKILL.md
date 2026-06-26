@@ -1,6 +1,6 @@
 ---
 name: compliance-review
-description: 合规性评审 — 按 compliance-path.md 引用的合规规则,逐条评估设计。Use when dealing with GSP / HIPAA / SOX / GDPR / 等强合规场景。
+description: 合规性评审 — 按 compliance-path.md 引用的合规规则,逐条评估设计。涉及 GSP / HIPAA / SOX / GDPR 等强合规场景时调用。
 disable-model-invocation: true
 version: 3.0.1
 requires: [context-pointer, stage-gate]
@@ -11,12 +11,12 @@ requires: [context-pointer, stage-gate]
 
 ## Contract
 
-- Inputs: signed `01-业务需求文档 BRD.md`, `compliance-path.md`
-- Outputs: `04-合规评审.md`
-- Gates: all applicable compliance clauses judged; severe gaps resolved or explicitly accepted; user/compliance signoff
+- 输入: 已签字的 `01-业务需求文档 BRD.md` 与 `compliance-path.md`
+- 输出: `04-合规评审.md`
+- 门控: 所有适用合规条款均已判定;严重缺陷已修复或显式接受;用户 + 合规方签字
 - Required rules: `stage-gate`, `context-pointer`
 - Required paths: `compliance-path`, `doc-naming-path`
-- Next: `/test-case-design`
+- 下一步: `/test-case-design`
 
 ## 适用场景
 

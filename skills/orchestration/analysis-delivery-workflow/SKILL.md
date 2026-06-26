@@ -1,6 +1,6 @@
 ---
 name: analysis-delivery-workflow
-description: 严守 9 阶段流程(分析-设计)— 适合新手/复杂项目,按顺序自动调 9 个 user-invoked skill。Use when you want the full structured workflow without making decisions per step.
+description: 严守 9 阶段流程(分析-设计)— 适合新手/复杂项目,按顺序自动调 9 个 user-invoked skill。希望按完整结构化流程、逐步推进且不需每步自行决策时调用本编排。
 disable-model-invocation: true
 version: 3.0.1
 
@@ -10,12 +10,12 @@ version: 3.0.1
 
 ## Contract
 
-- Inputs: project goal, domain, tech stack, optional existing `*-path.md`
-- Outputs: 9-stage delivery chain ending in `HANDOVER.md`
-- Gates: stage-gate signoff between every stage; `task-confirm-check.py --strict` for 2->3; QA P0=0 for 8->9
+- 输入: 项目目标、领域、技术栈,可选既有 `paths/*.md`
+- 输出: 9 阶段交付链,终点为 `HANDOVER.md`
+- 门控: 每阶段间 stage-gate 签字;`task-confirm-check.py --strict` 用于 2→3;QA P0=0 才能 8→9
 - Required rules: `stage-gate`, `doc-numbering`, `context-pointer`, `goal-boundary`
 - Required paths: `knowledge-path`, `tech-stack-path`, `compliance-path`, `doc-naming-path`
-- Next: `/setup-analysis-delivery` then sequential workflow; after stage 9 optionally `/using-superpowers`
+- 下一步: 先 `/setup-analysis-delivery`,再按顺序走 9 阶段;阶段 9 之后可选 `/using-superpowers`
 
 ## 适用场景
 

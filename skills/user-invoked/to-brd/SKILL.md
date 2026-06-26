@@ -1,6 +1,6 @@
 ---
 name: to-brd
-description: 生成业务需求文档(BRD)— 含业务流程图、角色职责、功能模块、字段映射。Use when business requirements need to be documented formally.
+description: 生成业务需求文档(BRD)— 含业务流程图、角色职责、功能模块、字段映射表。业务需求需正式文档化交付给团队评审时调用本 skill,把 TASK_CONFIRM 翻译为 9 节齐备的 BRD。
 disable-model-invocation: true
 version: 3.0.1
 requires: [ascii-flowchart, no-field-guessing, doc-numbering, stage-gate]
@@ -11,12 +11,12 @@ requires: [ascii-flowchart, no-field-guessing, doc-numbering, stage-gate]
 
 ## Contract
 
-- Inputs: signed `TASK_CONFIRM_*.md`, `REVIEW_需求确认书.md`, `REVIEW_字段对齐分析.md`, `knowledge-path.md`
-- Outputs: `01-业务需求文档 BRD.md`, ASCII flow diagrams, optional `业务流程图.drawio`
-- Gates: BRD required sections complete; field mapping checked against knowledge source; user signoff
+- 输入: 已签字的 `TASK_CONFIRM_*.md`、`REVIEW_需求确认书.md`、`REVIEW_字段对齐分析.md`、`paths/knowledge-path.md`
+- 输出: `01-业务需求文档 BRD.md`、ASCII 流程图、可选 `业务流程图.drawio`
+- 门控: BRD 必备章节齐全;字段映射与知识库核对;用户签字
 - Required rules: `stage-gate`, `no-field-guessing`, `ascii-flowchart`, `doc-numbering`, `goal-boundary`
 - Required paths: `knowledge-path`, `doc-naming-path`
-- Next: `/compliance-review`
+- 下一步: `/compliance-review`
 
 ## 适用场景
 

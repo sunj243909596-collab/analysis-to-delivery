@@ -1,6 +1,6 @@
 ---
 name: dev-design
-description: 开发设计 — 含 FSD + 数据模型 + 开发设计说明书 + 设计回测 + 任务复盘,合并原 9 阶段中的 7/8/8.4/8.5 子流程。Use when PRD is signed and you need technical design output.
+description: 开发设计 — 含 FSD + 数据模型 + 开发设计说明书 + 设计回测 + 任务复盘,合并原 9 阶段中的 7/8/8.4/8.5 子流程。PRD 已签字、需输出技术设计方案时调用。
 disable-model-invocation: true
 version: 3.0.1
 requires: [no-field-guessing, no-self-invent, sql-dialect-discipline, stage-gate, doc-numbering]
@@ -11,12 +11,12 @@ requires: [no-field-guessing, no-self-invent, sql-dialect-discipline, stage-gate
 
 ## Contract
 
-- Inputs: signed `05-产品需求文档 PRD.md`, `knowledge-path.md`, `tech-stack-path.md`, `doc-naming.md`
-- Outputs: `AGENTS.md`, `02-功能规格说明书 FSD.md`, `03-数据模型设计.md`, `06-开发设计说明书.md`, `08-设计回测报告.md`, optional `RETRO_任务复盘汇总.md`
-- Gates: field alignment passes; SQL dialect checks pass; design backtest passes; user signoff
+- 输入: 已签字的 `05-产品需求文档 PRD.md` 与 `paths/knowledge-path.md`、`paths/tech-stack-path.md`、`paths/doc-naming-path.md`
+- 输出: `AGENTS.md`、`02-功能规格说明书 FSD.md`、`03-数据模型设计.md`、`06-开发设计说明书.md`、`08-设计回测报告.md`、可选 `RETRO_任务复盘汇总.md`
+- 门控: 字段对齐通过;SQL 方言检查通过;设计回测通过;用户签字
 - Required rules: `stage-gate`, `no-field-guessing`, `no-self-invent`, `sql-dialect`, `doc-numbering`, `context-pointer`, `goal-boundary`
 - Required paths: `knowledge-path`, `tech-stack-path`, `doc-naming-path`
-- Next: `/qa-audit`
+- 下一步: `/qa-audit`
 
 ## 适用场景
 

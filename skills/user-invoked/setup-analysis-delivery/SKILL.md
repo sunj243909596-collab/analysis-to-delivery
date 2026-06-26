@@ -1,6 +1,6 @@
 ---
 name: setup-analysis-delivery
-description: 首次为新项目接 analysis-to-delivery 工作流 — 生成 4 个项目级 paths/*.md 配置(legacy 仅兼容)。Use when starting a new project or adding this skill to an existing project.
+description: 首次为新项目接 analysis-to-delivery 工作流 — 生成 4 个项目级 paths/*.md 配置(legacy 仅兼容)。启动新项目或为既有项目接入此工作流时调用。
 disable-model-invocation: true
 version: 3.2.0-dev
 requires: [context-pointer]
@@ -10,12 +10,12 @@ requires: [context-pointer]
 
 ## Contract
 
-- Inputs: project root, detected project files, optional existing project configuration
-- Outputs: `paths/knowledge-path.md`, `paths/compliance-path.md`, `paths/tech-stack-path.md`, `paths/doc-naming-path.md`; optional `config-used.md` ADR
-- Gates: 4 `paths/*.md` files exist and are non-empty (legacy project-root `*-path.md` files are accepted with warning); `knowledge-path.md` contains at least one real path before downstream field work
+- 输入: 项目根目录,已检测到的项目文件,可选的既有项目配置
+- 输出: `paths/knowledge-path.md`、`paths/compliance-path.md`、`paths/tech-stack-path.md`、`paths/doc-naming-path.md`;可选 `decisions.md` ADR
+- 门控: 4 个 `paths/*.md` 文件存在且非空(legacy 项目根 `*-path.md` 可接受但产生 warning);`knowledge-path.md` 至少含 1 个真实路径后才进入下游字段工作
 - Required rules: `context-pointer`
 - Required paths: `knowledge-path`, `compliance-path`, `tech-stack-path`, `doc-naming-path`
-- Next: `/grill-task`
+- 下一步: `/grill-task`
 
 ## 适用场景
 

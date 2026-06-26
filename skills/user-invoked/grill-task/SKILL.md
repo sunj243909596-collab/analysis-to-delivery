@@ -1,6 +1,6 @@
 ---
 name: grill-task
-description: 需求澄清 + 字段对齐分析 — 反复提问拉齐意图,生成 TASK_CONFIRM 和字段对齐分析。Use when starting a new feature or aligning field names with existing tables.
+description: 需求澄清 + 字段对齐分析 — 反复提问拉齐用户意图,生成 TASK_CONFIRM 任务确认书与字段对齐分析报告。启动新需求、或需要与现有数据库表对齐字段名时调用本 skill。
 disable-model-invocation: true
 version: 3.0.1
 requires: [context-pointer, no-field-guessing, no-self-invent, stage-gate]
@@ -11,12 +11,12 @@ requires: [context-pointer, no-field-guessing, no-self-invent, stage-gate]
 
 ## Contract
 
-- Inputs: `TASK_CONFIRM_*.md`, `knowledge-path.md`, user requirement notes
-- Outputs: `REVIEW_需求确认书.md`, `REVIEW_字段对齐分析.md`
-- Gates: `python3 scripts/task-confirm-check.py --strict TASK_CONFIRM_*.md REVIEW_需求确认书.md REVIEW_字段对齐分析.md`; user whitelist signoff
+- 输入: `TASK_CONFIRM_*.md`、`paths/knowledge-path.md`、用户需求笔记
+- 输出: `REVIEW_需求确认书.md`、`REVIEW_字段对齐分析.md`
+- 门控: `python3 scripts/task-confirm-check.py --strict TASK_CONFIRM_*.md REVIEW_需求确认书.md REVIEW_字段对齐分析.md` 通过;用户白名单话术签字
 - Required rules: `stage-gate`, `no-field-guessing`, `context-pointer`, `goal-boundary`
 - Required paths: `knowledge-path`, `doc-naming-path`
-- Next: `/to-brd`
+- 下一步: `/to-brd`
 
 ## 适用场景
 

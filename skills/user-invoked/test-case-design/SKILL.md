@@ -1,6 +1,6 @@
 ---
 name: test-case-design
-description: 测试用例设计 — 覆盖正常路径/边界条件/异常路径/合规校验/性能安全。Use when defining acceptance criteria before development.
+description: 测试用例设计 — 覆盖正常路径、边界条件、异常路径、合规校验、性能安全 5 大类用例。开发前需定义验收标准、为测试团队提供输入时调用本 skill,确保 BRD 功能点全部可验证。
 disable-model-invocation: true
 version: 3.0.1
 requires: [stage-gate, doc-numbering]
@@ -11,12 +11,12 @@ requires: [stage-gate, doc-numbering]
 
 ## Contract
 
-- Inputs: signed BRD, optional `04-合规评审.md`, business rules and acceptance criteria
-- Outputs: `07-测试用例设计.md`
-- Gates: BRD functions covered; normal/boundary/exception/compliance cases present; user signoff
+- 输入: 已签字的 BRD,可选 `04-合规评审.md`,业务规则与验收标准
+- 输出: `07-测试用例设计.md`
+- 门控: BRD 功能已覆盖;正常/边界/异常/合规 4 大类齐;用户签字
 - Required rules: `stage-gate`, `no-field-guessing`, `doc-numbering`, `goal-boundary`
 - Required paths: `knowledge-path`, `doc-naming-path`
-- Next: `/to-prd`
+- 下一步: `/to-prd`
 
 ## 适用场景
 

@@ -1,6 +1,6 @@
 ---
 name: ask-delivery
-description: 分析到交付的入口 — 根据你的目标(配置/澄清/BRD/PRD/合规/开发/审计/交接)路由到正确的 skill。Use when unsure which skill to use.
+description: 分析到交付的入口 — 根据你的目标(配置/澄清/BRD/PRD/合规/开发/审计/交接)路由到正确的 user-invoked skill。不确定该用哪个 analysis-to-delivery skill 时,从此入口进入。
 disable-model-invocation: true
 version: 3.0.1
 
@@ -10,11 +10,12 @@ version: 3.0.1
 
 ## Contract
 
-- Inputs: user goal / uncertainty about which analysis-to-delivery skill to use
-- Outputs: recommended next skill name and 1-2 clarification questions if needed
-- Gates: none
-- Required disciplines: none
-- Next: selected skill or `/analysis-delivery-workflow`
+- 输入: 用户目标,或不确定该用哪个 analysis-to-delivery skill
+- 输出: 推荐的下一个 skill 名;若需要则附 1-2 个澄清问题
+- 门控: 无
+- Required rules: 无
+- Required paths: 无
+- 下一步: 选中的 skill 或 `/analysis-delivery-workflow`
 
 ## 我该用哪个 skill?
 

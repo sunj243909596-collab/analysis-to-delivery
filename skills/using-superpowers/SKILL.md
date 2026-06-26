@@ -1,6 +1,6 @@
 ---
 name: using-superpowers
-description: 开发实施子流程入口 — brainstorming / writing-plans / TDD / executing / verification 等。Use when ready to start implementation after design is done.
+description: 开发实施子流程入口 — brainstorming / writing-plans / TDD / executing / verification 等。设计完成、准备进入实施时调用。
 disable-model-invocation: true
 version: 3.0.1
 
@@ -10,11 +10,12 @@ version: 3.0.1
 
 ## Contract
 
-- Inputs: signed design outputs or implementation goal
-- Outputs: recommended superpowers bridge skill and starting point
-- Gates: design phase complete or explicit implementation request
-- Required disciplines: `stage-gate`
-- Next: `/brainstorming`, `/design-an-interface`, `/domain-modeling`, `/writing-plans`, `/tdd`, `/executing-plans`, or `/verification-before-completion`
+- 输入: 已签字的设计产物,或明确的实施目标
+- 输出: 推荐的 superpowers bridge skill 与起始点
+- 门控: 设计阶段已签字,或用户明确请求进入实施
+- Required rules: `stage-gate`
+- Required paths: 无
+- 下一步: `/brainstorming`、`/design-an-interface`、`/domain-modeling`、`/writing-plans`、`/tdd`、`/executing-plans` 或 `/verification-before-completion`
 
 > 本 skill 是 **桥接层**,不复制 superpowers 官方内容,具体纪律以 `~/.claude/skills/<name>/SKILL.md` 为准。
 > 完整 superpowers 体系文档:https://github.com/obra/superpowers

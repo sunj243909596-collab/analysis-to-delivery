@@ -11,14 +11,14 @@ updated: "2026-06-26: v3.2.0-dev rules-and-paths refactor — thin root router, 
 
 > 26 个独立 skill 自由组合 — 走流程用 orchestration,做单件事用 action,纪律由 rules 自动加载。
 
-## Contract
+## 契约
 
-- Inputs: 新功能 / 项目交付请求,领域,技术栈,可选的 `paths/*.md` 配置
-- Outputs: 推荐路由的 user-invoked skill,或走完整 9 阶段工作流
-- Gates: 走流程用 `/analysis-delivery-workflow`;每阶段由子 skill 的 stage-gate 把关
+- 输入: 新功能 / 项目交付请求,领域,技术栈,可选的 `paths/*.md` 配置
+- 输出: 推荐路由的 user-invoked skill,或走完整 9 阶段工作流
+- 门控: 走流程用 `/analysis-delivery-workflow`;每阶段由子 skill 的 stage-gate 把关
 - Required rules: 子 skill 各自声明(`context-pointer` / `stage-gate` / `doc-numbering` / `no-field-guessing` 等)
 - Required paths: 子 skill 各自声明(`knowledge-path` / `tech-stack-path` / `compliance-path` / `doc-naming-path`)
-- Next: `/ask-delivery`、`/analysis-delivery-workflow`,或直接调某个 user-invoked skill
+- 下一步: `/ask-delivery`、`/analysis-delivery-workflow`,或直接调某个 user-invoked skill
 
 ## 快速开始
 

@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: 代码交接文档 — 整理已完成文档、待办事项、已知风险、后续工作建议。Use when ending design phase and handing over to implementation.
+description: 代码交接文档 — 整理本项目已完成的全部设计文档、待办事项、已知风险、后续工作建议。设计阶段收尾、向实施团队或编码 skill 正式交接时调用本 skill 生成 HANDOVER.md。
 disable-model-invocation: true
 version: 3.0.1
 requires: [stage-gate, doc-numbering]
@@ -11,12 +11,12 @@ requires: [stage-gate, doc-numbering]
 
 ## Contract
 
-- Inputs: QA audit with P0=0, completed design documents, known risks and TODOs
-- Outputs: `HANDOVER.md`
-- Gates: handover includes completed docs, TODOs, risks, follow-up recommendation; receiver acknowledged
+- 输入: P0=0 的 QA 审计报告,已完成的全部设计文档,已知风险与待办
+- 输出: `HANDOVER.md`
+- 门控: 交接文档含已完成文档清单、待办、风险、后续建议;接收方已确认收到
 - Required rules: `stage-gate`, `doc-numbering`, `context-pointer`, `goal-boundary`
 - Required paths: `knowledge-path`, `tech-stack-path`, `compliance-path`, `doc-naming-path`
-- Next: `/using-superpowers` or implementation team handoff
+- 下一步: `/using-superpowers` 或交接给开发团队
 
 ## 适用场景
 

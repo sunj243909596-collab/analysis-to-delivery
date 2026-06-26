@@ -1,6 +1,6 @@
 ---
 name: to-prd
-description: 生成产品需求文档(PRD) — 含用户故事、功能需求、非功能需求、验收标准。Use when formalizing product requirements for handoff to design and dev.
+description: 生成产品需求文档(PRD)— 含用户故事、功能需求、非功能需求、验收标准。需将产品需求正式化、向设计与开发团队交接时调用本 skill,输出三格式产物(源 / HTML / DOCX)。
 disable-model-invocation: true
 version: 3.0.1
 requires: [no-field-guessing, doc-numbering, stage-gate]
@@ -11,12 +11,12 @@ requires: [no-field-guessing, doc-numbering, stage-gate]
 
 ## Contract
 
-- Inputs: signed BRD, compliance review, test cases, field alignment review
-- Outputs: `05-产品需求文档 PRD.md`, optional `05-PRD.html`, optional `05-PRD.docx`, optional Figma design document
-- Gates: PRD required sections complete; acceptance criteria signed; field mapping validates against knowledge source
+- 输入: 已签字的 BRD、合规评审、测试用例、字段对齐分析
+- 输出: `05-产品需求文档 PRD.md`、可选 `05-PRD.html`、可选 `05-PRD.docx`、可选 Figma 设计文档
+- 门控: PRD 必备章节齐全;验收标准已签字;字段映射与知识库核对
 - Required rules: `stage-gate`, `no-field-guessing`, `doc-numbering`, `goal-boundary`
 - Required paths: `knowledge-path`, `doc-naming-path`
-- Next: `/dev-design`
+- 下一步: `/dev-design`
 
 ## 适用场景
 

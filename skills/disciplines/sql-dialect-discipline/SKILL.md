@@ -5,6 +5,6 @@
 >
 > **Naming note**: 规范名为 `sql-dialect`(无 `-discipline` 后缀);本文件名保留旧名仅用于向后兼容。
 
-This Skill remains for backward compatibility. The canonical rule now lives at `rules/sql-dialect.md`.
+本 Skill 仅为向后兼容而保留。canonical 规则现位于 `rules/sql-dialect.md`。
 
-When this Skill is invoked, read `rules/sql-dialect.md` and follow that rule as the source of truth.
+当本 Skill 被调用时,请读取 `rules/sql-dialect.md`,并以其作为唯一真相源执行。

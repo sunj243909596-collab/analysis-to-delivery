@@ -558,6 +558,9 @@ def _print_report(rep: GBReport) -> None:
 
 def main() -> int:
     args = sys.argv[1:]
+    if any(a in ("-h", "--help") for a in args):
+        print((__doc__ or "").strip())
+        return 0
     if "--self-test" in args:
         return self_test()
     project_dir = None

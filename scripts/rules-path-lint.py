@@ -324,6 +324,9 @@ def self_test() -> int:
 
 def main() -> int:
     args = sys.argv[1:]
+    if any(a in ("-h", "--help") for a in args):
+        print((__doc__ or "").strip())
+        return 0
     if "--self-test" in args:
         return self_test()
     skill_root = Path(args[0]) if args else Path(".")

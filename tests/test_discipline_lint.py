@@ -1,197 +1,129 @@
-"""pytest 单元测试 for scripts/discipline-lint.py"""
+"""pytest 单元测试 for scripts/discipline-lint.py(legacy 兼容壳)
+
+v3.2.0-dev 起,discipline-lint.py 仅校验:
+1. 7 个 legacy discipline 兼容壳存在
+2. 兼容壳文本指向 canonical rules/*.md
+3. 兼容壳行数不应过大(避免携带独立规则文本)
+
+不再校验 `requires:` frontmatter 与 `- Required disciplines:` Contract 行
+(新代码用 `- Required rules:` / `- Required paths:`,由 rules-path-lint.py 校验)。
+"""
 import importlib.util
+import shutil
+import subprocess
 import sys
 from pathlib import Path
-
-import pytest
 
 
 def _load_module():
     script = Path(__file__).parent.parent / "scripts" / "discipline-lint.py"
     spec = importlib.util.spec_from_file_location("discipline_lint", script)
     module = importlib.util.module_from_spec(spec)
+    sys.modules["discipline_lint"] = module  # for dataclass-like attrs
     spec.loader.exec_module(module)
     return module
 
 
 _mod = _load_module()
-parse_frontmatter = _mod.parse_frontmatter
-check_frontmatter_requires_present = _mod.check_frontmatter_requires_present
-check_contract_block_consistent = _mod.check_contract_block_consistent
-check_discipline_path_exists = _mod.check_discipline_path_exists
-check_no_typo_in_name = _mod.check_no_typo_in_name
-USER_INVOKED_SKILLS = _mod.USER_INVOKED_SKILLS
-KNOWN_DISCIPLINES = _mod.KNOWN_DISCIPLINES
+check_wrapper_files_exist = _mod.check_wrapper_files_exist
+check_wrapper_points_to_canonical = _mod.check_wrapper_points_to_canonical
+check_no_divergent_rule_text = _mod.check_no_divergent_rule_text
+LEGACY_TO_CANONICAL = _mod.LEGACY_TO_CANONICAL
 
 
-# ===== frontmatter 解析 =====
+def _make_minimal(repo_root: Path) -> Path:
+    """构造最小 skills 树(7 wrapper + 7 canonical rules)。
 
-def test_parse_frontmatter_simple():
-    text = "---\nname: foo\nversion: 3.0.1\n---\n\n# body\n"
-    fm, body = parse_frontmatter(text)
-    assert fm["name"] == "foo"
-    assert fm["version"] == "3.0.1"
-    assert "body" in body
-
-
-def test_parse_frontmatter_array():
-    text = "---\nname: foo\nrequires: [a, b, c]\n---\n"
-    fm, _ = parse_frontmatter(text)
-    assert fm["requires"] == ["a", "b", "c"]
-
-
-def test_parse_frontmatter_array_empty():
-    text = "---\nrequires: []\n---\n"
-    fm, _ = parse_frontmatter(text)
-    assert fm["requires"] == []
-
-
-def test_parse_frontmatter_no_frontmatter():
-    text = "# no frontmatter\n"
-    fm, body = parse_frontmatter(text)
-    assert fm == {}
-    assert body == text
-
-
-# ===== 构造测试 fixtures =====
-
-def _make_skill(p: Path, requires: list[str] | None, contract_names: list[str] | None):
-    p.parent.mkdir(parents=True, exist_ok=True)
-    # None = 不写 requires: 行; [] / [...] = 显式写
-    if requires is None:
-        fm_requires = ""
-    else:
-        fm_requires = f"requires: [{', '.join(requires)}]\n"
-    contract = ""
-    if contract_names is not None:
-        contract = (
-            "## Contract\n\n- Required disciplines: "
-            + ", ".join(f"`{n}`" for n in contract_names)
-            + "\n"
+    生产布局:repo_root/skills/disciplines/<name>/SKILL.md
+             repo_root/rules/<name>.md
+    """
+    skills_root = repo_root / "skills"
+    disc_dir = skills_root / "disciplines"
+    rules_dir = repo_root / "rules"
+    disc_dir.mkdir(parents=True)
+    rules_dir.mkdir()
+    for disc_name, canonical_name in LEGACY_TO_CANONICAL.items():
+        (disc_dir / disc_name).mkdir()
+        (disc_dir / disc_name / "SKILL.md").write_text(
+            f"# Compatibility Wrapper\n\n"
+            f"deprecated; canonical is `rules/{canonical_name}.md`\n",
+            encoding="utf-8",
         )
-    p.write_text(
-        f"---\nname: {p.parent.name}\ndescription: x\nversion: 3.0.1\n"
-        "disable-model-invocation: true\n"
-        f"{fm_requires}---\n\n{contract}",
-        encoding="utf-8",
+        (rules_dir / f"{canonical_name}.md").write_text(
+            f"# {canonical_name}\n", encoding="utf-8",
+        )
+    return skills_root
+
+
+# ===== Check 1: wrapper 文件存在 =====
+
+def test_wrapper_files_exist_pass(tmp_path):
+    skills_root = _make_minimal(tmp_path)
+    result = check_wrapper_files_exist(skills_root)
+    assert result.passed
+
+
+def test_wrapper_files_exist_missing(tmp_path):
+    skills_root = _make_minimal(tmp_path)
+    shutil.rmtree(skills_root / "disciplines" / "stage-gate")
+    result = check_wrapper_files_exist(skills_root)
+    assert not result.passed
+    assert any("stage-gate" in e for e in result.errors)
+
+
+# ===== Check 2: 指向 canonical =====
+
+def test_wrapper_points_to_canonical_pass(tmp_path):
+    skills_root = _make_minimal(tmp_path)
+    result = check_wrapper_points_to_canonical(skills_root)
+    assert result.passed
+
+
+def test_wrapper_points_to_canonical_missing_rule(tmp_path):
+    skills_root = _make_minimal(tmp_path)
+    (tmp_path / "rules" / "stage-gate.md").unlink()
+    result = check_wrapper_points_to_canonical(skills_root)
+    assert not result.passed
+
+
+def test_wrapper_points_to_canonical_wrong_text(tmp_path):
+    skills_root = _make_minimal(tmp_path)
+    # 改 wrapper 文本,不再指向 canonical
+    (skills_root / "disciplines" / "stage-gate" / "SKILL.md").write_text(
+        "# Wrapper\n\n什么都没指向\n", encoding="utf-8",
     )
-
-
-def _make_skill_tree(tmp_path: Path) -> Path:
-    """构造最小 skills 树(7 discipline + 9 user-invoked skills)。"""
-    for d in KNOWN_DISCIPLINES:
-        _make_skill(tmp_path / "disciplines" / d / "SKILL.md", None, None)
-    return tmp_path
-
-
-# ===== Check 1: frontmatter requires 存在 =====
-
-def test_check1_all_present(tmp_path):
-    _make_skill_tree(tmp_path)
-    for n in USER_INVOKED_SKILLS:
-        _make_skill(tmp_path / "user-invoked" / n / "SKILL.md", ["stage-gate"], ["stage-gate"])
-    result = check_frontmatter_requires_present(tmp_path)
-    assert result.passed, f"errors={result.errors}"
-
-
-def test_check1_missing(tmp_path):
-    _make_skill_tree(tmp_path)
-    _make_skill(tmp_path / "user-invoked" / "grill-task" / "SKILL.md", None, None)
-    for n in USER_INVOKED_SKILLS:
-        if n == "grill-task":
-            continue
-        _make_skill(tmp_path / "user-invoked" / n / "SKILL.md", ["stage-gate"], ["stage-gate"])
-    result = check_frontmatter_requires_present(tmp_path)
+    result = check_wrapper_points_to_canonical(skills_root)
     assert not result.passed
-    assert any("grill-task" in e for e in result.errors)
+    assert any("stage-gate" in e and "未指向" in e for e in result.errors)
 
 
-def test_check1_empty_array(tmp_path):
-    _make_skill_tree(tmp_path)
-    for n in USER_INVOKED_SKILLS:
-        _make_skill(tmp_path / "user-invoked" / n / "SKILL.md", [], ["stage-gate"])
-    result = check_frontmatter_requires_present(tmp_path)
-    assert not result.passed
-    assert any("空" in e for e in result.errors)
+# ===== Check 3: 无 divergent 文本 =====
 
-
-# ===== Check 2: 与 Contract 块一致 =====
-
-def test_check2_consistent(tmp_path):
-    _make_skill_tree(tmp_path)
-    for n in USER_INVOKED_SKILLS:
-        _make_skill(
-            tmp_path / "user-invoked" / n / "SKILL.md",
-            ["stage-gate", "doc-numbering"],
-            ["stage-gate", "doc-numbering"],
-        )
-    result = check_contract_block_consistent(tmp_path)
+def test_no_divergent_text_pass(tmp_path):
+    skills_root = _make_minimal(tmp_path)
+    result = check_no_divergent_rule_text(skills_root)
     assert result.passed
 
 
-def test_check2_inconsistent(tmp_path):
-    _make_skill_tree(tmp_path)
-    for n in USER_INVOKED_SKILLS:
-        _make_skill(
-            tmp_path / "user-invoked" / n / "SKILL.md",
-            ["stage-gate", "doc-numbering"],
-            ["stage-gate"],  # 缺 doc-numbering
-        )
-    result = check_contract_block_consistent(tmp_path)
+def test_no_divergent_text_too_long(tmp_path):
+    skills_root = _make_minimal(tmp_path)
+    # 写一个超长 wrapper,假装携带独立规则
+    long_text = "# Wrapper\n\n" + "lorem ipsum\n" * 50
+    (skills_root / "disciplines" / "stage-gate" / "SKILL.md").write_text(
+        long_text, encoding="utf-8",
+    )
+    result = check_no_divergent_rule_text(skills_root)
     assert not result.passed
-
-
-# ===== Check 3: discipline 路径存在 =====
-
-def test_check3_path_exists(tmp_path):
-    _make_skill_tree(tmp_path)
-    for n in USER_INVOKED_SKILLS:
-        _make_skill(tmp_path / "user-invoked" / n / "SKILL.md", ["stage-gate"], ["stage-gate"])
-    result = check_discipline_path_exists(tmp_path)
-    assert result.passed
-
-
-def test_check3_missing_discipline(tmp_path):
-    _make_skill_tree(tmp_path)
-    # 删除一个 discipline 目录
-    import shutil
-    shutil.rmtree(tmp_path / "disciplines" / "stage-gate")
-    for n in USER_INVOKED_SKILLS:
-        _make_skill(tmp_path / "user-invoked" / n / "SKILL.md", ["stage-gate"], ["stage-gate"])
-    result = check_discipline_path_exists(tmp_path)
-    assert not result.passed
-    assert any("stage-gate" in e and "不存在" in e for e in result.errors)
-
-
-# ===== Check 4: 白名单 =====
-
-def test_check4_in_whitelist(tmp_path):
-    _make_skill_tree(tmp_path)
-    for n in USER_INVOKED_SKILLS:
-        _make_skill(tmp_path / "user-invoked" / n / "SKILL.md", ["stage-gate"], ["stage-gate"])
-    result = check_no_typo_in_name(tmp_path)
-    assert result.passed
-
-
-def test_check4_typo(tmp_path):
-    _make_skill_tree(tmp_path)
-    for n in USER_INVOKED_SKILLS:
-        _make_skill(
-            tmp_path / "user-invoked" / n / "SKILL.md",
-            ["stage-gate", "typo-bad-discipline"],
-            ["stage-gate", "typo-bad-discipline"],
-        )
-    result = check_no_typo_in_name(tmp_path)
-    assert not result.passed
-    assert any("白名单" in e for e in result.errors)
+    assert any("stage-gate" in e and "行数" in e for e in result.errors)
 
 
 # ===== self-test =====
 
 def test_self_test_runs():
-    import subprocess
     r = subprocess.run(
-        [sys.executable, str(Path(__file__).parent.parent / "scripts" / "discipline-lint.py"), "--self-test"],
+        [sys.executable,
+         str(Path(__file__).parent.parent / "scripts" / "discipline-lint.py"),
+         "--self-test"],
         capture_output=True, text=True,
     )
     assert r.returncode == 0, f"stderr={r.stderr}\nstdout={r.stdout}"
@@ -200,8 +132,7 @@ def test_self_test_runs():
 # ===== 实际仓库集成测试 =====
 
 def test_real_repo_passes():
-    """真实仓库 skills/ 应通过 discipline-lint。"""
-    import subprocess
+    """真实仓库 skills/ 应通过 discipline-lint(legacy 兼容壳校验)。"""
     repo = Path(__file__).parent.parent
     r = subprocess.run(
         [sys.executable, str(repo / "scripts" / "discipline-lint.py"), "--strict",
@@ -209,29 +140,3 @@ def test_real_repo_passes():
         capture_output=True, text=True,
     )
     assert r.returncode == 0, f"stderr={r.stderr}\nstdout={r.stdout}"
-
-
-def test_real_repo_break_on_modify():
-    """故意改坏 grill-task 的 requires,跑 lint 应 exit 1。"""
-    import subprocess
-    import shutil
-    repo = Path(__file__).parent.parent
-    target = repo / "skills" / "user-invoked" / "grill-task" / "SKILL.md"
-    backup = target.read_text(encoding="utf-8")
-    broken = backup.replace(
-        "requires: [context-pointer, no-field-guessing, no-self-invent, stage-gate]",
-        "requires: [typo-discipline]",
-    )
-    if backup == broken:
-        # 字段已经改了,跳过
-        return
-    try:
-        target.write_text(broken, encoding="utf-8")
-        r = subprocess.run(
-            [sys.executable, str(repo / "scripts" / "discipline-lint.py"), "--strict",
-             str(repo / "skills")],
-            capture_output=True, text=True,
-        )
-        assert r.returncode == 1, f"应 exit 1,实际 {r.returncode}\nstdout={r.stdout}"
-    finally:
-        target.write_text(backup, encoding="utf-8")

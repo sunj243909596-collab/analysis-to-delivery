@@ -169,7 +169,7 @@ bash install.sh --uninstall
 | 4 | 各阶段重试次数 | 哪些阶段反复回去修 |
 | 5 | 阶段用时(分钟) | 已签字阶段耗时(开始 → 签字) |
 
-**用途**:找流程瓶颈 / 门控过严过松。详见 `disciplines/stage-gate` §度量章节。
+**用途**:找流程瓶颈 / 门控过严过松。详见 `rules/stage-gate.md` §度量章节。
 
 ## 快速开始
 
@@ -560,14 +560,17 @@ analysis-to-delivery/
 │   │       ├── tdd/
 │   │       ├── executing-plans/
 │   │       └── verification-before-completion/
-│   └── disciplines/            # 7 个纪律(model-invoked)
-│       ├── no-field-guessing/
-│       ├── no-self-invent/
-│       ├── ascii-flowchart/
-│       ├── stage-gate/
-│       ├── sql-dialect-discipline/
-│       ├── doc-numbering/
-│       └── context-pointer/
+│   └── disciplines/            # 7 个 legacy 纪律兼容壳(指向 rules/*)
+│       ├── no-field-guessing/    →  rules/no-field-guessing.md
+│       ├── no-self-invent/       →  rules/no-self-invent.md
+│       ├── ascii-flowchart/      →  rules/ascii-flowchart.md
+│       ├── stage-gate/           →  rules/stage-gate.md
+│       ├── sql-dialect-discipline/ → rules/sql-dialect.md
+│       ├── doc-numbering/        →  rules/doc-numbering.md
+│       └── context-pointer/      →  rules/context-pointer.md
+├── rules/                      # 7 个跨阶段规则(canonical,v3.2.0-dev)
+├── paths/                      # 4 个项目级配置入口(canonical)
+├── templates/project-config/   # 兼容壳(指向 paths/*)
 ├── config/                     # 领域配置(skill 级 fallback)
 │   ├── compliance/             # gsp / none / template
 │   ├── tech-stack/             # java-spring / frontend-vue / template

@@ -7,6 +7,19 @@
 
 ## [Unreleased]
 
+### Rules and Paths Refactor(v3.2.0-dev)
+
+> 实现细节见 [`docs/plans/2026-06-25-rules-path-refactor.md`](docs/plans/2026-06-25-rules-path-refactor.md)。
+
+- 🆕 **canonical `rules/` 层**:7 个跨阶段不变式规则从 `skills/disciplines/*` 迁出,迁入 `rules/{stage-gate, no-field-guessing, no-self-invent, ascii-flowchart, sql-dialect, doc-numbering, context-pointer}.md`。
+- 🆕 **canonical `paths/` 层**:4 个项目级配置入口迁入 `paths/{knowledge-path, compliance-path, tech-stack-path, doc-naming-path}.md`。
+- 🆕 **per-stage `Required rules` / `Required paths` 声明**:每个 user-invoked / orchestration SKILL.md 在 `## Contract` 块中显式声明需要的 rules 与 paths(替代旧的 `Required disciplines`)。
+- 🆕 **`scripts/rules-path-lint.py`**:机器校验声明一致性 —— 禁止未知 rule / path / 重复 declaration / legacy `sql-dialect-discipline` 别名 / 缺失 `rules/*.md` 与 `paths/*.md` 文件。
+- 🆕 **thin root SKILL.md**:根 `SKILL.md` 缩减到 35 行(原 119 行),仅作 router / 架构图 / 加载规则。详细说明迁移到 `SPEC.md §13`。
+- ♻️ **`scripts/discipline-lint.py` 降级为 legacy 兼容壳**:不再校验 `requires:` frontmatter 与 `- Required disciplines:` 行(已废弃),仅校验 `skills/disciplines/*/SKILL.md` 兼容壳仍指向对应 canonical `rules/*.md`。
+- ♻️ **`scripts/setup-check.py` / `init-project-config.sh`**:支持 canonical `paths/*.md`,legacy 项目根 `*.md` 接受并产生 warning。
+- ♻️ **`templates/project-config/*`** 改为兼容 wrapper(指向 `paths/*.md`),新项目走 `init-project-config.sh` 默认(写到 `paths/`),旧项目用 `--legacy` 兼容。
+
 ## [v3.1.0] - 2026-07-02
 
 > **P0-P3 共 12 项修复**:门控脚本补齐 + discipline lint + bridge 降级 + flow strict + 状态持久化 + 数字统一 + README 降级 + 快速通道 + 3 example 升级 + description 精简 + 反模式 + 改名 decisions。

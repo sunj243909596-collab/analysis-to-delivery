@@ -1,6 +1,6 @@
 ---
 name: setup-analysis-delivery
-description: 首次为新项目接 analysis-to-delivery 工作流 — 生成 4 个项目级 paths/*.md 配置文件(legacy 项目根 *-path.md 仅兼容)。Use when starting a new project or adding this skill to an existing project.
+description: 首次为新项目接 analysis-to-delivery 工作流 — 生成 4 个项目级 paths/*.md 配置(legacy 仅兼容)。Use when starting a new project or adding this skill to an existing project.
 disable-model-invocation: true
 version: 3.2.0-dev
 requires: [context-pointer]
